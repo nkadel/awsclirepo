@@ -25,9 +25,7 @@ BuildArch:      noarch
 Conflicts:	python2-%{pypi_name}
 Conflicts:	python-%{pypi_name}
 
-%description
-S3transfer is a Python library for managing Amazon S3 transfers.
-
+BuildRequires:  python%{python3_pkgversion}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 %if %{with tests}
@@ -38,8 +36,13 @@ BuildRequires:  python%{python3_pkgversion}-botocore
 BuildRequires:  python%{python3_pkgversion}-coverage
 BuildRequires:  python%{python3_pkgversion}-unittest2
 %endif # tests
+# Explicitly needed for RHEL 6
+BuildRequires:  python3-rpm-macros
 Requires:       python%{python3_pkgversion}-botocore
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
+
+%description
+S3transfer is a Python library for managing Amazon S3 transfers.
 
 %prep
 %setup -q -n %{pypi_name}-%{version}
