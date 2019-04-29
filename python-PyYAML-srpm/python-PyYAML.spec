@@ -165,7 +165,7 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Mon Apr 229 2019-04-29 Nico Kadel-Garcia <nkadel@gmail.com> - 3.10-0
+* Mon Apr 29 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 3.10-0
 - Split to python2-PyYAML and python34-PyYAML, blocking PyYAML
 
 * Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 3.10-11
