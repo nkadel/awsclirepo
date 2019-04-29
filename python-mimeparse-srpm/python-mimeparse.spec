@@ -1,11 +1,15 @@
-%if 0%{?fedora}
-%global with_python3 1
-%endif
-%global srcname mimeparse
+# Single python3 version in Fedora, python3_pkgversion macro not available
+%{!?python3_pkgversion:%global python3_pkgversion 3}
 
-Name:           python-%{srcname}
+%global with_python3 1
+%global with_python2 1
+
+%global pypi_name mimeparse
+
+Name:           python-%{pypi_name}
 Version:        0.1.4
-Release:        1%{?dist}
+#Release:        1%%{?dist}
+Release:        0%{?dist}
 Summary:        Python module for parsing mime-type names
 Group:          Development/Languages
 License:        MIT
@@ -13,20 +17,20 @@ URL:            https://pypi.python.org/pypi/python-mimeparse
 Source0:        https://pypi.python.org/packages/source/p/%{name}/%{name}-%{version}.tar.gz
 BuildArch:      noarch
 BuildRequires:  python2-devel
-%if 0%{?with_python3}
-BuildRequires:  python3-devel
+%if %{with_python3}
+BuildRequires:  python%{python3_pkgversion}-devel
 %endif # if with_python3
 
 %description
 This module provides basic functions for parsing mime-type names
 and matching them against a list of media-ranges.
 
-%if 0%{?with_python3}
-%package -n python3-%{srcname}
+%if %{with_python3}
+%package -n python%{python3_pkgversion}-%{pypi_name}
 Summary:        Python module for parsing mime-type names
 Group:          Development/Languages
 
-%description -n python3-%{srcname}
+%description -n python%{python3_pkgversion}-%{pypi_name}
 This module provides basic functions for parsing mime-type names
 and matching them against a list of media-ranges.
 %endif # with_python3
@@ -34,7 +38,7 @@ and matching them against a list of media-ranges.
 %prep
 %setup -q -n %{name}-%{version}
 
-%if 0%{?with_python3}
+%if %{with_python3}
 rm -rf %{py3dir}
 cp -a . %{py3dir}
 %endif # with_python3
@@ -42,7 +46,7 @@ cp -a . %{py3dir}
 %build
 CFLAGS="%{optflags}" %{__python} setup.py build
 
-%if 0%{?with_python3}
+%if %{with_python3}
 pushd %{py3dir}
 CFLAGS="%{optflags}" %{__python3} setup.py build
 popd
@@ -51,7 +55,7 @@ popd
 %check
 %{__python} mimeparse_test.py
 
-%if 0%{?with_python3}
+%if %{with_python3}
 pushd %{py3dir}
 %{__python3} mimeparse_test.py
 popd
@@ -61,7 +65,7 @@ popd
 # Must do the python3 install first because the scripts in /usr/bin are
 # overwritten with every setup.py install (and we want the python2 version
 # to be the default for now).
-%if 0%{?with_python3}
+%if %{with_python3}
 pushd %{py3dir}
 %{__python3} setup.py install --skip-build --root %{buildroot}
 popd
@@ -73,8 +77,8 @@ popd
 %doc README
 %{python_sitelib}/*
 
-%if 0%{?with_python3}
-%files -n python3-%{srcname}
+%if %{with_python3}
+%files -n python%{python3_pkgversion}-%{pypi_name}
 %doc README
 %{python3_sitelib}/*
 %endif # with_python3
