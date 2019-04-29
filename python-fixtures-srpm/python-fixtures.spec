@@ -1,3 +1,6 @@
+# Single python3 version in Fedora, python3_pkgversion macro not available
+%{!?python3_pkgversion:%global python3_pkgversion 3}
+
 %global pypi_name fixtures
 
 %global with_python3 1
