@@ -1,10 +1,7 @@
-%if 0%{?fedora} || 0%{?rhel} > 7
+# Single python3 version in Fedora, python3_pkgversion macro not available
+%{!?python3_pkgversion:%global python3_pkgversion 3}
+
 %bcond_without python3
-%{!?python3_version: %global python3_version %(%{__python3} -c "import sys; sys.stdout.write(sys.version[:3])")}
-%else
-%bcond_with python3
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print (get_python_lib())")}
-%endif
 
 %global pypi_name unittest2
 %global bootstrap_traceback2 0
@@ -28,21 +25,21 @@ Patch2:         unittest2-1.1.0-backport-tests-from-py3.5.patch
 BuildArch:      noarch
 
 BuildRequires:  python2-devel
-BuildRequires:  python-setuptools
-BuildRequires:  python-six
+BuildRequires:  python2-setuptools
+BuildRequires:  python2-six
 %if ! 0%{?bootstrap_traceback2}
-BuildRequires:  python-traceback2
-Requires:       python-traceback2
+BuildRequires:  python2-traceback2
+Requires:       python2-traceback2
 %endif
-Requires:       python-setuptools
-Requires:       python-six
+Requires:       python2-setuptools
+Requires:       python2-six
 
 %if %{with python3}
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-six
+BuildRequires:  python%{python3_pkgversion}-devel
+BuildRequires:  python%{python3_pkgversion}-setuptools
+BuildRequires:  python%{python3_pkgversion}-six
 %if ! 0%{?bootstrap_traceback2}
-BuildRequires:  python3-traceback2
+BuildRequires:  python%{python3_pkgversion}-traceback2
 %endif # bootstrap_traceback2
 %endif # if with_python3
 
@@ -53,15 +50,15 @@ framework in Python 2.7 and onwards. It is tested to run on Python 2.6, 2.7,
 3.2, 3.3, 3.4 and pypy.
 
 %if %{with python3}
-%package -n     python3-%{pypi_name}
+%package -n     python%{python3_pkgversion}-%{pypi_name}
 Summary:        The new features in unittest backported to Python 2.4+
-Requires:       python3-setuptools
-Requires:       python3-six
+Requires:       python%{python3_pkgversion}-setuptools
+Requires:       python%{python3_pkgversion}-six
 %if ! 0%{?bootstrap_traceback2}
-Requires:       python3-traceback2
+Requires:       python%{python3_pkgversion}-traceback2
 %endif
 
-%description -n python3-%{pypi_name}
+%description -n python%{python3_pkgversion}-%{pypi_name}
 unittest2 is a backport of the new features added to the unittest testing
 framework in Python 2.7 and onwards. It is tested to run on Python 2.6, 2.7,
 3.2, 3.3, 3.4 and pypy.
@@ -102,7 +99,7 @@ popd
 %if %{with python3}
 pushd %{py3dir}
 %{__python3} setup.py install --skip-build --root %{buildroot}
-mv %{buildroot}%{_bindir}/unit2 %{buildroot}/%{_bindir}/python3-unit2
+mv %{buildroot}%{_bindir}/unit2 %{buildroot}/%{_bindir}/python%{python3_pkgversion}-unit2
 popd
 %endif # with_python3
 
@@ -128,9 +125,9 @@ popd
 %{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %if %{with python3}
-%files -n python3-%{pypi_name}
+%files -n python%{python3_pkgversion}-%{pypi_name}
 %doc README.txt
-%{_bindir}/python3-unit2
+%{_bindir}/python%{python3_pkgversion}-unit2
 %{python3_sitelib}/%{pypi_name}
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 %endif # with_python3
