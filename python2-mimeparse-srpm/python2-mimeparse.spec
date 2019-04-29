@@ -1,4 +1,4 @@
-%global dummy mimieparse
+%global dummy mimeparse
 
 Name:       python2-%dummy
 Version:    0.1.4
