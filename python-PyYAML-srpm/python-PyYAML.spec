@@ -1,26 +1,35 @@
-%if 0%{?fedora} > 12
+# Single python3 version in Fedora, python3_pkgversion macro not available
+%{!?python3_pkgversion:%global python3_pkgversion 3}
+
 %global with_python3 1
-%else
-%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
+
+%global with_python2 1
+%if 0%{?fedora} > 30
+%global with_python2 0
 %endif
 
-Name:           PyYAML
+%global pypi_name PyYAML
+
+#Name:           PyYAML
+Name:           python-%{pypi_name}
 Version:        3.10
-Release:        11%{?dist}
+#Release:        11%%{?dist}
+Release:        0%{?dist}
 Summary:        YAML parser and emitter for Python
 
 Group:          Development/Libraries
 License:        MIT
 URL:            http://pyyaml.org/
-Source0:        http://pyyaml.org/download/pyyaml/%{name}-%{version}.tar.gz
-BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
-BuildRequires:  python-devel, python-setuptools, libyaml-devel, Cython
-Provides:       python-yaml = %{version}-%{release}
-Provides:       python-yaml%{?_isa} = %{version}-%{release}
-%if 0%{?with_python3}
-BuildRequires: python3-devel
-BuildRequires: python3-setuptools
-%endif
+Source0:        http://pyyaml.org/download/pyyaml/%{pypi_name}-%{version}.tar.gz
+BuildRequires:  libyaml-devel, Cython
+%if %{with_python2}
+BuildRequires:  python2-devel
+BuildRequires:  python2-setuptools
+%endif # with_python2
+%if %{with_python3}
+BuildRequires:  python%{python3_pkgversion}-devel
+BuildRequires:  python%{python3_pkgversion}-setuptools
+%endif # with_python3
 
 # http://pyyaml.org/ticket/247
 Patch0: PyYAML-size_t_not_int.patch
@@ -38,12 +47,18 @@ allow to represent an arbitrary Python object.
 PyYAML is applicable for a broad range of tasks from complex
 configuration files to object serialization and persistance.
 
-%if 0%{?with_python3}
-%package -n python3-PyYAML
+%if %{with_python2}
+%package -n python2-%{pypi_name}
 Summary: YAML parser and emitter for Python
 Group: Development/Libraries
+#Provides:       python2-yaml = %{version}-%{release}
+#Provides:       python2-yaml%{?_isa} = %{version}-%{release}
+%{?python_provide:%python_provide python2-yaml}
+# Due to misnaming as "PyYAML" in RHEL
+Provides: PyYAML = %{version}-%{release}
+Conflicts: PyYAML
 
-%description -n python3-PyYAML
+%description -n python2-%{pypi_name}
 YAML is a data serialization format designed for human readability and
 interaction with scripting languages.  PyYAML is a YAML parser and
 emitter for Python.
@@ -55,72 +70,104 @@ allow to represent an arbitrary Python object.
 
 PyYAML is applicable for a broad range of tasks from complex
 configuration files to object serialization and persistance.
-%endif
+%endif # with_python2
 
+%if %{with_python3}
+%package -n python%{python3_pkgversion}-%{pypi_name}
+Summary: YAML parser and emitter for Python
+Group: Development/Libraries
+#Provides:       python%{python3_pkgversion}-yaml = %{version}-%{release}
+#Provides:       python%{python3_pkgversion}-yaml%{?_isa} = %{version}-%{release}
+%{?python_provide:%python_provide python%{python3_pkgversion}-yaml}
+
+%description -n python%{python3_pkgversion}-%{pypi_name}
+YAML is a data serialization format designed for human readability and
+interaction with scripting languages.  PyYAML is a YAML parser and
+emitter for Python.
+
+PyYAML features a complete YAML 1.1 parser, Unicode support, pickle
+support, capable extension API, and sensible error messages.  PyYAML
+supports standard YAML tags and provides Python-specific tags that
+allow to represent an arbitrary Python object.
+
+PyYAML is applicable for a broad range of tasks from complex
+configuration files to object serialization and persistance.
+%endif # with_python3
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q -n %{pypi_name}-%{version}
 chmod a-x examples/yaml-highlight/yaml_hl.py
 %patch0 -p1
 pushd ext
 cython _yaml.pyx
 popd
 
-%if 0%{?with_python3}
+%if %{with_python3}
 rm -rf %{py3dir}
 cp -a . %{py3dir}
-%endif
-
+%endif # with_python3
 
 %build
-CFLAGS="${RPM_OPT_FLAGS}" %{__python} setup.py --with-libyaml build
+%if %{with_python2}
+CFLAGS="${RPM_OPT_FLAGS}" %{__python2} setup.py --with-libyaml build
+%endif # with_python2
 
-%if 0%{?with_python3}
+%if %{with_python3}
 pushd %{py3dir}
 CFLAGS="${RPM_OPT_FLAGS}" %{__python3} setup.py --with-libyaml build
 popd
 %endif
 
-
 %install
-rm -rf %{buildroot}
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+%if %{with_python2}
+%{__python2} setup.py install -O1 --skip-build --root %{buildroot}
+%endif # with_python2
 
-%if 0%{?with_python3}
+%if %{with_python3}
 pushd %{py3dir}
 %{__python3} setup.py install -O1 --skip-build --root %{buildroot}
 popd
 %endif
 
-
 %check
+%if %{with_python2}
 %{__python} setup.py test
+%endif
 
-%if 0%{?with_python3}
+%if %{?with_python3}
 pushd %{py3dir}
 %{__python3} setup.py test
 popd
 %endif
 
-
-%clean
+%%clean
 rm -rf %{buildroot}
 
-
-%files
+%files -n python2-%{pypi_name}
 %defattr(644,root,root,755)
 %doc CHANGES LICENSE PKG-INFO README examples
-%{python_sitearch}/*
+%{python2_sitearch}/*
+%{python3_sitearch}/*
 
-%if 0%{?with_python3}
-%files -n python3-PyYAML
+%if %{with_python2}
+%files -n python2-%{pypi_name}
+%defattr(644,root,root,755)
+%doc CHANGES LICENSE PKG-INFO README examples
+%{python2_sitearch}/*
+%endif # with_python2
+
+%if %{with_python3}
+%files -n python%{python3_pkgversion}-%{pypi_name}
 %defattr(644,root,root,755)
 %doc CHANGES LICENSE PKG-INFO README examples
 %{python3_sitearch}/*
-%endif
+%endif # with_python3
 
 
 %changelog
+* Mon Apr 229 2019-04-29 Nico Kadel-Garcia <nkadel@gmail.com> - 3.10-0
+- Split to python2-PyYAML and python34-PyYAML, blocking PyYAML
+
 * Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 3.10-11
 - Mass rebuild 2014-01-24
 
