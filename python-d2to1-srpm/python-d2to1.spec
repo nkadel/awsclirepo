@@ -1,22 +1,23 @@
-%if 0%{?fedora} > 12 || 0%{?rhel} > 6
 %global with_python3 1
-%else
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print (get_python_lib())")}
-%endif
+%global with_python2 1
 
 %global upname d2to1
 
 Name: python-%{upname}
 Version: 0.2.10
-Release: 1%{?dist}
+#Release: 1%%{?dist}
+Release: 0%{?dist}
 Summary: Allows using distutils2-like setup.cfg files with setup.py
 License: BSD
 
 Group: Development/Languages
-URL: http://pypi.python.org/pypi/d2to1
-Source0: http://pypi.python.org/packages/source/d/d2to1/%{upname}-%{version}.tar.gz
-BuildRequires: python-devel python-setuptools
-Requires: python-setuptools
+URL: https://pypi.python.org/pypi/d2to1
+Source0: https://pypi.python.org/packages/source/d/d2to1/%{upname}-%{version}.tar.gz
+BuildRequires: openssl-devel
+
+BuildRequires: python2-devel
+BuildRequires: python2-setuptools
+Requires: python2-setuptools
 
 BuildArch: noarch
 
@@ -27,12 +28,13 @@ distutils2-formatted setup.cfg file containing all of a package's metadata,
 and a very minimal setup.py which will slurp its arguments from the setup.cfg.
 
 %if 0%{?with_python3}
-%package -n python3-d2to1
+%package -n python%{python3_pkgversion}-d2to1
 Summary: Allows using distutils2-like setup.cfg files with setup.py
-BuildRequires:  python3-devel python3-setuptools
-Requires:  python3-setuptools
+BuildRequires:  python%{python3_pkgversion}-devel
+BuildRequires:  python%{python3_pkgversion}-setuptools
+Requires:  python%{python3_pkgversion}-setuptools
 
-%description -n python3-d2to1
+%description -n python%{python3_pkgversion}-d2to1
 d2to1 allows using distutils2-like setup.cfg files for a package's metadata 
 with a distribute/setuptools setup.py script. It works by providing a 
 distutils2-formatted setup.cfg file containing all of a package's metadata, 
@@ -42,6 +44,15 @@ and a very minimal setup.py which will slurp its arguments from the setup.cfg.
 %prep
 %setup -q -n %{upname}-%{version}
 rm -rf %{upname}.egg-info
+
+
+for file in \
+    distribute_setup.py \
+    d2to1/tests/testpackage/distribute_setup.py \
+    d2to1/tests/testpackage/README.txt; do
+    echo Correct http://pypi.python.org in $file
+    sed -i.bak  's|http://pypi.python.org/|https://pypi.python.org/|g' $file
+done
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -76,13 +87,17 @@ popd
 %{python_sitelib}/*
 
 %if 0%{?with_python3}
-%files -n python3-d2to1
+%files -n python%{python3_pkgversion}-d2to1
 %doc CHANGES.rst CONTRIBUTORS LICENSE README.rst
 %{python3_sitelib}/*
 %endif # with_python3
 
 
 %changelog
+* Mon Apr 29 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 0.2.10-0
+- Enable python3 by default, use python3_pkgversion
+- Change URL for downloaded distribute module to use https://
+
 * Thu Apr 25 2013 Sergio Pascual <sergiopr@fedoraproject.org> - 0.2.10-1
 - New upstream source
 
