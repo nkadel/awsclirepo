@@ -1,0 +1,50 @@
+--- dateutil/zoneinfo/__init__.py
++++ dateutil/zoneinfo/__init__.py
+@@ -14,9 +14,10 @@
+
+ __all__ = ["setcachesize", "gettz", "rebuild"]
+
+-_ZONEFILENAME = "dateutil-zoneinfo.tar.gz"
++_LOCAL_ZONEINFO_FILE = "dateutil-zoneinfo.tar.gz"
++_SYSTEM_ZONEINFO_DIR = "/usr/share/zoneinfo"
+
+-# python2.6 compatability. Note that TarFile.__exit__ != TarFile.close, but
++# python2.6 compatibility. Note that TarFile.__exit__ != TarFile.close, but
+ # it's close enough for python2.6
+ _tar_open = TarFile.open
+ if not hasattr(TarFile, '__exit__'):
+@@ -31,9 +32,8 @@
+
+ def getzoneinfofile_stream():
+     try:
+-        return BytesIO(get_data(__name__, _ZONEFILENAME))
++        return BytesIO(get_data(__name__, _LOCAL_ZONEINFO_FILE))
+     except IOError as e:  # TODO  switch to FileNotFoundError?
+-        warnings.warn("I/O error({0}): {1}".format(e.errno, e.strerror))
+         return None
+
+
+@@ -59,6 +59,14 @@
+                 self.zones.update(links)
+         else:
+             self.zones = dict()
++            if os.path.isdir(_SYSTEM_ZONEINFO_DIR):
++                for root, dirnames, filenames in os.walk(_SYSTEM_ZONEINFO_DIR):
++                    for filename in filenames:
++                        absolute_filename = os.path.join(root, filename)
++                        relative_filename = absolute_filename[len(_SYSTEM_ZONEINFO_DIR)+1:]
++                        with open(absolute_filename, "rb") as file:
++                            if file.read(4) == b"TZif":
++                                self.zones[relative_filename] = tzfile(absolute_filename, relative_filename)
+
+
+ # The current API has gettz as a module function, although in fact it taps into
+@@ -99,7 +107,7 @@
+                         "libc-bin or some other package that provides it, "
+                         "or it's not in your PATH?")
+                     raise
+-        target = os.path.join(moduledir, _ZONEFILENAME)
++        target = os.path.join(moduledir, _LOCAL_ZONEINFO_FILE)
+         with _tar_open(target, "w:%s" % format) as tf:
+             for entry in os.listdir(zonedir):
+                 entrypath = os.path.join(zonedir, entry)
