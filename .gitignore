@@ -1,0 +1,8 @@
+*.cfg
+*.conf
+*.out
+*.repo
+*.rpm
+*~
+awsclirepo
+repodata
