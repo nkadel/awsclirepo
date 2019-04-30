@@ -3,6 +3,7 @@
 
 %global pypi_name fixtures
 
+# Disable python2 for RHEL 6 dependencies on python-testtool
 %global with_python3 1
 
 Name:           python-%{pypi_name}
@@ -18,6 +19,7 @@ BuildArch:      noarch
 
 BuildRequires:  python2-devel
 
+# Not available on RHEL 6 yet
 Requires:       python2-testtools
 
 %description
@@ -84,6 +86,9 @@ popd
 %endif
 
 %changelog
+* Mon Apr 29 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 0.3.14-0
+- Backport to RHEL 6 with python3_pkgversion
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.3.14-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
