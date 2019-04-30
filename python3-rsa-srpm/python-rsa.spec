@@ -1,19 +1,16 @@
+# Single python3 version in Fedora, python3_pkgversion macro not available
+%{!?python3_pkgversion:%global python3_pkgversion 3}
+
 %global pypi_name rsa
 
-%if 0%{?rhel}
-%global with_python3 0
-%{!?__python2: %global __python2 /usr/bin/python2}
-%{!?python2_sitelib: %global python2_sitelib %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%{!?python2_sitearch: %global python2_sitearch %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
-%{!?py2_build: %global py2_build %{expand: CFLAGS="%{optflags}" %{__python2} setup.py %{?py_setup_args} build --executable="%{__python2} -s"}}
-%{!?py2_install: %global py2_install %{expand: CFLAGS="%{optflags}" %{__python2} setup.py %{?py_setup_args} install -O1 --skip-build --root %{buildroot}}}
-%else
+# Disable python2 for RHEL 6 stability
 %global with_python3 1
-%endif
+%global with_python2 0
 
 Name:           python-%{pypi_name}
 Version:        3.4.1
-Release:        1%{?dist}
+#Release:        1%%{?dist}
+Release:        0%{?dist}
 Summary:        Pure-Python RSA implementation
 
 License:        ASL 2.0
@@ -21,14 +18,19 @@ URL:            http://stuvel.eu/rsa
 Source0:        https://pypi.python.org/packages/source/r/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
 
+%if %{with_python2}
+BuildRequires:  python2
 BuildRequires:  python2-devel
-BuildRequires:  python-setuptools
-BuildRequires:  python-pyasn1%{!?el6: >= 0.1.3}
+BuildRequires:  python2-setuptools
+BuildRequires:  python2-pyasn1%{!?el6: >= 0.1.3}
+BuildRequires:  python2-unittest2
+%endif
 %if 0%{?with_python3}
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-BuildRequires:  python3-pyasn1 >= 0.1.3
-BuildRequires:  python3-unittest2
+BuildRequires:  python%{python3_pkgversion}
+BuildRequires:  python%{python3_pkgversion}-devel
+BuildRequires:  python%{python3_pkgversion}-setuptools
+BuildRequires:  python%{python3_pkgversion}-pyasn1 >= 0.1.3
+BuildRequires:  python%{python3_pkgversion}-unittest2
 %endif # with_python3
 
 %description
@@ -37,28 +39,30 @@ and decryption, signing and verifying signatures, and key generation
 according to PKCS#1 version 1.5. It can be used as a Python library as
 well as on the command-line.
 
+%if %{with_python2}
 %package -n     python2-%{pypi_name}
 Summary:        Pure-Python RSA implementation
 %{?python_provide:%python_provide python2-%{pypi_name}}
 %{?el6:Provides: python-%{pypi_name}}
 %{?el6:Obsoletes: python-%{pypi_name} < 3.3}
-
 Requires:       python-pyasn1%{!?el6: >= 0.1.3}
 Requires:       python-setuptools
+
 %description -n python2-%{pypi_name}
 Python-RSA is a pure-Python RSA implementation. It supports encryption
 and decryption, signing and verifying signatures, and key generation
 according to PKCS#1 version 1.5. It can be used as a Python library as
 well as on the command-line.
+%endif # with_python2
 
 %if 0%{?with_python3}
-%package -n     python3-%{pypi_name}
+%package -n     python%{python3_pkgversion}-%{pypi_name}
 Summary:        Pure-Python RSA implementation
-%{?python_provide:%python_provide python3-%{pypi_name}}
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
+Requires:       python%{python3_pkgversion}-pyasn1 >= 0.1.3
+Requires:       python%{python3_pkgversion}-setuptools
 
-Requires:       python3-pyasn1 >= 0.1.3
-Requires:       python3-setuptools
-%description -n python3-%{pypi_name}
+%description -n python%{python3_pkgversion}-%{pypi_name}
 Python-RSA is a pure-Python RSA implementation. It supports encryption
 and decryption, signing and verifying signatures, and key generation
 according to PKCS#1 version 1.5. It can be used as a Python library as
@@ -72,13 +76,16 @@ well as on the command-line.
 %{?el6:sed -i "s/pyasn1 >= 0.1.3/pyasn1 >= 0/" setup.py}
 
 %build
-%py2_build
+%if %{with_python2}
+%{py2_build}
+%endif # with_python2
 %if 0%{?with_python3}
-%py3_build
+%{py3_build}
 %endif # with_python3
 
 %install
-%py2_install
+%if %{with_python2}
+%{py2_install}
 cp %{buildroot}%{_bindir}/pyrsa-priv2pub %{buildroot}%{_bindir}/pyrsa-priv2pub-2
 cp %{buildroot}%{_bindir}/pyrsa-keygen %{buildroot}%{_bindir}/pyrsa-keygen-2
 cp %{buildroot}%{_bindir}/pyrsa-encrypt %{buildroot}%{_bindir}/pyrsa-encrypt-2
@@ -87,9 +94,10 @@ cp %{buildroot}%{_bindir}/pyrsa-sign %{buildroot}%{_bindir}/pyrsa-sign-2
 cp %{buildroot}%{_bindir}/pyrsa-verify %{buildroot}%{_bindir}/pyrsa-verify-2
 cp %{buildroot}%{_bindir}/pyrsa-encrypt-bigfile %{buildroot}%{_bindir}/pyrsa-encrypt-bigfile-2
 cp %{buildroot}%{_bindir}/pyrsa-decrypt-bigfile %{buildroot}%{_bindir}/pyrsa-decrypt-bigfile-2
+%endif # with_python2
 
 %if 0%{?with_python3}
-%py3_install
+%{py3_install}
 cp %{buildroot}%{_bindir}/pyrsa-priv2pub %{buildroot}%{_bindir}/pyrsa-priv2pub-3
 cp %{buildroot}%{_bindir}/pyrsa-keygen %{buildroot}%{_bindir}/pyrsa-keygen-3
 cp %{buildroot}%{_bindir}/pyrsa-encrypt %{buildroot}%{_bindir}/pyrsa-encrypt-3
@@ -100,6 +108,7 @@ cp %{buildroot}%{_bindir}/pyrsa-encrypt-bigfile %{buildroot}%{_bindir}/pyrsa-enc
 cp %{buildroot}%{_bindir}/pyrsa-decrypt-bigfile %{buildroot}%{_bindir}/pyrsa-decrypt-bigfile-3
 %endif # with_python3
 
+%if %{with_python2}
 %files -n python2-%{pypi_name}
 %{!?_licensedir:%global license %doc}
 %doc README.md
@@ -124,9 +133,11 @@ cp %{buildroot}%{_bindir}/pyrsa-decrypt-bigfile %{buildroot}%{_bindir}/pyrsa-dec
 %{_bindir}/pyrsa-decrypt-bigfile-2
 %{python2_sitelib}/%{pypi_name}
 %{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
+%endif # with_python2
 
 %if 0%{?with_python3}
-%files -n python3-%{pypi_name}
+%files -n python%{python3_pkgversion}-%{pypi_name}
+%{!?_licensedir:%global license %doc}
 %doc README.md
 %license LICENSE
 %{_bindir}/pyrsa-priv2pub
@@ -150,12 +161,17 @@ cp %{buildroot}%{_bindir}/pyrsa-decrypt-bigfile %{buildroot}%{_bindir}/pyrsa-dec
 %endif # with_python3
 
 %check
+%if %{with_python2}
 %{__python2} setup.py test
+%endif
 %if 0%{?with_python3}
 %{__python3} setup.py test
 %endif # with_python3
 
 %changelog
+* Mon Apr 29 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 3.4.1-0
+- Disable python2, enable python3 build with python3_pkgversion
+
 * Sat Mar 26 2016 Fabio Alessandro Locati <fabio@locati.cc> - 3.4.1-1
 - Update to 3.4.1
 
