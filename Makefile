@@ -44,12 +44,10 @@ AWSCLIPKGS+=python3-rsa-srpm
 AWSCLIPKGS+=python3-testtools-srpm
 AWSCLIPKGS+=python3-pbr-srpm
 
-AWSCLIPKGS+=python-s3transfer-srpm
+AWSCLIPKGS+=python3-s3transfer-srpm
 
 # dependencies
 AWSCLIPKGS+=python-linecache2-srpm
-
-#AWSCLIPKGS+=python-s3transfer-srpm
 
 REPOS+=awsclirepo/el/6
 
