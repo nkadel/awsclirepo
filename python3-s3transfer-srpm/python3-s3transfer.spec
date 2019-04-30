@@ -10,9 +10,9 @@
 
 %global pypi_name s3transfer
 
-# Use pkgversoin for package name, because this is repackaged
+# Use pkgversion for package name, because this is repackaged
 # for RHEL 6 where python 2.6 does not work
-Name:           python%{python3_pkgversion}-%{pypi_name}
+Name:           python3-%{pypi_name}
 Version:        0.1.13
 Release:        0%{?dist}
 Summary:        An Amazon S3 Transfer Manager
@@ -21,10 +21,6 @@ License:        ASL 2.0
 URL:            https://github.com/boto/s3transfer
 Source0:        https://pypi.io/packages/source/s/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
-# Compiled specifically for python3
-Conflicts:	python2-%{pypi_name}
-Conflicts:	python-%{pypi_name}
-
 BuildRequires:  python%{python3_pkgversion}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
@@ -38,10 +34,22 @@ BuildRequires:  python%{python3_pkgversion}-unittest2
 %endif # tests
 # Explicitly needed for RHEL 6
 BuildRequires:  python3-rpm-macros
+
+%package -n python%{python3_pkgversion}-%{pypi_name} 
+Summary:        An Amazon S3 Transfer Manager
+# Compiled specifically for python3
+Conflicts:	python2-%{pypi_name}
+Conflicts:	python-%{pypi_name}
 Requires:       python%{python3_pkgversion}-botocore
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
+%files -n python%{python3_pkgversion}-%{pypi_name} 
+
+
 %description
+S3transfer is a Python library for managing Amazon S3 transfers.
+
+%description -n python%{python3_pkgversion}-%{pypi_name} 
 S3transfer is a Python library for managing Amazon S3 transfers.
 
 %prep
