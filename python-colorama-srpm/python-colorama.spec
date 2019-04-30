@@ -35,7 +35,7 @@ Termcolor.
 %package -n python%{python3_pkgversion}-%{pypi_name}
 Summary:        Cross-platform colored terminal text
 
-Requires:      python3
+Requires:      python%{python3_pkgversion}
 BuildRequires: python%{python3_pkgversion}-devel
 
 %description -n python%{python3_pkgversion}-%{pypi_name}
