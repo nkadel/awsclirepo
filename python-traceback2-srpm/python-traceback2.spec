@@ -1,16 +1,16 @@
+# Single python3 version in Fedora, python3_pkgversion macro not available
+%{!?python3_pkgversion:%global python3_pkgversion 3}
+
 %global pkgname traceback2
 %global sum Backport of the traceback module
 %global desc A backport of traceback to older supported Pythons.
 
-%if 0%{?fedora}
 %bcond_without python3
-%else
-%bcond_with python3
-%endif
 
 Name:           python-%{pkgname}
 Version:        1.4.0
-Release:        7%{?dist}
+#Release:        7%{?dist}
+Release:        0%{?dist}
 Summary:        %{sum}
 
 License:        Python
@@ -19,22 +19,22 @@ Source0:        https://pypi.python.org/packages/source/t/%{pkgname}/%{pkgname}-
 
 BuildArch:      noarch
 BuildRequires:  python2-devel
-BuildRequires:  python-pbr
-BuildRequires:  python-linecache2
+BuildRequires:  python2-pbr
+BuildRequires:  python2-linecache2
 # Test dependencies
-BuildRequires:  python-contextlib2
-BuildRequires:  python-fixtures
-BuildRequires:  python-testtools
-BuildRequires:  python-unittest2
+BuildRequires:  python2-contextlib2
+BuildRequires:  python2-fixtures
+BuildRequires:  python2-testtools
+BuildRequires:  python2-unittest2
 
 %if %{with python3}
-BuildRequires:  python3-devel
-BuildRequires:  python3-pbr
+BuildRequires:  python%{python3_pkgversion}-devel
+BuildRequires:  python%{python3_pkgversion}-pbr
 # Test dependencies
-BuildRequires:  python3-contextlib2
-BuildRequires:  python3-fixtures
-BuildRequires:  python3-testtools
-BuildRequires:  python3-unittest2
+BuildRequires:  python%{python3_pkgversion}-contextlib2
+BuildRequires:  python%{python3_pkgversion}-fixtures
+BuildRequires:  python%{python3_pkgversion}-testtools
+BuildRequires:  python%{python3_pkgversion}-unittest2
 %endif # with python3
 
 %description
@@ -51,12 +51,12 @@ Requires:       python-linecache2
 
 
 %if %{with python3}
-%package     -n python3-%{pkgname}
+%package     -n python%{python3_pkgversion}-%{pkgname}
 Summary:        %{sum}
-Requires:       python3-linecache2
-%{?python_provide:%python_provide python3-%{pkgname}}
+Requires:       python%{python3_pkgversion}-linecache2
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pkgname}}
 
-%description -n python3-%{pkgname}
+%description -n python%{python3_pkgversion}-%{pkgname}
 %{desc}
 
 %endif # with python3
@@ -123,7 +123,7 @@ popd
 %{python2_sitelib}/*
 
 %if %{with python3}
-%files -n python3-%{pkgname}
+%files -n python%{python3_pkgversion}-%{pkgname}
 %doc python3/AUTHORS python3/ChangeLog python3/README.rst
 %{python3_sitelib}/*
 %endif # with python3
