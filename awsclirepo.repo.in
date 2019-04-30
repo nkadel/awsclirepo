@@ -1,0 +1,15 @@
+[awsclirepo]
+name=awscli repo - $basearch
+baseurl=file://@REPOBASEDIR@/awsclirepo/@RELEASEDIR@/$releasever/$basearch
+enabled=0
+# Expire very quickly for locally updated repo
+metadata_expire=1
+gpgcheck=0
+
+[awsclirepo-source]
+name=awscli repo - Source
+baseurl=file://@REPOBASEDIR@/awsclirepo/@RELEASEDIR@/$releasever/SRPMS/
+enabled=0
+# Expire very quickly for locally updated repo
+metadata_expire=1
+gpgcheck=0
