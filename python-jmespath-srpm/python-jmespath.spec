@@ -1,19 +1,15 @@
-%if 0%{?rhel}
-%global with_python3 0
-%{!?__python2: %global __python2 /usr/bin/python2}
-%{!?python2_sitelib: %global python2_sitelib %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%{!?python2_sitearch: %global python2_sitearch %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
-%{!?py2_build: %global py2_build %{expand: CFLAGS="%{optflags}" %{__python2} setup.py %{?py_setup_args} build --executable="%{__python2} -s"}}
-%{!?py2_install: %global py2_install %{expand: CFLAGS="%{optflags}" %{__python2} setup.py %{?py_setup_args} install -O1 --skip-build --root %{buildroot}}}
-%else
+# Single python3 version in Fedora, python3_pkgversion macro not available
+%{!?python3_pkgversion:%global python3_pkgversion 3}
+
+# Enable for RHEL 6 and awscli
 %global with_python3 1
-%endif
 
 %global pypi_name jmespath
 
 Name:           python-%{pypi_name}
 Version:        0.9.0
-Release:        2%{?dist}
+#Release:        2%%{?dist}
+Release:        0%{?dist}
 Summary:        JSON Matching Expressions
 
 License:        MIT
@@ -22,10 +18,10 @@ Source0:        https://pypi.python.org/packages/source/j/%{pypi_name}/%{pypi_na
 BuildArch:      noarch
 
 BuildRequires:  python2-devel
-BuildRequires:  python-setuptools
+BuildRequires:  python2-setuptools
 %if 0%{?with_python3}
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
+BuildRequires:  python%{python3_pkgversion}-devel
+BuildRequires:  python%{python3_pkgversion}-setuptools
 %endif # with_python3
 
 %description
@@ -42,11 +38,11 @@ JMESPath allows you to declaratively specify how to extract elements from
 a JSON document.
 
 %if 0%{?with_python3}
-%package -n     python3-%{pypi_name}
+%package -n     python%{python3_pkgversion}-%{pypi_name}
 Summary:        JSON Matching Expressions
-%{?python_provide:%python_provide python3-%{pypi_name}}
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
-%description -n python3-%{pypi_name}
+%description -n python%{python3_pkgversion}-%{pypi_name}
 JMESPath allows you to declaratively specify how to extract elements from
 a JSON document.
 %endif # with_python3
@@ -84,7 +80,8 @@ ln -sf %{_bindir}/jp.py-2 %{buildroot}/%{_bindir}/jp.py-%{python2_version}
 %{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %if 0%{?with_python3}
-%files -n python3-%{pypi_name}
+%files -n python%{python3_pkgversion}-%{pypi_name}
+%{!?_licensedir:%global license %doc}
 %doc README.rst
 %license LICENSE.txt
 %{_bindir}/jp.py-3
@@ -94,6 +91,9 @@ ln -sf %{_bindir}/jp.py-2 %{buildroot}/%{_bindir}/jp.py-%{python2_version}
 %endif # with_python3
 
 %changelog
+* Sun Aug 05 2018 Kevin Fenzi <kevin@scrye.com> - 0.9.0-0
+- Activate python3_pkgversion and enable python3 for RHEL
+
 * Wed Jan 06 2016 Fabio Alessandro Locati <fabio@locati.cc> - 0.9.0-2
 - Improve to set the Provides tag for EL6 too
 
