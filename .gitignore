@@ -3,6 +3,8 @@
 *.out
 *.repo
 *.rpm
+*.tar.*
+*\#*
 *~
 awsclirepo
 repodata
