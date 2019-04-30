@@ -1,8 +1,11 @@
+# Single python3 version in Fedora, python3_pkgversion macro not available
+%{!?python3_pkgversion:%global python3_pkgversion 3}
+
+%bcond_without python3
+
 %if 0%{?rhel} && 0%{?rhel} <= 7
-%bcond_with python3
 %bcond_without fix_dateutil
 %else
-%bcond_without python3
 %bcond_with fix_dateutil
 %endif
 
@@ -30,6 +33,7 @@ botocore package is the foundation for the AWS CLI as well as boto3.
 
 %package -n     python2-%{pypi_name}
 Summary:        Low-level, data-driven core of boto 3
+BuildRequires:  python2
 BuildRequires:  python2-devel
 BuildRequires:  python-setuptools
 %if %{with docs}
@@ -62,34 +66,35 @@ A low-level interface to a growing number of Amazon Web Services. The
 botocore package is the foundation for the AWS CLI as well as boto3.
 
 %if %{with python3}
-%package -n     python3-%{pypi_name}
+%package -n     python%{python3_pkgversion}-%{pypi_name}
 Summary:        Low-level, data-driven core of boto 3
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
+BuildRequires:  python%{python3_pkgversion}
+BuildRequires:  python%{python3_pkgversion}-devel
+BuildRequires:  python%{python3_pkgversion}-setuptools
 %if %{with docs}
-BuildRequires:  python3-sphinx
-BuildRequires:  python3-guzzle_sphinx_theme
+BuildRequires:  python%{python3_pkgversion}-sphinx
+BuildRequires:  python%{python3_pkgversion}-guzzle_sphinx_theme
 %endif # with docs
 %if %{with tests}
-%{?fc24:BuildRequires: python3-behave}
-BuildRequires:  python3-mock
-BuildRequires:  python3-nose
-BuildRequires:  python3-six
-BuildRequires:  python3-wheel
-BuildRequires:  python3-docutils
-BuildRequires:  python3-dateutil
-BuildRequires:  python3-jmespath
+%{?fc24:BuildRequires: python%{python3_pkgversion}-behave}
+BuildRequires:  python%{python3_pkgversion}-mock
+BuildRequires:  python%{python3_pkgversion}-nose
+BuildRequires:  python%{python3_pkgversion}-six
+BuildRequires:  python%{python3_pkgversion}-wheel
+BuildRequires:  python%{python3_pkgversion}-docutils
+BuildRequires:  python%{python3_pkgversion}-dateutil
+BuildRequires:  python%{python3_pkgversion}-jmespath
 %endif # with tests
-Requires:       python3-jmespath >= 0.7.1
+Requires:       python%{python3_pkgversion}-jmespath >= 0.7.1
 %if %{with fix_dateutil}
-Requires:       python3-dateutil >= 1.4
+Requires:       python%{python3_pkgversion}-dateutil >= 1.4
 %else
-Requires:       python3-dateutil >= 2.1
+Requires:       python%{python3_pkgversion}-dateutil >= 2.1
 %endif # with fix_dateutil
-Requires:       python3-docutils >= 0.10
-%{?python_provide:%python_provide python3-%{pypi_name}}
+Requires:       python%{python3_pkgversion}-docutils >= 0.10
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
-%description -n python3-%{pypi_name}
+%description -n python%{python3_pkgversion}-%{pypi_name}
 A low-level interface to a growing number of Amazon Web Services. The
 botocore package is the foundation for the AWS CLI as well as boto3.
 %endif # with_python3
@@ -152,7 +157,7 @@ nosetests-3.5 --with-coverage --cover-erase --cover-package botocore --with-xuni
 %{python2_sitelib}/%{pypi_name}-*.egg-info/
 
 %if %{with python3}
-%files -n python3-%{pypi_name}
+%files -n python%{python3_pkgversion}-%{pypi_name}
 %doc README.rst
 %license LICENSE.txt
 %{python3_sitelib}/%{pypi_name}/
@@ -165,6 +170,10 @@ nosetests-3.5 --with-coverage --cover-erase --cover-package botocore --with-xuni
 %endif # with docs
 
 %changelog
+* Mon Apr 29 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.6.0-0
+- Activate python3_pkgverson and with_python3 for RHEL 6
+- Actiavate license macro for RHEL 6
+
 * Sun Aug 13 2017 Fabio Alessandro Locati <fale@fedoraproject.org> - 1.6.0-1
 - Update to 1.6.0
 
