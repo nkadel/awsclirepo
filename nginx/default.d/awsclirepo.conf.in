@@ -1,0 +1,4 @@
+location /awsclirepo {
+     root @REPOBASEDIR@;
+     autoindex on;
+}
