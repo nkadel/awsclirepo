@@ -42,7 +42,8 @@ Recommends: zsh
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 # Older packages have shortened name
 Conflicts: awscli
-Obsoletes: awscli <= %{verson}
+Provides: awscli = %{version}-%{release}
+Obsoletes: awscli <= %{version}-%{release}
 
 %description -n python%{python3_pkgversion}-%{pypi_name}
 This python%{python3_pkgversion} package provides a unified
@@ -68,7 +69,8 @@ Recommends: zsh
 %endif # Fedora
 # Older packages have shortened name
 Conflicts: awscli
-Obsoletes: awscli <= %{verson}
+Provides: awscli = %{version}-%{release}
+Obsoletes: awscli <= %{version}-%{release}
 
 %description -n python2-%{pypi_name}
 This python2 package provides a unified
