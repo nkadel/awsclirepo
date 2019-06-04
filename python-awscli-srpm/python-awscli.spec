@@ -11,7 +11,7 @@
 
 Name:           python-%{pypi_name}
 Version:        1.15.71
-Release:        0%{?dist}
+Release:        0.1%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
 License:        ASL 2.0 and MIT
@@ -40,6 +40,9 @@ Recommends: bash-completion
 Recommends: zsh
 %endif # Fedora
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
+# Older packages have shortened name
+Conflicts: awscli
+Obsoletes: awscli <= %{verson}
 
 %description -n python%{python3_pkgversion}-%{pypi_name}
 This python%{python3_pkgversion} package provides a unified
@@ -63,6 +66,9 @@ Requires:       PyYAML >= 3.10
 Recommends: bash-completion
 Recommends: zsh
 %endif # Fedora
+# Older packages have shortened name
+Conflicts: awscli
+Obsoletes: awscli <= %{verson}
 
 %description -n python2-%{pypi_name}
 This python2 package provides a unified
@@ -139,6 +145,11 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %endif # with python2
 
 %changelog
+* Tue Jun 4 2019 Nico Kade-Garcia <nkadel@gmail.com> - 1.15.71-0.1
+- Backport to RHEL 6
+- Rename packages to "python2-awscli" and "python3-awscli",
+  obsoleting "awscli"
+
 * Sun Aug 05 2018 Kevin Fenzi <kevin@scrye.com> - 1.15.71-1
 - Update to 1.15.71. Fixes bug #1612393
 
