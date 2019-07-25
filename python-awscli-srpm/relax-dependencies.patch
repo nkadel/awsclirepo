@@ -1,0 +1,11 @@
+--- awscli-1.16.198-orig/setup.py	2019-07-14 02:58:35.590102693 +0000
++++ awscli-1.16.198/setup.py	2019-07-14 03:11:00.266272480 +0000
+@@ -24,7 +24,7 @@ def find_version(*file_paths):
+ 
+ 
+ requires = ['botocore==1.12.188',
+-            'colorama>=0.2.5,<=0.3.9',
++            'colorama>=0.2.5',
+             'docutils>=0.10',
+             'rsa>=3.1.2,<=3.5.0',
+             's3transfer>=0.2.0,<0.3.0']

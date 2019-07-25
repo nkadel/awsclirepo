@@ -1,107 +1,90 @@
-# Single python3 version in Fedora, python3_pkgversion macro not available
+# python3_pkgversion macro for EPEL in older RHEL
 %{!?python3_pkgversion:%global python3_pkgversion 3}
-
-# Generally produce python3, not python2
-%bcond_without python3
-%bcond_with python2
 
 %global pypi_name awscli
 
-%global botocore_version 1.10.41
+%{?python_enable_dependency_generator}
+
+#%%if 0%%{?rhel} && 0%%{?rhel} <= 8
+#%%bcond_with python3
+#%%else
+#%%bcond_without python3
+#%%endif
+# Build only for python3 to resolve dependencies
+%bcond_without python3
+
+%global botocore_version 1.12.188
 
 Name:           python-%{pypi_name}
-Version:        1.15.71
-Release:        0.1%{?dist}
+Version:        1.16.198
+Release:        1%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
 License:        ASL 2.0 and MIT
 URL:            http://aws.amazon.com/cli
-Source0:        https://pypi.io/packages/source/a/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
+Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
+Patch0:         relax-dependencies.patch
 BuildArch:      noarch
-
-%description
-This package provides a unified
-command line interface to Amazon Web Services.
-
-
 %if %{with python3}
-%package -n python%{python3_pkgversion}-%{pypi_name}
-Summary:        Universal Command Line Environment for AWS
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
+%if %{undefined __pythondist_requires}
 Requires:       python%{python3_pkgversion}-botocore = %{botocore_version}
 Requires:       python%{python3_pkgversion}-colorama >= 0.2.5
 Requires:       python%{python3_pkgversion}-docutils >= 0.10
 Requires:       python%{python3_pkgversion}-rsa >= 3.1.2
 Requires:       python%{python3_pkgversion}-s3transfer >= 0.1.9
 Requires:       python%{python3_pkgversion}-PyYAML >= 3.10
-%if 0%{?fedora}
-Recommends: bash-completion
-Recommends: zsh
-%endif # Fedora
-%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
-# Older packages have shortened name
-Conflicts: awscli
-Provides: awscli = %{version}-%{release}
-Obsoletes: awscli <= %{version}-%{release}
-
-%description -n python%{python3_pkgversion}-%{pypi_name}
-This python%{python3_pkgversion} package provides a unified
-command line interface to Amazon Web Services.
-%endif # with python3
-
-%if %{with python2}
-%package -n python2-%{pypi_name}
-Summary:        Universal Command Line Environment for AWS
+%endif
+%else
 BuildRequires:  python2-devel
-BuildRequires:  python2-setuptools
+BuildRequires:  python-setuptools
+%if %{undefined __pythondist_requires}
 Requires:       python2-botocore = %{botocore_version}
-Requires:       python2-colorama >= 0.2.5
-Requires:       python2-docutils >= 0.10
+Requires:       python-colorama >= 0.2.5
+Requires:       python-docutils >= 0.10
 Requires:       python2-rsa >= 3.1.2
 Requires:       python2-s3transfer >= 0.1.9
-# Misnamed for python2
-#Requires:       python2-PyYAML >= 3.10
 Requires:       PyYAML >= 3.10
-%if 0%{?fedora}
-Recommends: bash-completion
-Recommends: zsh
+%endif
+%endif # with python3
+%if ! (0%{?rhel} && 0%{?rhel} <= 7)
+Recommends:     bash-completion
+Recommends:     zsh
+Recommends:     groff
 %endif # Fedora
-# Older packages have shortened name
-Conflicts: awscli
-Provides: awscli = %{version}-%{release}
-Obsoletes: awscli <= %{version}-%{release}
-
-%description -n python2-%{pypi_name}
-This python2 package provides a unified
-command line interface to Amazon Web Services.
-%endif # with python2
 
 %if %{with python3}
-%endif
-%if %{with python2}
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
+%else
+%{?python_provide:%python_provide python2-%{pypi_name}}
 %endif # with python3
+# Block and obsolete misnamed awscli package
+Provides: awscli = %{version}-%{release}
+Obsoletes: awscli <= %{version}-%{release}
+Conflicts: awscli
+
+%description
+This package provides a unified
+command line interface to Amazon Web Services.
 
 %prep
-%setup -q -n %{pypi_name}-%{version}
+%autosetup -n %{pypi_name}-%{version} -p 1
 rm -rf %{pypi_name}.egg-info
 
 %build
 %if %{with python3}
 %py3_build
-%endif  # with python3
-%if %{with python2}
+%else
 %py2_build
-%endif # with python2
+%endif # with python3
 
 %install
 %if %{with python3}
 %py3_install
-%endif  # with python3
-%if %{with python2}
+%else
 %py2_install
-%endif # with python2
-
+%endif # with python3
 # Fix path and permissions for bash completition
 %global bash_completion_dir /etc/bash_completion.d
 mkdir -p %{buildroot}%{bash_completion_dir}
@@ -113,12 +96,10 @@ mkdir -p %{buildroot}%{zsh_completion_dir}
 mv %{buildroot}%{_bindir}/aws_zsh_completer.sh %{buildroot}%{zsh_completion_dir}
 chmod 755 %{buildroot}%{zsh_completion_dir}/aws_zsh_completer.sh
 ls -alh %{buildroot}%{zsh_completion_dir}/aws_zsh_completer.sh
-# We don't need the Windows CMD script
+# We do not need the Windows CMD script
 rm %{buildroot}%{_bindir}/aws.cmd
 
-%if %{with python3}
-%files -n python%{python3_pkgversion}-%{pypi_name}
-%{!?_licensedir:%global license %doc} 
+%files
 %doc README.rst
 %license LICENSE.txt
 %{_bindir}/aws
@@ -127,30 +108,60 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %{bash_completion_dir}/aws_bash_completer
 %dir %{zsh_completion_dir}
 %{zsh_completion_dir}/aws_zsh_completer.sh
-%{python3_sitelib}/awscli
+%if %{with python3}
+%{python3_sitelib}/%{pypi_name}
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
+%else
+%{python2_sitelib}/%{pypi_name}
+%{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 %endif # with python3
 
-%if %{with python2}
-%{!?_licensedir:%global license %doc} 
-%doc README.rst
-%license LICENSE.txt
-%{_bindir}/aws
-%{_bindir}/aws_completer
-%dir %{bash_completion_dir}
-%{bash_completion_dir}/aws_bash_completer
-%dir %{zsh_completion_dir}
-%{zsh_completion_dir}/aws_zsh_completer.sh
-%files -n python2-%{pypi_name}
-%{python2_sitelib}/awscli
-%{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
-%endif # with python2
-
 %changelog
-* Tue Jun 4 2019 Nico Kade-Garcia <nkadel@gmail.com> - 1.15.71-0.1
-- Backport to RHEL 6
-- Rename packages to "python2-awscli" and "python3-awscli",
-  obsoleting "awscli"
+* Thu Jul 25 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.16.198-0
+- Backport to RHEL 7
+
+* Sat Jul 13 2019 David Duncan <davdunc@amazon.com> - 1.16.198-1
+- Update to 1.16.198
+- Add updates and fixes
+
+* Tue May 28 2019 David Duncan <davdunc@amazon.com> - 1.16.167-1
+- Update to 1.16.167
+- Add updates and fixes
+
+* Wed Apr 24 2019 David Duncan <davdunc@amazon.com> - 1.16.145-1
+- Adding support for ap-east-1 
+
+* Thu Mar 21 2019 David Duncan <davdunc@amazon.com> - 1.16.129-1
+- Bumping version to 1.16.129
+
+* Sat Feb 23 2019 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 1.16.111-1
+- Update to 1.16.111
+
+* Mon Feb 11 2019 David Duncan <davdunc@amazon.com> - 1.16.101
+- api-change:ecs: Update ecs command to latest version
+- api-change:discovery: Update discovery command to latest version
+- api-change:dlm: Update dlm command to latest version
+
+* Thu Jan 31 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.16.85-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
+* Fri Jan 11 2019 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 1.16.85-2
+- Enable python dependency generator
+
+* Mon Nov 19 2018 David Duncan <davdunc@amazon.com> - 1.16.57-1
+- Update to 1.16.57. Fixes bug #1613078
+
+* Tue Nov 06 2018 Carl George <carl@george.computer> - 1.16.28-3
+- Add patch0 to relax dependencies
+
+* Wed Oct 17 2018 Justin W. Flory <jflory7@fedoraproject.org> - 1.16.28-2
+- Add groff dependency, fix 'aws help' issue in stock install
+
+* Sun Oct 07 2018 David Duncan <davdunc@amazon.com> - 1.16.28
+- Update to 1.16.28
+
+* Sun Sep 02 2018 David Duncan <davdunc@amazon.com> - 1.15.72-1
+- Update to 1.15.72. Updates bug #1613078
 
 * Sun Aug 05 2018 Kevin Fenzi <kevin@scrye.com> - 1.15.71-1
 - Update to 1.15.71. Fixes bug #1612393
@@ -443,15 +454,15 @@ rm %{buildroot}%{_bindir}/aws.cmd
 
 * Wed Jan 20 2016 Fabio Alessandro Locati <fale@fedoraproject.org> - 1.9.21-1
 - Update to current upstream version
-- Don't fix documentation permissions any more (pull request merged)
+- do not fix documentation permissions any more (pull request merged)
 
 * Fri Jan 15 2016 Fabio Alessandro Locati <fale@fedoraproject.org> - 1.920-1
 - Update to current upstream version
 
 * Fri Jan 15 2016 Fabio Alessandro Locati <fale@fedoraproject.org> - 1.9.19-1
 - Update to current upstream version
-- Don't substitue the text of bin/aws_bash_completer anymore (pull request merged)
-- Don't remove the shabang from awscli/paramfile.py anymore (pull request merged)
+- do not substitue the text of bin/aws_bash_completer anymore (pull request merged)
+- do not remove the shabang from awscli/paramfile.py anymore (pull request merged)
 
 * Wed Jan 13 2016 Fabio Alessandro Locati <fale@fedoraproject.org> - 1.9.18-1
 - Update to current upstream version
