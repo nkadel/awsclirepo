@@ -8,8 +8,8 @@
 #	Set up local 
 
 # Rely on local nginx service poingint to file://$(PWD)/awsclirepo
-#REPOBASE = file://$(PWD)
-REPOBASE = http://localhost
+REPOBASE = file://$(PWD)
+#EPOBASE = http://localhost
 
 # Placeholder RPMs for python2-foo packages to include python-foo
 EPELPKGS+=python2-contextlib2-srpm
@@ -55,9 +55,11 @@ REPODIRS := $(patsubst %,%/x86_64/repodata,$(REPOS)) $(patsubst %,%/SRPMS/repoda
 
 # No local dependencies at build time
 CFGS+=awsclirepo-6-x86_64.cfg
+CFGS+=awsclirepo-7-x86_64.cfg
 
 # Link from /etc/mock
 MOCKCFGS+=epel-6-x86_64.cfg
+MOCKCFGS+=epel-7-x86_64.cfg
 
 all:: $(CFGS) $(MOCKCFGS)
 all:: $(REPODIRS)
@@ -113,6 +115,25 @@ awsclirepo-6-x86_64.cfg: epel-6-x86_64.cfg
 	@echo 'name=awsclirepo' >> $@
 	@echo 'enabled=1' >> $@
 	@echo 'baseurl=$(REPOBASE)/awsclirepo/el/6/x86_64/' >> $@
+	@echo 'failovermethod=priority' >> $@
+	@echo 'skip_if_unavailable=False' >> $@
+	@echo 'metadata_expire=1' >> $@
+	@echo 'gpgcheck=0' >> $@
+	@echo '#cost=2000' >> $@
+	@echo '"""' >> $@
+	@uniq -u $@ > $@~
+	@mv $@~ $@
+
+awsclirepo-7-x86_64.cfg: epel-7-x86_64.cfg
+	@echo Generating $@ from $?
+	@cat $? > $@
+	@sed -i 's/epel-7-x86_64/awsclirepo-7-x86_64/g' $@
+	@echo '"""' >> $@
+	@echo >> $@
+	@echo '[awsclirepo]' >> $@
+	@echo 'name=awsclirepo' >> $@
+	@echo 'enabled=1' >> $@
+	@echo 'baseurl=$(REPOBASE)/awsclirepo/el/7/x86_64/' >> $@
 	@echo 'failovermethod=priority' >> $@
 	@echo 'skip_if_unavailable=False' >> $@
 	@echo 'metadata_expire=1' >> $@
