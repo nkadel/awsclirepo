@@ -25,8 +25,9 @@ PKGNAME := "`ls *.spec | head -1 | sed 's/.spec$$//g'`"
 all:: /usr/bin/createrepo
 all:: $(MOCKS)
 
-# Needed for correct srpm and build format
-#build srpm:: /etc/rpm/macros.python27-config
+# Get any tarballes as describe by .spec
+getsrc:
+	spectool -g $(SPEC)
 
 srpm:: FORCE
 	@echo "Building $(SPEC) SRPM"

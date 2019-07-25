@@ -14,18 +14,21 @@ RSYNCOPTS=-a --no-owner --no-group
 # Some RHEL dependencies are supplied locally in awsclirepo
 #MOCKS+=epel-6-x86_64
 MOCKS+=awsclirepo-6-x86_64
-MOCKS+=awsclirepo-7-x86_64
+#MOCKS+=awsclirepo-7-x86_64
 
 # Local yum compatible RPM repository
 REPOBASEDIR="`/bin/pwd | xargs dirname`/awsclirepo"
 
 # Deduce local package names and .spec files, for universe Makefile use
 SPEC := `ls *.spec | head -1`
-PKGNAME := "`ls *.spec | head -1 | sed 's/.spec$$//g'`"
 
 # Needed for yum repo updates
 all:: /usr/bin/createrepo
 all:: $(MOCKS)
+
+# Get any tarballes as describe by .spec
+getsrc:
+	spectool -g $(SPEC)
 
 # Get any tarballes as describe by .spec
 getsrc:
