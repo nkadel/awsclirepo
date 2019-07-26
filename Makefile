@@ -50,6 +50,7 @@ AWSCLIPKGS+=python3-s3transfer-srpm
 AWSCLIPKGS+=python-linecache2-srpm
 
 REPOS+=awsclirepo/el/6
+REPOS+=awsclirepo/el/7
 
 REPODIRS := $(patsubst %,%/x86_64/repodata,$(REPOS)) $(patsubst %,%/SRPMS/repodata,$(REPOS))
 
