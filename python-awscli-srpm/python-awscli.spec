@@ -5,19 +5,11 @@
 
 %{?python_enable_dependency_generator}
 
-#%%if 0%%{?rhel} && 0%%{?rhel} <= 8
-#%%bcond_with python3
-#%%else
-#%%bcond_without python3
-#%%endif
-# Build only for python3 to resolve dependencies
-%bcond_without python3
-
 %global botocore_version 1.12.188
 
 Name:           python-%{pypi_name}
 Version:        1.16.198
-Release:        1%{?dist}
+Release:        0%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
 License:        ASL 2.0 and MIT
@@ -25,7 +17,6 @@ URL:            http://aws.amazon.com/cli
 Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 Patch1:         relax-dependencies.patch
 BuildArch:      noarch
-%if %{with python3}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 %if %{undefined __pythondist_requires}
@@ -36,29 +27,14 @@ Requires:       python%{python3_pkgversion}-rsa >= 3.1.2
 Requires:       python%{python3_pkgversion}-s3transfer >= 0.1.9
 Requires:       python%{python3_pkgversion}-PyYAML >= 3.10
 %endif
-%else
-BuildRequires:  python2-devel
-BuildRequires:  python-setuptools
-%if %{undefined __pythondist_requires}
-Requires:       python2-botocore = %{botocore_version}
-Requires:       python-colorama >= 0.2.5
-Requires:       python-docutils >= 0.10
-Requires:       python2-rsa >= 3.1.2
-Requires:       python2-s3transfer >= 0.1.9
-Requires:       PyYAML >= 3.10
-%endif
-%endif # with python3
+
 %if ! (0%{?rhel} && 0%{?rhel} <= 7)
 Recommends:     bash-completion
 Recommends:     zsh
 Recommends:     groff
 %endif # Fedora
 
-%if %{with python3}
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
-%else
-%{?python_provide:%python_provide python2-%{pypi_name}}
-%endif # with python3
 # Block and obsolete misnamed awscli package
 Provides: awscli = %{version}-%{release}
 Obsoletes: awscli <= %{version}-%{release}
@@ -68,24 +44,25 @@ Conflicts: awscli
 This package provides a unified
 command line interface to Amazon Web Services.
 
+%package -n python%{python3_pkgversion}-%{pypi_name}
+Version:        1.16.198
+Release:        0%{?dist}
+Summary:        Universal Command Line Environment for AWS
+
+%description -n python%{python3_pkgversion}-%{pypi_name}
+This package provides a unified
+command line interface to Amazon Web Services.
+
 %prep
 %autosetup -n %{pypi_name}-%{version}
 
 rm -rf %{pypi_name}.egg-info
 
 %build
-%if %{with python3}
 %py3_build
-%else
-%py2_build
-%endif # with python3
 
 %install
-%if %{with python3}
 %py3_install
-%else
-%py2_install
-%endif # with python3
 # Fix path and permissions for bash completition
 %global bash_completion_dir /etc/bash_completion.d
 mkdir -p %{buildroot}%{bash_completion_dir}
@@ -100,7 +77,7 @@ ls -alh %{buildroot}%{zsh_completion_dir}/aws_zsh_completer.sh
 # We do not need the Windows CMD script
 rm %{buildroot}%{_bindir}/aws.cmd
 
-%files
+%files -n  python%{python3_pkgversion}-%{pypi_name}
 %doc README.rst
 %license LICENSE.txt
 %{_bindir}/aws
@@ -109,15 +86,8 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %{bash_completion_dir}/aws_bash_completer
 %dir %{zsh_completion_dir}
 %{zsh_completion_dir}/aws_zsh_completer.sh
-%if %{with python3}
-#%{python3_sitelib}/%{pypi_name}
-#%{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
-%{python3_sitelib}/%{pypi_name}*
-%else
-#%{python2_sitelib}/%{pypi_name}
-#%{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
-%{python2_sitelib}/%{pypi_name}*
-%endif # with python3
+%{python3_sitelib}/%{pypi_name}
+%{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
 * Thu Jul 25 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.16.198-0
