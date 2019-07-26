@@ -1,15 +1,7 @@
-# Single python3 version in Fedora, python3_pkgversion macro not available
+# python3_pkgversion macro for EPEL in older RHEL
 %{!?python3_pkgversion:%global python3_pkgversion 3}
 
-# Enforce python3 for RHEL and EPEL
-%bcond_without python3
-
-%if 0%{?rhel} && 0%{?rhel} <= 7
-%bcond_without fix_dateutil
-%else
-%bcond_with fix_dateutil
-%endif
-
+%{?python_enable_dependency_generator}
 # Enable tests
 %bcond_with test
 # Disable documentation generation for now
@@ -18,55 +10,19 @@
 %global pypi_name botocore
 
 Name:           python-%{pypi_name}
-Version:        1.10.41
-#Release:        4%%{?dist}
+Version:        1.12.188
 Release:        0%{?dist}
 Summary:        Low-level, data-driven core of boto 3
 
 License:        ASL 2.0
 URL:            https://github.com/boto/botocore
 Source0:        https://pypi.io/packages/source/b/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
-Patch0:         0001-Fix-date-util-version-for-EL7.patch
 BuildArch:      noarch
 
 %description
 A low-level interface to a growing number of Amazon Web Services. The
 botocore package is the foundation for the AWS CLI as well as boto3.
 
-%package -n     python2-%{pypi_name}
-Summary:        Low-level, data-driven core of boto 3
-BuildRequires:  python2-devel
-BuildRequires:  python2-setuptools
-%if %{with docs}
-BuildRequires:  python2-sphinx
-BuildRequires:  python-guzzle_sphinx_theme
-%endif # with docs
-%if %{with tests}
-%{?fc23:BuildRequires: mock}
-%{!?fc23:BuildRequires: python2-mock}
-BuildRequires:  python2-behave
-BuildRequires:  python2-nose
-BuildRequires:  python2-six
-BuildRequires:  python2-wheel
-BuildRequires:  python2-docutils
-BuildRequires:  python2-dateutil
-BuildRequires:  python2-jmespath
-%endif # with tests
-Requires:       python2-jmespath >= 0.7.1
-%if %{with fix_dateutil}
-Requires:       python2-dateutil >= 1.4
-%else
-Requires:       python2-dateutil >= 2.1
-%endif # with fix_dateutil
-Requires:       python2-docutils >= 0.10
-%{?el6:Provides: python-%{pypi_name}}
-%{?python_provide:%python_provide python2-%{pypi_name}}
-
-%description -n python2-%{pypi_name}
-A low-level interface to a growing number of Amazon Web Services. The
-botocore package is the foundation for the AWS CLI as well as boto3.
-
-%if %{with python3}
 %package -n     python%{python3_pkgversion}-%{pypi_name}
 Summary:        Low-level, data-driven core of boto 3
 BuildRequires:  python%{python3_pkgversion}-devel
@@ -76,7 +32,6 @@ BuildRequires:  python%{python3_pkgversion}-sphinx
 BuildRequires:  python%{python3_pkgversion}-guzzle_sphinx_theme
 %endif # with docs
 %if %{with tests}
-%{?fc24:BuildRequires: python%{python3_pkgversion}-behave}
 BuildRequires:  python%{python3_pkgversion}-mock
 BuildRequires:  python%{python3_pkgversion}-nose
 BuildRequires:  python%{python3_pkgversion}-six
@@ -84,33 +39,24 @@ BuildRequires:  python%{python3_pkgversion}-wheel
 BuildRequires:  python%{python3_pkgversion}-docutils
 BuildRequires:  python%{python3_pkgversion}-dateutil
 BuildRequires:  python%{python3_pkgversion}-jmespath
+BuildRequires:  python%{python3_pkgversion}-jsonschema
+BuildRequires:  python%{python3_pkgversion}-urllib3
 %endif # with tests
-Requires:       python%{python3_pkgversion}-jmespath >= 0.7.1
-%if %{with fix_dateutil}
-Requires:       python%{python3_pkgversion}-dateutil >= 1.4
-%else
-Requires:       python%{python3_pkgversion}-dateutil >= 2.1
-%endif # with fix_dateutil
-Requires:       python%{python3_pkgversion}-docutils >= 0.10
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
 %description -n python%{python3_pkgversion}-%{pypi_name}
 A low-level interface to a growing number of Amazon Web Services. The
 botocore package is the foundation for the AWS CLI as well as boto3.
-%endif # with_python3
 
 %if %{with docs}
 %package doc
-Summary:        Documentation for %{name}
+Summary: Documentation for %{name}
 %description doc
 %{summary}.
 %endif # with docs
 
 %prep
 %setup -q -n %{pypi_name}-%{version}
-%if %{with fix_dateutil}
-%patch0 -p1
-%endif # with fix_dateutil
 sed -i -e '1 d' botocore/vendored/requests/packages/chardet/chardetect.py
 sed -i -e '1 d' botocore/vendored/requests/certs.py
 rm -rf %{pypi_name}.egg-info
@@ -118,57 +64,105 @@ rm -rf %{pypi_name}.egg-info
 rm -rf tests/integration
 
 %build
-%py2_build
-%if %{with python3}
 %py3_build
-%endif # with python3
 
 %install
-%if %{with python3}
 %py3_install
-%endif # with python3
-%py2_install
 %if %{with docs}
-%if %{with python3}
 sphinx-build-3 docs/source html
 rm -rf html/.{doctrees,buildinfo}
-%else # with python3
-sphinx-build docs/source html
-rm -rf html/.{doctrees,buildinfo}
-%endif # with python3
 %endif # with docs
 
 %if %{with tests}
 %check
-# %{__python2} setup.py test
-nosetests-2.7 --with-coverage --cover-erase --cover-package botocore --with-xunit --cover-xml -v tests/unit/ tests/functional/
-%if %{with python3}
 # %{__python3} setup.py test
-nosetests-3.5 --with-coverage --cover-erase --cover-package botocore --with-xunit --cover-xml -v tests/unit/ tests/functional/
-%endif # with python3
+export PYTHONPATH=%{buildroot}%{python3_sitelib}
+nosetests-3 --with-coverage --cover-erase --cover-package botocore --with-xunit --cover-xml -v tests/unit/ tests/functional/
 %endif # with tests
 
-%{!?_licensedir:%global license %doc}
-
-%files -n python2-%{pypi_name}
-%doc README.rst
-%license LICENSE.txt
-%{python2_sitelib}/%{pypi_name}/
-%{python2_sitelib}/%{pypi_name}-*.egg-info/
-
-%if %{with python3}
 %files -n python%{python3_pkgversion}-%{pypi_name}
 %doc README.rst
 %license LICENSE.txt
 %{python3_sitelib}/%{pypi_name}/
 %{python3_sitelib}/%{pypi_name}-*.egg-info/
-%endif # with python3
 %if %{with docs}
 %files doc
 %doc html
 %endif # with docs
 
 %changelog
+* Thu Jul 25 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.12.188-0
+- Backport ot RHEL
+
+* Sat Jul 13 2019 David Duncan <davdunc@amazon.com> - 1.12.188-1
+- Bumping version to 1.12.188
+- resolves #1677950
+- update to latest endpoints and models
+
+* Tue May 28 2019 David Duncan <davdunc@amazon.com> - 1.12.157-1
+- Bumping to version 1.12.157
+- resolves #1677950
+- update to latest endpoints and models
+
+* Wed Apr 24 2019 David Duncan <dadvunc@amazon.com> - 1.12.135-1
+- Bumping version to 1.12.135
+- add support for ap-east-1
+
+* Thu Mar 21 2019 David Duncan <davdunc@amazon.com> - 1.12.119-1
+- resolves #1677950
+- Bumping version to 1.12.119
+
+
+* Sat Feb 23 2019 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 1.12.101-1
+- Update to 1.12.101
+
+* Fri Feb 15 2019 Kevin Fenzi <kevin@scrye.com> - 1.12.96-1
+- Update to 1.12.96.
+
+* Sun Feb 10 2019 David Duncan <davdunc@amazon.com> - 1.12.91
+- resolves #1667630
+- Update to latest models
+- api-change:``discovery``: Update discovery client to latest version
+- api-change:``ecs``: Update ecs client to latest version
+- api-change:``dlm``: Update dlm client to latest version
+
+* Mon Feb 04 2019 David Duncan <davdunc@amazon.com> - 1.12.87
+- Update to latest models
+- Improve event stream parser tests
+- resolves #1667630
+
+* Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.12.75-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
+* Fri Jan 11 2019 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 1.12.75-3
+- Enable python dependency generator
+
+* Wed Jan 09 2019 Miro Hrončok <mhroncok@redhat.com> - 1.12.75-2
+- Subpackage python2-botocore has been removed
+  See https://fedoraproject.org/wiki/Changes/Mass_Python_2_Package_Removal
+
+* Tue Jan 08 2019 David Duncan <davdunc@amazon.com> - 1.12.75
+- Update to latest endpoints
+- Update to latest models
+
+* Sun Nov 18 2018 David Duncan <davdunc@amazon.com> - 1.12.47
+- Update to latest models.
+
+* Sun Oct 07 2018 David Duncan <davdunc@amazon.com> - 1.12.18
+- Update to latest models 
+
+* Tue Oct 02 2018 Charalampos Stratakis <cstratak@redhat.com> - 1.12.15-2
+- Reinstate python-urllib3 dependency as python-boto3 requires it
+
+* Tue Oct 02 2018 Charalampos Stratakis <cstratak@redhat.com> - 1.12.15-1
+- Update to 1.12.15
+
+* Wed Sep 5 2018 David Duncan <davdunc@amazon.com> - 1.10.43-1
+- Bumping version to 1.10.43 Updates bz#1531330
+
+* Mon Sep 3 2018 David Duncan <davdunc@amazon.com> - 1.10.42-1
+- Bumping version to 1.10.42 Updates bz#1531330
+
 * Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 1.10.41-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 

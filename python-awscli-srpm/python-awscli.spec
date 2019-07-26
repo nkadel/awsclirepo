@@ -23,7 +23,7 @@ Summary:        Universal Command Line Environment for AWS
 License:        ASL 2.0 and MIT
 URL:            http://aws.amazon.com/cli
 Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
-Patch0:         relax-dependencies.patch
+Patch1:         relax-dependencies.patch
 BuildArch:      noarch
 %if %{with python3}
 BuildRequires:  python%{python3_pkgversion}-devel
@@ -69,7 +69,8 @@ This package provides a unified
 command line interface to Amazon Web Services.
 
 %prep
-%autosetup -n %{pypi_name}-%{version} -p 1
+%autosetup -n %{pypi_name}-%{version}
+
 rm -rf %{pypi_name}.egg-info
 
 %build
@@ -109,16 +110,19 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %dir %{zsh_completion_dir}
 %{zsh_completion_dir}/aws_zsh_completer.sh
 %if %{with python3}
-%{python3_sitelib}/%{pypi_name}
-%{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
+#%{python3_sitelib}/%{pypi_name}
+#%{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
+%{python3_sitelib}/%{pypi_name}*
 %else
-%{python2_sitelib}/%{pypi_name}
-%{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
+#%{python2_sitelib}/%{pypi_name}
+#%{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
+%{python2_sitelib}/%{pypi_name}*
 %endif # with python3
 
 %changelog
 * Thu Jul 25 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.16.198-0
-- Backport to RHEL 7
+- Backport to RHEL
+- Rename Patch0 tp Patch1, discard '-p 1' from autosetup command for RHEL 6
 
 * Sat Jul 13 2019 David Duncan <davdunc@amazon.com> - 1.16.198-1
 - Update to 1.16.198
