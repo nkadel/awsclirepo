@@ -32,6 +32,7 @@ EPELPKGS+=python-extras-srpm
 EPELPKGS+=python-jmespath-srpm
 EPELPKGS+=python-mimeparse-srpm
 EPELPKGS+=python-unittest2-srpm
+EPELPKGS+=python-urllib3-srpm
 EPELPKGS+=python-PyYAML-srpm
 EPELPKGS+=python3-dateutil-srpm
 EPELPKGS+=python3-fixtures-srpm

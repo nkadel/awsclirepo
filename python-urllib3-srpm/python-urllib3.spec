@@ -33,7 +33,7 @@
 
 # Common SRPM package
 Name:           python-%{pypi_name}
-Version:        1.25.3
+Version:        1.24.3
 Release:        0%{?dist}
 Url:            https://urllib3.readthedocs.io/
 Summary:        HTTP library with thread-safe connection pooling, file post, and more.
@@ -65,8 +65,6 @@ urllib3 has usage and reference documentation at `urllib3.readthedocs.io <https:
 
 %if %{with_python2}
 %package -n python2-%{pypi_name}
-Version:        1.25.3
-Release:        0%{?dist}
 Url:            https://urllib3.readthedocs.io/
 Summary:        HTTP library with thread-safe connection pooling, file post, and more.
 License:        MIT
@@ -136,8 +134,6 @@ urllib3 has usage and reference documentation at `urllib3.readthedocs.io <https:
 
 %if %{with_python3}
 %package -n python%{python3_pkgversion}-%{pypi_name}
-Version:        1.25.3
-Release:        0%{?dist}
 Url:            https://urllib3.readthedocs.io/
 Summary:        HTTP library with thread-safe connection pooling, file post, and more.
 License:        MIT
@@ -224,3 +220,7 @@ rm -rf %{buildroot}
 %endif # with_python3
 
 %changelog
+* Thu Aug  8 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.24.3-0
+- Create initial build with py2pack
+- Roll back version to 1.24.3 for RHEL 6 compatibility
+

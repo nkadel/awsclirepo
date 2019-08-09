@@ -10,7 +10,7 @@
 %global pypi_name botocore
 
 Name:           python-%{pypi_name}
-Version:        1.12.188
+Version:        1.12.204
 Release:        0%{?dist}
 Summary:        Low-level, data-driven core of boto 3
 
@@ -91,6 +91,9 @@ nosetests-3 --with-coverage --cover-erase --cover-package botocore --with-xunit 
 %endif # with docs
 
 %changelog
+* Thu Aug 8 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.12.204-0
+- Update to 1.12.204
+
 * Thu Jul 25 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.12.188-0
 - Backport ot RHEL
 

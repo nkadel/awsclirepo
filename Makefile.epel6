@@ -72,10 +72,10 @@ install:: $(MOCKS)
 	    srpmdir=$(REPOBASEDIR)/$$yumrelease/SRPMS; \
 	    echo "	Pusning SRPMS to $$srpmdir"; \
 	    rsync $(RSYNCSAFEOPTS) $$repo/*.src.rpm $$srpmdir/. || exit 1; \
-	    createrepo -q --update $$srpmdir/.; \
+	    createrepo -q $$srpmdir/.; \
 	    echo "	Pushing RPMS to $$rpmdir"; \
 	    rsync $(RSYNCSAFEOPTS) --exclude=*.src.rpm --exclude=*debuginfo*.rpm $$repo/*.rpm $$rpmdir/. || exit 1; \
-	    createrepo -q --update $$rpmdir/.; \
+	    createrepo -q $$rpmdir/.; \
 	done
 
 clean::

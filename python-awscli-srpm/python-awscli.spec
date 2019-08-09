@@ -5,10 +5,10 @@
 
 %{?python_enable_dependency_generator}
 
-%global botocore_version 1.12.188
+%global botocore_version 1.12.204
 
 Name:           python-%{pypi_name}
-Version:        1.16.198
+Version:        1.16.214
 Release:        0%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
@@ -19,14 +19,6 @@ Patch1:         relax-dependencies.patch
 BuildArch:      noarch
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
-%if %{undefined __pythondist_requires}
-Requires:       python%{python3_pkgversion}-botocore = %{botocore_version}
-Requires:       python%{python3_pkgversion}-colorama >= 0.2.5
-Requires:       python%{python3_pkgversion}-docutils >= 0.10
-Requires:       python%{python3_pkgversion}-rsa >= 3.1.2
-Requires:       python%{python3_pkgversion}-s3transfer >= 0.1.9
-Requires:       python%{python3_pkgversion}-PyYAML >= 3.10
-%endif
 
 %if ! (0%{?rhel} && 0%{?rhel} <= 7)
 Recommends:     bash-completion
@@ -45,9 +37,15 @@ This package provides a unified
 command line interface to Amazon Web Services.
 
 %package -n python%{python3_pkgversion}-%{pypi_name}
-Version:        1.16.198
-Release:        0%{?dist}
 Summary:        Universal Command Line Environment for AWS
+#%if %%{undefined __pythondist_requires}
+Requires:       python%{python3_pkgversion}-botocore = %{botocore_version}
+Requires:       python%{python3_pkgversion}-colorama >= 0.2.5
+Requires:       python%{python3_pkgversion}-docutils >= 0.10
+Requires:       python%{python3_pkgversion}-rsa >= 3.1.2
+Requires:       python%{python3_pkgversion}-s3transfer >= 0.1.9
+Requires:       python%{python3_pkgversion}-PyYAML >= 3.10
+#%endif
 
 %description -n python%{python3_pkgversion}-%{pypi_name}
 This package provides a unified
