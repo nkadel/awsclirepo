@@ -8,8 +8,8 @@
 #	Set up local 
 
 # Rely on local nginx service poingint to file://$(PWD)/awsclirepo
-REPOBASE = file://$(PWD)
-#EPOBASE = http://localhost
+REPOBASE = http://localhost
+#REPOBASE = file://$(PWD)
 
 # Placeholder RPMs for python2-foo packages to include python-foo
 EPELPKGS+=python2-contextlib2-srpm
@@ -32,13 +32,14 @@ EPELPKGS+=python-extras-srpm
 EPELPKGS+=python-jmespath-srpm
 EPELPKGS+=python-mimeparse-srpm
 EPELPKGS+=python-unittest2-srpm
-EPELPKGS+=python-urllib3-srpm
 EPELPKGS+=python-PyYAML-srpm
 EPELPKGS+=python3-dateutil-srpm
 EPELPKGS+=python3-fixtures-srpm
 
 # Actually compilable with epel-6-x86_64
 EPELPKGS+=python-awscli-srpm
+
+AWSCLIPKGS+=python-botocore-srpm
 
 AWSCLIPKGS+=python3-rsa-srpm
 

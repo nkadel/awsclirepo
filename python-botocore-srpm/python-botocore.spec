@@ -27,6 +27,12 @@ botocore package is the foundation for the AWS CLI as well as boto3.
 Summary:        Low-level, data-driven core of boto 3
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
+BuildRequires:  python%{python3_pkgversion}-urllib3
+BuildRequires:  python%{python3_pkgversion}-dateutil
+BuildRequires:  python%{python3_pkgversion}-jmespath
+Requires:       python%{python3_pkgversion}-urllib3
+Requires:       python%{python3_pkgversion}-dateutil
+Requires:       python%{python3_pkgversion}-jmespath
 %if %{with docs}
 BuildRequires:  python%{python3_pkgversion}-sphinx
 BuildRequires:  python%{python3_pkgversion}-guzzle_sphinx_theme
@@ -37,10 +43,7 @@ BuildRequires:  python%{python3_pkgversion}-nose
 BuildRequires:  python%{python3_pkgversion}-six
 BuildRequires:  python%{python3_pkgversion}-wheel
 BuildRequires:  python%{python3_pkgversion}-docutils
-BuildRequires:  python%{python3_pkgversion}-dateutil
-BuildRequires:  python%{python3_pkgversion}-jmespath
 BuildRequires:  python%{python3_pkgversion}-jsonschema
-BuildRequires:  python%{python3_pkgversion}-urllib3
 %endif # with tests
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
@@ -93,6 +96,7 @@ nosetests-3 --with-coverage --cover-erase --cover-package botocore --with-xunit 
 %changelog
 * Thu Aug 8 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.12.204-0
 - Update to 1.12.204
+- Update python-dateutil requirements
 
 * Thu Jul 25 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.12.188-0
 - Backport ot RHEL
