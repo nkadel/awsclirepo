@@ -2,7 +2,7 @@ awsclirepo
 ==========
 
 Wrapper for SRPM building tools for awscli on RHEL 6. RHEL 7 has working
-awscli published via EPEL, and Fedora has it built in.
+a working published via EPEL, but it's out of date, so this builds for both
 
 Local repo access
 =================
@@ -19,7 +19,7 @@ Makefile for the options.
 Building awscli
 ===============
 
-Build on a RHEL or CentOS 6 with EPEL enabled, or use mock.
+Ideally, install "mock" and use that to build for both RHEL 6 and RHEL
 
 * make cfgs # Create local .cfg configs for "mock".
 * * epel-6-x86_64.cfg # Used for some Makefiles
