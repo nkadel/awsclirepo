@@ -15,7 +15,7 @@ Summary:        Backport of the linecache module
 
 License:        Python
 URL:            https://github.com/testing-cabal/linecache2
-Source0:        http://pypi.python.org/packages/source/l/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
+Source0:        https://pypi.python.org/packages/source/l/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 
 BuildArch:      noarch
 %if %{with python2}
