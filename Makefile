@@ -68,7 +68,7 @@ all:: $(REPODIRS)
 all:: $(EPELPKGS)
 all:: $(AWSCLIPKGS)
 
-all install clean:: FORCE
+all install clean getsrc:: FORCE
 	@for name in $(EPELPKGS) $(AWSCLIPKGS); do \
 	     (cd $$name; $(MAKE) $(MFLAGS) $@); \
 	done  

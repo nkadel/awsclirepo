@@ -25,7 +25,7 @@ PKGNAME := "`ls *.spec | head -1 | sed 's/.spec$$//g'`"
 all:: /usr/bin/createrepo
 all:: $(MOCKS)
 
-# Get any tarballes as describe by .spec
+# Get any tarballs as describe by .spec
 getsrc:
 	spectool -g $(SPEC)
 
