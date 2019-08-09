@@ -107,7 +107,7 @@ popd
 * Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.3.12-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
-* Wed Jan  1 2013 Pádraig Brady <P@draigBrady.com> - 0.3.12-1
+* Tue Jan  1 2013 Pádraig Brady <P@draigBrady.com> - 0.3.12-1
 - Update to 0.3.12
 
 * Fri Nov 16 2012 Pádraig Brady <P@draigBrady.com> - 0.3.9-4
