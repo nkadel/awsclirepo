@@ -21,7 +21,7 @@ Group:          Development/Libraries
 License:        MIT
 URL:            http://pyyaml.org/
 Source0:        http://pyyaml.org/download/pyyaml/%{pypi_name}-%{version}.tar.gz
-BuildRequires:  libyaml-devel, Cython
+BuildRequires:  libyaml-devel
 
 %if 0%{?rhel}
 BuildRequires:  epel-rpm-macros
@@ -30,10 +30,16 @@ BuildRequires:  epel-rpm-macros
 %if %{with_python2}
 BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools
+%if 0%{?rhel} && 0%{?rhel} < 8
+BuildRequires:  Cython
+%else
+BuildRequires:  python2-Cython
+%endif
 %endif # with_python2
 %if %{with_python3}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
+BuildRequires:  python%{python3_pkgversion}-Cython
 %endif # with_python3
 
 # http://pyyaml.org/ticket/247
@@ -56,8 +62,8 @@ configuration files to object serialization and persistance.
 %package -n python2-%{pypi_name}
 Summary: YAML parser and emitter for Python
 Group: Development/Libraries
-#Provides:       python2-yaml = %{version}-%{release}
-#Provides:       python2-yaml%{?_isa} = %{version}-%{release}
+#Provides:       python2-yaml = %%{version}-%%{release}
+#Provides:       python2-yaml%%{?_isa} = %%{version}-%%{release}
 %{?python_provide:%python_provide python2-yaml}
 # Due to misnaming as "PyYAML" in RHEL
 Provides: PyYAML = %{version}-%{release}
@@ -81,8 +87,8 @@ configuration files to object serialization and persistance.
 %package -n python%{python3_pkgversion}-%{pypi_name}
 Summary: YAML parser and emitter for Python
 Group: Development/Libraries
-#Provides:       python%{python3_pkgversion}-yaml = %{version}-%{release}
-#Provides:       python%{python3_pkgversion}-yaml%{?_isa} = %{version}-%{release}
+#Provides:       python%%{python3_pkgversion}-yaml = %%{version}-%%{release}
+#Provides:       python%%{python3_pkgversion}-yaml%%{?_isa} = %%{version}-%%{release}
 %{?python_provide:%python_provide python%{python3_pkgversion}-yaml}
 
 %description -n python%{python3_pkgversion}-%{pypi_name}
@@ -147,12 +153,6 @@ popd
 
 %%clean
 rm -rf %{buildroot}
-
-%files -n python2-%{pypi_name}
-%defattr(644,root,root,755)
-%doc CHANGES LICENSE PKG-INFO README examples
-%{python2_sitearch}/*
-%{python3_sitearch}/*
 
 %if %{with_python2}
 %files -n python2-%{pypi_name}
