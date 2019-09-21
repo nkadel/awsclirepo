@@ -12,7 +12,6 @@ RSYNCOPTS=-a --no-owner --no-group
 
 # "mock" configurations to build with, activate only as needed
 # Some RHEL dependencies are supplied locally in awsclirepo
-#MOCKS+=epel-6-x86_64
 MOCKS+=awsclirepo-6-x86_64
 MOCKS+=awsclirepo-7-x86_64
 MOCKS+=awsclirepo-8-x86_64
@@ -65,6 +64,7 @@ install:: $(MOCKS)
 	    case $$repo in \
 		*-6-x86_64) yumrelease=el/6; yumarch=x86_64; ;; \
 		*-7-x86_64) yumrelease=el/7; yumarch=x86_64; ;; \
+		*-8-x86_64) yumrelease=el/8; yumarch=x86_64; ;; \
 		*-30-x86_64) yumrelease=fedora/30; yumarch=x86_64; ;; \
 		*-f30-x86_64) yumrelease=fedora/30; yumarch=x86_64; ;; \
 		*) echo "Unrecognized release for $$repo, exiting" >&2; exit 1; ;; \

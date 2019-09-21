@@ -14,8 +14,7 @@ RSYNCOPTS=-a --no-owner --no-group
 # Some RHEL dependencies are supplied locally in awsclirepo
 MOCKS+=epel-6-x86_64
 MOCKS+=epel-7-x86_64
-#MOCKS+=epel-7-x86_64
-MOCKS+=rhelepel-8-x86_64
+MOCKS+=epel-8-x86_64
 
 # Local yum compatible RPM repository
 REPOBASEDIR="`/bin/pwd | xargs dirname`/awsclirepo"
@@ -65,10 +64,9 @@ install:: $(MOCKS)
 	    case $$repo in \
 		*-6-x86_64) yumrelease=el/6; yumarch=x86_64; ;; \
 		*-7-x86_64) yumrelease=el/7; yumarch=x86_64; ;; \
-		*-28-x86_64) yumrelease=fedora/28; yumarch=x86_64; ;; \
-		*-29-x86_64) yumrelease=fedora/29; yumarch=x86_64; ;; \
-		*-f28-x86_64) yumrelease=fedora/28; yumarch=x86_64; ;; \
-		*-f29-x86_64) yumrelease=fedora/29; yumarch=x86_64; ;; \
+		*-8-x86_64) yumrelease=el/8; yumarch=x86_64; ;; \
+		*-30-x86_64) yumrelease=fedora/30; yumarch=x86_64; ;; \
+		*-f30-x86_64) yumrelease=fedora/30; yumarch=x86_64; ;; \
 		*) echo "Unrecognized release for $$repo, exiting" >&2; exit 1; ;; \
 	    esac; \
 	    rpmdir=$(REPOBASEDIR)/$$yumrelease/$$yumarch; \
