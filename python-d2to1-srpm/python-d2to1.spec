@@ -1,6 +1,3 @@
-# Single python3 version in Fedora, python3_pkgversion macro not available
-%{!?python3_pkgversion:%global python3_pkgversion 3}
-
 %global with_python3 1
 %global with_python2 1
 
@@ -70,7 +67,9 @@ find %{py3dir} -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
 find -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python}|'
 
 %build
-%{__python} setup.py build
+%if 0%{?with_python2}
+%{__python2} setup.py build
+%endif # with_python2
 
 %if 0%{?with_python3}
 pushd %{py3dir}
@@ -87,7 +86,9 @@ pushd %{py3dir}
 popd
 %endif # with_python3
 
-%{__python} setup.py install -O1 --skip-build --root  %{buildroot}
+%if 0%{?with_python2}
+%{__python2} setup.py install -O1 --skip-build --root  %{buildroot}
+%endif
 
 %files
 %doc CHANGES.rst CONTRIBUTORS LICENSE README.rst
