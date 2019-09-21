@@ -1,6 +1,3 @@
-# Single python3 version in Fedora, python3_pkgversion macro not available
-%{!?python3_pkgversion:%global python3_pkgversion 3}
-
 %global pypi_name pbr
 
 %global with_python3 1
@@ -16,7 +13,7 @@
 %global do_test 0
 
 #Name:           python-%%{pypi_name}
-Name:           python3-%{pypi_name}
+Name:           python%{python3_pkgversion}-%{pypi_name}
 Version:        0.8.0
 #Release:        1%{?dist}
 Release:        0%{?dist}
@@ -79,13 +76,13 @@ Requires:       python2-pip
 Manage dynamic plugins for Python applications
 %endif # with_python2
 
-%if %{with_python3}
-%package -n python%{python3_pkgversion}-pbr
-Summary:        Python Build Reasonableness
-
-%description -n python%{python3_pkgversion}-pbr
-Manage dynamic plugins for Python applications
-%endif
+#%if %{with_python3}
+#%package -n python%{python3_pkgversion}-pbr
+#Summary:        Python Build Reasonableness
+#
+#%description -n python%{python3_pkgversion}-pbr
+#Manage dynamic plugins for Python applications
+#%endif
 
 %prep
 %setup -q -n %{pypi_name}-%{version}
