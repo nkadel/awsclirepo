@@ -1,14 +1,11 @@
-# python3_pkgversion macro for EPEL in older RHEL
-%{!?python3_pkgversion:%global python3_pkgversion 3}
-
 %global pypi_name awscli
 
 %{?python_enable_dependency_generator}
 
-%global botocore_version 1.12.236
+%global botocore_version 1.12.231
 
 Name:           python-%{pypi_name}
-Version:        1.16.236
+Version:        1.16.241
 Release:        0%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
@@ -93,9 +90,34 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
-* Thu Jul 25 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.16.198-0
+* Thu Jul 25 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.16.141-0-0
 - Backport to RHEL
-- Rename Patch0 tp Patch1, discard '-p 1' from autosetup command for RHEL 6
+- Update relax-dependencies patch
+- Add epel-rpm-macros as needed
+
+* Thu Sep 19 2019 David Duncan <davdunc@amazon.com - 1.16.241-1
+- Update to 1.16.241
+ 
+* Mon Sep 09 2019 Kevin Fenzi <kevin@scrye.com> - 1.16.235-2
+- Rebuild with correct patch.
+
+* Mon Sep 09 2019 Kevin Fenzi <kevin@scrye.com> - 1.16.235-1
+- Update to 1.16.235.
+
+* Mon Sep 09 2019 Kevin Fenzi <kevin@scrye.com> - 1.16.222-3
+- Rebuild for new python-botocore 1.12.225
+
+* Wed Aug 21 2019 Kevin Fenzi <kevin@scrye.com> - 1.16.222-2
+- Re-add mistakenly dropped patch.
+
+* Wed Aug 21 2019 Kevin Fenzi <kevin@scrye.com> - 1.16.222-1
+- Update to 1.16.222
+
+* Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 1.16.198-3
+- Rebuilt for Python 3.8
+
+* Wed Jul 24 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.16.198-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
 * Sat Jul 13 2019 David Duncan <davdunc@amazon.com> - 1.16.198-1
 - Update to 1.16.198
@@ -431,7 +453,7 @@ rm %{buildroot}%{_bindir}/aws.cmd
 
 * Wed Jan 20 2016 Fabio Alessandro Locati <fale@fedoraproject.org> - 1.9.21-1
 - Update to current upstream version
-- do not fix documentation permissions any more (pull request merged)
+- Do not fix documentation permissions any more (pull request merged)
 
 * Fri Jan 15 2016 Fabio Alessandro Locati <fale@fedoraproject.org> - 1.920-1
 - Update to current upstream version
