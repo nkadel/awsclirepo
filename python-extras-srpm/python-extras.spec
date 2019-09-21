@@ -98,7 +98,7 @@ popd
 %files -n python2-extras
 %doc LICENSE NEWS README.rst
 # For noarch packages: sitelib
-%{python_sitelib}/*
+%{python2_sitelib}/*
 %endif # with_python2
 
 %if %{with_python3}
