@@ -92,7 +92,7 @@ popd
 
 %files
 %doc CHANGES.rst CONTRIBUTORS LICENSE README.rst
-%{python_sitelib}/*
+%{python2_sitelib}/*
 
 %if 0%{?with_python3}
 %files -n python%{python3_pkgversion}-d2to1
