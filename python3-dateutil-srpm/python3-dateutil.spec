@@ -1,10 +1,7 @@
-# Single python3 version in Fedora, python3_pkgversion macro not available
-%{!?python3_pkgversion:%global python3_pkgversion 3}
-
 # This is an epel-only package.
 # We want python3*-dateutil in EPEL, but the original package is in RHEL.
 # This was forked from the latest python-dateutil in rawhide on 2016-07-27.
-Name:           python3-dateutil
+Name:           python%{python3_pkgversion}-dateutil
 Version:        2.4.2
 Release:        5%{?dist}
 Epoch:          1
@@ -23,15 +20,6 @@ BuildArch:      noarch
 %if 0%{?rhel}
 BuildRequires:  epel-rpm-macros
 %endif
-
-%description
-The dateutil module provides powerful extensions to the standard datetime
-module available in Python 2.3+.
-
-This is the version for Python 3.
-
-%package -n python%{python3_pkgversion}-dateutil
-Summary:        Powerful extensions to the standard datetime module
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 BuildRequires:  python%{python3_pkgversion}-six
@@ -39,11 +27,26 @@ BuildRequires:  python%{python3_pkgversion}-six
 Requires:       python%{python3_pkgversion}-six
 Requires:       tzdata
 
-%description -n python%{python3_pkgversion}-dateutil
+%description
 The dateutil module provides powerful extensions to the standard datetime
 module available in Python 2.3+.
 
 This is the version for Python 3.
+
+#%%package -n python%%{python3_pkgversion}-dateutil
+#Summary:        Powerful extensions to the standard datetime module
+#BuildRequires:  python%%{python3_pkgversion}-devel
+#BuildRequires:  python%%{python3_pkgversion}-setuptools
+#BuildRequires:  python%%{python3_pkgversion}-six
+#
+#Requires:       python%%{python3_pkgversion}-six
+#Requires:       tzdata
+
+#%%description -n python%%{python3_pkgversion}-dateutil
+#The dateutil module provides powerful extensions to the standard datetime
+#module available in Python 2.3+.
+
+#This is the version for Python 3.
 
 %package doc
 Summary: API documentation for python-dateutil
