@@ -25,7 +25,6 @@ EPELPKGS+=python2-testtools-srpm
 EPELPKGS+=python2-unittest2-srpm
 
 # Build python3 versions of packages
-EPELPKGS+=python-botocore-srpm
 EPELPKGS+=python-colorama-srpm
 EPELPKGS+=python-d2to1-srpm
 EPELPKGS+=python-extras-srpm
@@ -88,8 +87,13 @@ build:: FORCE
 # Dependencies
 python-awscli-srpm::
 
+python-botocore-srpm:: python-jmespath-srpm
+python-botocore-srpm:: python3-dateutil-srpm
+
 python-linecacwe-srpm:: python-fixtures-srpm
 python-linecacwe-srpm:: python-unittest2-srpm
+
+python3-pbr-srpm:: python-d2to1-srpm
 
 # Actually build in directories
 $(EPELPKGS):: FORCE
