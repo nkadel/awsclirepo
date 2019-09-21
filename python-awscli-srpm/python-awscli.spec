@@ -90,7 +90,7 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
-* Thu Jul 25 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.16.141-0-0
+* Sat Sep 21 2019 Nico Kadel-Garcia <nkadel@gmail.com>
 - Backport to RHEL
 - Update relax-dependencies patch
 - Add epel-rpm-macros as needed
