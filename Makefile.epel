@@ -14,6 +14,8 @@ RSYNCOPTS=-a --no-owner --no-group
 # Some RHEL dependencies are supplied locally in awsclirepo
 MOCKS+=epel-6-x86_64
 MOCKS+=epel-7-x86_64
+#MOCKS+=epel-7-x86_64
+MOCKS+=rhelepel-8-x86_64
 
 # Local yum compatible RPM repository
 REPOBASEDIR="`/bin/pwd | xargs dirname`/awsclirepo"

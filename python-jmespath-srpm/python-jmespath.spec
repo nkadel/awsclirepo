@@ -17,6 +17,10 @@ URL:            https://github.com/jmespath/jmespath.py
 Source0:        https://pypi.python.org/packages/source/j/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
 
+%if 0%{?rhel}
+BuildRequires:  epel-rpm-macros
+%endif
+
 BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools
 %if 0%{?with_python3}

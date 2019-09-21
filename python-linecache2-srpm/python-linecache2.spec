@@ -18,6 +18,11 @@ URL:            https://github.com/testing-cabal/linecache2
 Source0:        https://pypi.python.org/packages/source/l/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 
 BuildArch:      noarch
+
+%if 0%{?rhel}
+BuildRequires:  epel-rpm-macros
+%endif
+
 %if %{with python2}
 BuildRequires:  python2
 BuildRequires:  python2-devel

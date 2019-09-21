@@ -22,6 +22,11 @@ License:        MIT
 URL:            http://pyyaml.org/
 Source0:        http://pyyaml.org/download/pyyaml/%{pypi_name}-%{version}.tar.gz
 BuildRequires:  libyaml-devel, Cython
+
+%if 0%{?rhel}
+BuildRequires:  epel-rpm-macros
+%endif
+
 %if %{with_python2}
 BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools

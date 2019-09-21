@@ -16,6 +16,11 @@ License:        MIT
 URL:            https://pypi.python.org/pypi/python-mimeparse
 Source0:        https://pypi.python.org/packages/source/p/%{name}/%{name}-%{version}.tar.gz
 BuildArch:      noarch
+
+%if 0%{?rhel}
+BuildRequires:  epel-rpm-macros
+%endif
+
 BuildRequires:  python2-devel
 %if %{with_python3}
 BuildRequires:  python%{python3_pkgversion}-devel

@@ -18,6 +18,9 @@ URL:            https://github.com/testing-cabal/traceback2
 Source0:        https://pypi.python.org/packages/source/t/%{pkgname}/%{pkgname}-%{version}.tar.gz
 
 BuildArch:      noarch
+%if 0%{?rhel}
+BuildRequires:  epel-rpm-macros
+%endif
 BuildRequires:  python2-devel
 BuildRequires:  python2-pbr
 BuildRequires:  python2-linecache2

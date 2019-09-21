@@ -15,6 +15,7 @@ RSYNCOPTS=-a --no-owner --no-group
 #MOCKS+=epel-6-x86_64
 MOCKS+=awsclirepo-6-x86_64
 MOCKS+=awsclirepo-7-x86_64
+MOCKS+=awsclirepo-8-x86_64
 
 # Local yum compatible RPM repository
 REPOBASEDIR="`/bin/pwd | xargs dirname`/awsclirepo"

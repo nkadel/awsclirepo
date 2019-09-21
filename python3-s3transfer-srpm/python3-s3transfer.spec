@@ -16,6 +16,10 @@ Source0:        https://pypi.io/packages/source/s/%{pypi_name}/%{pypi_name}-%{ve
 
 BuildArch:      noarch
 
+%if 0%{?rhel}
+BuildRequires:  epel-rpm-macros
+%endif
+
 %description %{_description}
 
 %package -n python%{python3_pkgversion}-%{pypi_name}

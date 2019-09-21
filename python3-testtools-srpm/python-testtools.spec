@@ -20,6 +20,11 @@ Source0:        https://pypi.python.org/packages/source/t/testtools/testtools-%{
 Patch0:         testtools-0.9.30-py3.patch
 
 BuildArch:      noarch
+
+%if 0%{?rhel}
+BuildRequires:  epel-rpm-macros
+%endif
+
 %if %{with_python2}
 BuildRequires:  python2-devel
 BuildRequires:  python2-extras

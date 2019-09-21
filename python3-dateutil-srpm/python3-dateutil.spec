@@ -20,6 +20,10 @@ Patch1:         python-dateutil-timelex-string.patch
 
 BuildArch:      noarch
 
+%if 0%{?rhel}
+BuildRequires:  epel-rpm-macros
+%endif
+
 %description
 The dateutil module provides powerful extensions to the standard datetime
 module available in Python 2.3+.

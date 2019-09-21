@@ -53,16 +53,19 @@ AWSCLIPKGS+=python-linecache2-srpm
 
 REPOS+=awsclirepo/el/6
 REPOS+=awsclirepo/el/7
+REPOS+=awsclirepo/el/8
 
 REPODIRS := $(patsubst %,%/x86_64/repodata,$(REPOS)) $(patsubst %,%/SRPMS/repodata,$(REPOS))
 
 # No local dependencies at build time
 CFGS+=awsclirepo-6-x86_64.cfg
 CFGS+=awsclirepo-7-x86_64.cfg
+CFGS+=awsclirepo-8-x86_64.cfg
 
 # Link from /etc/mock
 MOCKCFGS+=epel-6-x86_64.cfg
 MOCKCFGS+=epel-7-x86_64.cfg
+MOCKCFGS+=epel-8-x86_64.cfg
 
 all:: $(CFGS) $(MOCKCFGS)
 all:: $(REPODIRS)
@@ -137,6 +140,25 @@ awsclirepo-7-x86_64.cfg: epel-7-x86_64.cfg
 	@echo 'name=awsclirepo' >> $@
 	@echo 'enabled=1' >> $@
 	@echo 'baseurl=$(REPOBASE)/awsclirepo/el/7/x86_64/' >> $@
+	@echo 'failovermethod=priority' >> $@
+	@echo 'skip_if_unavailable=False' >> $@
+	@echo 'metadata_expire=1' >> $@
+	@echo 'gpgcheck=0' >> $@
+	@echo '#cost=2000' >> $@
+	@echo '"""' >> $@
+	@uniq -u $@ > $@~
+	@mv $@~ $@
+
+awsclirepo-8-x86_64.cfg: epel-8-x86_64.cfg
+	@echo Generating $@ from $?
+	@cat $? > $@
+	@sed -i 's/epel-8-x86_64/awsclirepo-8-x86_64/g' $@
+	@echo '"""' >> $@
+	@echo >> $@
+	@echo '[awsclirepo]' >> $@
+	@echo 'name=awsclirepo' >> $@
+	@echo 'enabled=1' >> $@
+	@echo 'baseurl=$(REPOBASE)/awsclirepo/el/8/x86_64/' >> $@
 	@echo 'failovermethod=priority' >> $@
 	@echo 'skip_if_unavailable=False' >> $@
 	@echo 'metadata_expire=1' >> $@

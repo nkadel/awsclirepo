@@ -10,7 +10,7 @@
 %global pypi_name botocore
 
 Name:           python-%{pypi_name}
-Version:        1.12.204
+Version:        1.12.226
 Release:        0%{?dist}
 Summary:        Low-level, data-driven core of boto 3
 
@@ -18,6 +18,10 @@ License:        ASL 2.0
 URL:            https://github.com/boto/botocore
 Source0:        https://pypi.io/packages/source/b/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
+
+%if 0%{?rhel}
+BuildRequires:  epel-rpm-macros
+%endif
 
 %description
 A low-level interface to a growing number of Amazon Web Services. The
@@ -94,6 +98,9 @@ nosetests-3 --with-coverage --cover-erase --cover-package botocore --with-xunit 
 %endif # with docs
 
 %changelog
+* Wed Sep 11 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.12.226-0
+- Update to 1.12.226
+
 * Thu Aug 8 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.12.204-0
 - Update to 1.12.204
 - Update python-dateutil requirements

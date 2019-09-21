@@ -16,6 +16,10 @@ URL:            https://pypi.python.org/pypi/colorama/
 Source0:        https://pypi.python.org/packages/source/c/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
  
+%if 0%{?rhel}
+BuildRequires:  epel-rpm-macros
+%endif
+
 BuildRequires:  python2-devel
 
 %description

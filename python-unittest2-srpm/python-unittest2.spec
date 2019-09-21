@@ -25,6 +25,10 @@ Patch1:         unittest2-1.1.0-remove-traceback2-from-requires.patch
 Patch2:         unittest2-1.1.0-backport-tests-from-py3.5.patch
 BuildArch:      noarch
 
+%if 0%{?rhel}
+BuildRequires:  epel-rpm-macros
+%endif
+
 BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools
 BuildRequires:  python2-six

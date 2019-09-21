@@ -5,10 +5,10 @@
 
 %{?python_enable_dependency_generator}
 
-%global botocore_version 1.12.204
+%global botocore_version 1.12.236
 
 Name:           python-%{pypi_name}
-Version:        1.16.214
+Version:        1.16.236
 Release:        0%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
@@ -17,6 +17,11 @@ URL:            http://aws.amazon.com/cli
 Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 Patch1:         relax-dependencies.patch
 BuildArch:      noarch
+
+%if 0%{?rhel}
+BuildRequires:  epel-rpm-macros
+%endif
+
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 

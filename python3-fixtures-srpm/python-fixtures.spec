@@ -17,6 +17,10 @@ URL:            https://launchpad.net/python-fixtures
 Source0:        https://pypi.python.org/packages/source/f/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
 
+%if 0%{?rhel}
+BuildRequires:  epel-rpm-macros
+%endif
+
 BuildRequires:  python2-devel
 
 # Not available on RHEL 6 yet

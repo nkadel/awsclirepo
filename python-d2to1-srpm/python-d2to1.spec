@@ -18,6 +18,10 @@ URL: https://pypi.python.org/pypi/d2to1
 Source0: https://pypi.python.org/packages/source/d/d2to1/%{upname}-%{version}.tar.gz
 BuildRequires: openssl-devel
 
+%if 0%{?rhel}
+BuildRequires:  epel-rpm-macros
+%endif
+
 BuildRequires: python2-devel
 BuildRequires: python2-setuptools
 Requires: python2-setuptools

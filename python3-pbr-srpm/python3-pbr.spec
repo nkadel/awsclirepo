@@ -27,6 +27,10 @@ URL:            https://pypi.python.org/pypi/pbr
 Source0:        https://pypi.python.org/packages/source/p/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
 
+%if 0%{?rhel}
+BuildRequires:  epel-rpm-macros
+%endif
+
 %if %{with_python2}
 %if 0%{?rhel}==6
 BuildRequires: python-sphinx10

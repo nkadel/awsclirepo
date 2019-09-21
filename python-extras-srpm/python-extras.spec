@@ -12,6 +12,11 @@ URL:            https://github.com/testing-cabal/extras
 Source0:        https://pypi.python.org/packages/source/e/extras/extras-%{version}.tar.gz
 
 BuildArch:      noarch
+
+%if 0%{?rhel}
+BuildRequires:  epel-rpm-macros
+%endif
+
 %if %{with_python2}
 BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools

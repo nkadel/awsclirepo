@@ -18,6 +18,10 @@ URL:            http://stuvel.eu/rsa
 Source0:        https://pypi.python.org/packages/source/r/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
 
+%if 0%{?rhel}
+BuildRequires:  epel-rpm-macros
+%endif
+
 %if %{with_python2}
 BuildRequires:  python2
 BuildRequires:  python2-devel
