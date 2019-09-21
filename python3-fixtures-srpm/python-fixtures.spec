@@ -60,7 +60,7 @@ cp -a . %{py3dir}
 
 
 %build
-%{__python} setup.py build
+%{__python2} setup.py build
 %if 0%{?with_python3}
 pushd %{py3dir}
 %{__python3} setup.py build
@@ -74,13 +74,13 @@ pushd %{py3dir}
 %{__python3} setup.py install --skip-build --root %{buildroot}
 popd
 %endif
-%{__python} setup.py install --skip-build --root %{buildroot}
+%{__python2} setup.py install --skip-build --root %{buildroot}
 
 
 %files
 %doc README GOALS NEWS Apache-2.0 BSD COPYING
-%{python_sitelib}/%{pypi_name}
-%{python_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
+%{python2_sitelib}/%{pypi_name}
+%{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %if 0%{?with_python3}
 %files -n python%{python3_pkgversion}-%{pypi_name}
