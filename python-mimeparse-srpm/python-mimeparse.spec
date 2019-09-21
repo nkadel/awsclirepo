@@ -49,7 +49,7 @@ cp -a . %{py3dir}
 %endif # with_python3
 
 %build
-CFLAGS="%{optflags}" %{__python} setup.py build
+CFLAGS="%{optflags}" %{__python2} setup.py build
 
 %if %{with_python3}
 pushd %{py3dir}
@@ -58,7 +58,7 @@ popd
 %endif # with_python3
 
 %check
-%{__python} mimeparse_test.py
+%{__python2} mimeparse_test.py
 
 %if %{with_python3}
 pushd %{py3dir}
@@ -76,11 +76,11 @@ pushd %{py3dir}
 popd
 %endif # with_python3
 
-%{__python} setup.py install --skip-build --root %{buildroot}
+%{__python2} setup.py install --skip-build --root %{buildroot}
 
 %files
 %doc README
-%{python_sitelib}/*
+%{python2_sitelib}/*
 
 %if %{with_python3}
 %files -n python%{python3_pkgversion}-%{pypi_name}
