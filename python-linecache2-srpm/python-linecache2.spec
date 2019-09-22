@@ -1,11 +1,8 @@
-# Single python3 version in Fedora, python3_pkgversion macro not available
-%{!?python3_pkgversion:%global python3_pkgversion 3}
-
 %global pypi_name linecache2
 
-# Enable python3, disable python2 for RHEL 6 compileation
+# Enable python3 only, disable python2
 %bcond_without python3
-%bcond_without python2
+%bcond_with python2
 
 Name:           python-%{pypi_name}
 Version:        1.0.0
@@ -41,7 +38,7 @@ BuildRequires:  python%{python3_pkgversion}-pbr
 # Test dependencies
 BuildRequires:  python%{python3_pkgversion}-fixtures
 # Tests are broken for non on RHEL 6
-#BuildRequires:  python%{python3_pkgversion}-unittest2
+#BuildRequires:  python%%{python3_pkgversion}-unittest2
 %endif # with python3
 
 %description
