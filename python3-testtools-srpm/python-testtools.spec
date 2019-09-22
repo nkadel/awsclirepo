@@ -1,10 +1,6 @@
-# Single python3 version in Fedora, python3_pkgversion macro not available
-%{!?python3_pkgversion:%global python3_pkgversion 3}
-
-# Disable python2, does not work on RHEL 6
 %global with_python3 1
+# Disable python2 on older RHEL, does not work on RHEL 6
 %global with_python2 0
-
 
 Name:           python-testtools
 Version:        1.1.0
@@ -31,8 +27,8 @@ BuildRequires:  python2-extras
 BuildRequires:  python2-mimeparse >= 0.1.4
 BuildRequires:  python2-setuptools
 BuildRequires:  python2-sphinx
-
 %endif
+
 %if %{with_python3}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-extras
@@ -66,10 +62,8 @@ Requires:       python%{python3_pkgversion}-mimeparse
 %description -n python%{python3_pkgversion}-testtools
 testtools is a set of extensions to the Python standard library's unit testing
 framework.
-
 %endif # with_python3
 
-%if %{with_python2}
 %package        doc
 Summary:        Documentation for %{name}
 Group:          Documentation
@@ -81,7 +75,6 @@ Provides:       bundled(jquery)
 
 %description doc
 This package contains HTML documentation for %{name}.
-%endif # with_python2
 
 %prep
 %setup -q -n testtools-%{version}
