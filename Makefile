@@ -71,20 +71,17 @@ all:: $(REPODIRS)
 all:: $(EPELPKGS)
 all:: $(AWSCLIPKGS)
 
-all install clean getsrc:: FORCE
+
+all:: install
+build install clean getsrc build:: FORCE
 	@for name in $(EPELPKGS) $(AWSCLIPKGS); do \
 	     (cd $$name; $(MAKE) $(MFLAGS) $@); \
 	done  
 
+# It is sometimes useful to build up all the more independent EPEL packages first
 epel:: $(EPELPKGS)
 
-# Build for locacl OS
-build:: FORCE
-	@for name in $(AWSCLIPKGS); do \
-	     (cd $$name; $(MAKE) $(MFLAGS) $@); \
-	done
-
-# Dependencies
+# Dependencies for order sensitivity
 python-awscli-srpm::
 
 python-botocore-srpm:: python-jmespath-srpm
