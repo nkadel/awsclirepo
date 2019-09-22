@@ -1,11 +1,8 @@
-# Single python3 version in Fedora, python3_pkgversion macro not available
-%{!?python3_pkgversion:%global python3_pkgversion 3}
-
 %global pypi_name s3transfer
 %global _description \
 S3transfer is a Python library for managing Amazon S3 transfers.
 
-Name:           python3-%{pypi_name}
+Name:           python-%{pypi_name}
 Version:        0.2.0
 Release:        0%{?dist}
 Summary:        Amazon S3 Transfer Manager
