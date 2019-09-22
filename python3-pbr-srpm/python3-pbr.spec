@@ -5,9 +5,9 @@
 #%%global with_python2 1
 %global with_python2 0
 
-#%if 0%{?fedora} > 19
-#%global do_test 1
-#%endif
+#%%if 0%%{?fedora} > 19
+#%%global do_test 1
+#%%endif
 
 # tests are failing currently
 %global do_test 0
@@ -15,7 +15,7 @@
 #Name:           python-%%{pypi_name}
 Name:           python%{python3_pkgversion}-%{pypi_name}
 Version:        0.8.0
-#Release:        1%{?dist}
+#Release:        1%%{?dist}
 Release:        0%{?dist}
 Summary:        Python Build Reasonableness
 
@@ -76,13 +76,13 @@ Requires:       python2-pip
 Manage dynamic plugins for Python applications
 %endif # with_python2
 
-#%if %{with_python3}
-#%package -n python%{python3_pkgversion}-pbr
+#%%if %%{with_python3}
+#%%package -n python%%{python3_pkgversion}-pbr
 #Summary:        Python Build Reasonableness
 #
-#%description -n python%{python3_pkgversion}-pbr
+#%%description -n python%%{python3_pkgversion}-pbr
 #Manage dynamic plugins for Python applications
-#%endif
+#%%endif
 
 %prep
 %setup -q -n %{pypi_name}-%{version}
