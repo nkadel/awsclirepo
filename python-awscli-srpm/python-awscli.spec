@@ -1,6 +1,9 @@
 %global pypi_name awscli
 
+# Use only for fedora
+%if 0%{?fedora}
 %{?python_enable_dependency_generator}
+%endif
 
 %global botocore_version 1.12.231
 
