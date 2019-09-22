@@ -6,10 +6,10 @@
 # Disable python2 for RHEL 6 dependencies on python-testtool
 %global with_python3 1
 # Older RHEL versions ahve python-%%{pypi_name} packages
-%if 0%{?rhel} && 0%{?rhel} < 7
-%global with_python2 0
-%else
+%if 0%{?fedora} || 0%{?rhel} > 7
 %global with_python2 1
+%else
+%global with_python2 0
 %endif
 
 Name:           python-%{pypi_name}
@@ -51,8 +51,7 @@ primarily for unit testing. Helper and adaption logic is included to
 make it easy to write your own fixtures using the fixtures contract.
 Glue code is provided that makes using fixtures that meet the Fixtures
 contract in unittest compatible test cases easy and straight forward.
-%endif
-
+%endif # with_python2
 
 %if 0%{?with_python3}
 %package -n python%{python3_pkgversion}-%{pypi_name}
