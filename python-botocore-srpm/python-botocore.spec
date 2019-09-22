@@ -1,7 +1,8 @@
-# python3_pkgversion macro for EPEL in older RHEL
-%{!?python3_pkgversion:%global python3_pkgversion 3}
-
+# Use only for fedora
+%if 0%{?fedora}
 %{?python_enable_dependency_generator}
+%endif
+
 # Enable tests
 %bcond_with test
 # Disable documentation generation for now
