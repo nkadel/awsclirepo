@@ -1,16 +1,9 @@
-# Single python3 version in Fedora, python3_pkgversion macro not available
-%{!?python3_pkgversion:%global python3_pkgversion 3}
-
 %global pypi_name fixtures
 
 # Disable python2 for RHEL 6 dependencies on python-testtool
 %global with_python3 1
 # Older RHEL versions ahve python-%%{pypi_name} packages
-%if 0%{?fedora} || 0%{?rhel} > 7
-%global with_python2 1
-%else
 %global with_python2 0
-%endif
 
 Name:           python-%{pypi_name}
 Version:        0.3.14
