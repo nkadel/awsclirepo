@@ -1,10 +1,10 @@
 diff -Nur awscli-1.16.241-orig/setup.py awscli-1.16.241/setup.py
---- awscli-1.16.241-orig/setup.py	2019-09-18 22:34:01.112571317 +0000
-+++ awscli-1.16.241/setup.py	2019-09-19 01:31:11.330639460 +0000
+--- awscli-1.16.241-orig/setup.py	2019-09-22 22:34:01.112571317 +0000
++++ awscli-1.16.241/setup.py	2019-09-22 01:31:11.330639460 +0000
 @@ -24,7 +24,7 @@
  
  
- requires = ['botocore==1.12.231',
+ requires = ['botocore==1.12.233',
 -            'colorama>=0.2.5,<=0.3.9',
 +            'colorama>=0.2.5',
              'docutils>=0.10,<0.16',
