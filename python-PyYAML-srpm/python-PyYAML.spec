@@ -142,7 +142,7 @@ popd
 
 %check
 %if %{with_python2}
-%{__python} setup.py test
+%{__python2} setup.py test
 %endif
 
 %if %{?with_python3}
