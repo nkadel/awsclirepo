@@ -1,6 +1,3 @@
-# Single python3 version in Fedora, python3_pkgversion macro not available
-%{!?python3_pkgversion:%global python3_pkgversion 3}
-
 %global with_python3 1
 
 %global pypi_name colorama
@@ -15,11 +12,12 @@ License:        BSD
 URL:            https://pypi.python.org/pypi/colorama/
 Source0:        https://pypi.python.org/packages/source/c/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
- 
+
 %if 0%{?rhel}
 BuildRequires:  epel-rpm-macros
 %endif
 
+BuildRequires:  python2
 BuildRequires:  python2-devel
 
 %description
