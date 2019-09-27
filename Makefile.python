@@ -16,6 +16,8 @@ MOCKS+=awsclirepo-6-x86_64
 MOCKS+=awsclirepo-7-x86_64
 MOCKS+=awsclirepo-8-x86_64
 
+MOCKCFGS+=$(MOCKS)
+
 # Local yum compatible RPM repository
 REPOBASEDIR="`/bin/pwd | xargs dirname`/awsclirepo"
 
@@ -77,6 +79,10 @@ install:: $(MOCKS)
 	    echo "	Pushing RPMS to $$rpmdir"; \
 	    rsync $(RSYNCSAFEOPTS) --exclude=*.src.rpm --exclude=*debuginfo*.rpm $$repo/*.rpm $$rpmdir/. || exit 1; \
 	    createrepo -q $$rpmdir/.; \
+	done
+	@for name in $(MOCKCFGS); do \
+	    echo Forcing updates for $${name}; \
+	    touch ../$${name}.cfg; \
 	done
 
 clean::
