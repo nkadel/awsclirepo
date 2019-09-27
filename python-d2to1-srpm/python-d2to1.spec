@@ -22,6 +22,7 @@ BuildRequires:  epel-rpm-macros
 BuildRequires: python2-devel
 BuildRequires: python2-setuptools
 Requires: python2-setuptools
+%{?python_provide:%python_provide python2-%{pkgname}}
 
 BuildArch: noarch
 
@@ -37,6 +38,7 @@ Summary: Allows using distutils2-like setup.cfg files with setup.py
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 Requires:  python%{python3_pkgversion}-setuptools
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pkgname}}
 
 %description -n python%{python3_pkgversion}-d2to1
 d2to1 allows using distutils2-like setup.cfg files for a package's metadata 
