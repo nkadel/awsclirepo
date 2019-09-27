@@ -8,8 +8,8 @@
 #	Set up local 
 
 # Rely on local nginx service poingint to file://$(PWD)/awsclirepo
-REPOBASE = http://localhost
-#REPOBASE = file://$(PWD)
+#REPOBASE = http://localhost
+REPOBASE = file://$(PWD)
 
 # Placeholder RPMs for python2-foo packages to include python-foo
 EPELPKGS+=python2-contextlib2-srpm
@@ -116,58 +116,52 @@ awsclirepo-6-x86_64.cfg: epel-6-x86_64.cfg
 	@echo Generating $@ from $?
 	@cat $? > $@
 	@sed -i 's/epel-6-x86_64/awsclirepo-6-x86_64/g' $@
-	@echo '"""' >> $@
 	@echo >> $@
-	@echo '[awsclirepo]' >> $@
-	@echo 'name=awsclirepo' >> $@
-	@echo 'enabled=1' >> $@
-	@echo 'baseurl=$(REPOBASE)/awsclirepo/el/6/x86_64/' >> $@
-	@echo 'failovermethod=priority' >> $@
-	@echo 'skip_if_unavailable=False' >> $@
-	@echo 'metadata_expire=1' >> $@
-	@echo 'gpgcheck=0' >> $@
-	@echo '#cost=2000' >> $@
+	echo "config_opts['yum.conf'] += \"\"\"" >> $@
+	@echo "[awsclirepo]" >> $@
+	@echo "name=awsclirepo" >> $@
+	@echo "enabled=1" >> $@
+	@echo "baseurl=$(REPOBASE)/awsclirepo/el/6/x86_64/" >> $@
+	@echo "failovermethod=priority" >> $@
+	@echo "skip_if_unavailable=False" >> $@
+	@echo "metadata_expire=1" >> $@
+	@echo "gpgcheck=0" >> $@
+	@echo "#cost=2000" >> $@
 	@echo '"""' >> $@
-	@uniq -u $@ > $@~
-	@mv $@~ $@
 
 awsclirepo-7-x86_64.cfg: epel-7-x86_64.cfg
 	@echo Generating $@ from $?
 	@cat $? > $@
 	@sed -i 's/epel-7-x86_64/awsclirepo-7-x86_64/g' $@
-	@echo '"""' >> $@
 	@echo >> $@
-	@echo '[awsclirepo]' >> $@
-	@echo 'name=awsclirepo' >> $@
-	@echo 'enabled=1' >> $@
-	@echo 'baseurl=$(REPOBASE)/awsclirepo/el/7/x86_64/' >> $@
-	@echo 'failovermethod=priority' >> $@
-	@echo 'skip_if_unavailable=False' >> $@
-	@echo 'metadata_expire=1' >> $@
-	@echo 'gpgcheck=0' >> $@
-	@echo '#cost=2000' >> $@
-	@echo '"""' >> $@
-	@uniq -u $@ > $@~
-	@mv $@~ $@
+	@echo "config_opts['yum.conf'] += \"\"\"" >> $@
+	@echo "[awsclirepo]" >> $@
+	@echo "name=awsclirepo" >> $@
+	@echo "enabled=1" >> $@
+	@echo "baseurl=$(REPOBASE)/awsclirepo/el/7/x86_64/" >> $@
+	@echo "failovermethod=priority" >> $@
+	@echo "skip_if_unavailable=False" >> $@
+	@echo "metadata_expire=1" >> $@
+	@echo "gpgcheck=0" >> $@
+	@echo "#cost=2000" >> $@
+	echo "\"\"\"" >> $@
 
 awsclirepo-8-x86_64.cfg: epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@cat $? > $@
 	@sed -i 's/epel-8-x86_64/awsclirepo-8-x86_64/g' $@
-	@echo '"""' >> $@
-	@echo >> $@
-	@echo '[awsclirepo]' >> $@
-	@echo 'name=awsclirepo' >> $@
-	@echo 'enabled=1' >> $@
-	@echo 'baseurl=$(REPOBASE)/awsclirepo/el/8/x86_64/' >> $@
-	@echo 'failovermethod=priority' >> $@
-	@echo 'skip_if_unavailable=False' >> $@
-	@echo 'metadata_expire=1' >> $@
-	@echo 'gpgcheck=0' >> $@
-	@echo '#cost=2000' >> $@
-	@echo '"""' >> $@
-	@uniq -u $@ > $@~
-	@mv $@~ $@
+	echo >> $@
+	echo "config_opts['yum.conf'] += \"\"\"" >> $@
+	echo "[awsclirepo]" >> $@
+	echo "name=awsclirepo" >> $@
+	echo "enabled=1" >> $@
+	echo "baseurl=$(REPOBASE)/awsclirepo/el/8/x86_64/" >> $@
+	echo "failovermethod=priority" >> $@
+	echo "skip_if_unavailable=False" >> $@
+	echo "metadata_expire=1" >> $@
+	echo "gpgcheck=0" >> $@
+	echo "#cost=2000" >> $@
+	echo "\"\"\"" >> $@
 
 $(MOCKCFGS)::
 	ln -sf --no-dereference /etc/mock/$@ $@
