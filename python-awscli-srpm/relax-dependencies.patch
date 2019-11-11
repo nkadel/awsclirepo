@@ -1,12 +1,20 @@
-diff -Nur awscli-1.16.241-orig/setup.py awscli-1.16.241/setup.py
---- awscli-1.16.241-orig/setup.py	2019-09-22 22:34:01.112571317 +0000
-+++ awscli-1.16.241/setup.py	2019-09-22 01:31:11.330639460 +0000
-@@ -24,7 +24,7 @@
+--- awscli-1.16.278/setup.py.orig	2019-11-08 14:14:34.000000000 -0500
++++ awscli-1.16.278/setup.py	2019-11-11 06:37:15.867209395 -0500
+@@ -39,14 +39,14 @@
+     install_requires.append('PyYAML>=3.10,<=3.13')
+ 
+     # Colorama removed support for EOL pythons.
+-    install_requires.append('colorama>=0.2.5,<=0.3.9')
++    install_requires.append('colorama>=0.2.5')
+ elif sys.version_info[:2] == (3, 3):
+     install_requires.append('PyYAML>=3.10,<=3.13')
+     # Colorama removed support for EOL pythons.
+-    install_requires.append('colorama>=0.2.5,<=0.3.9')
++    install_requires.append('colorama>=0.2.5')
+ else:
+     install_requires.append('PyYAML>=3.10,<5.2')
+-    install_requires.append('colorama>=0.2.5,<0.4.2')
++    install_requires.append('colorama>=0.2.5')
  
  
- requires = ['botocore==1.12.233',
--            'colorama>=0.2.5,<=0.3.9',
-+            'colorama>=0.2.5',
-             'docutils>=0.10,<0.16',
-             'rsa>=3.1.2,<=3.5.0',
-             's3transfer>=0.2.0,<0.3.0']
+ setup_options = dict(
