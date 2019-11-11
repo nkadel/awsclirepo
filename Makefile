@@ -8,8 +8,8 @@
 #	Set up local 
 
 # Rely on local nginx service poingint to file://$(PWD)/awsclirepo
-REPOBASE = http://localhost
-#REPOBASE = file://$(PWD)
+#REPOBASE = http://localhost
+REPOBASE = file://$(PWD)
 
 # Placeholder RPMs for python2-foo packages to include python-foo
 EPELPKGS+=python2-contextlib2-srpm
