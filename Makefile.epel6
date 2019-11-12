@@ -16,6 +16,10 @@ MOCKS+=epel-6-x86_64
 #MOCKS+=epel-7-x86_64
 #MOCKS+=epel-8-x86_64
 
+MOCKCFGS+=awsclirepo-6-x86_64
+#MOCKCFGS+=awsclirepo-7-x86_64
+#MOCKCFGS+=awsclirepo-8-x86_64
+
 # Local yum compatible RPM repository
 REPOBASEDIR="`/bin/pwd | xargs dirname`/awsclirepo"
 
@@ -67,6 +71,8 @@ install:: $(MOCKS)
 		*-8-x86_64) yumrelease=el/8; yumarch=x86_64; ;; \
 		*-30-x86_64) yumrelease=fedora/30; yumarch=x86_64; ;; \
 		*-f30-x86_64) yumrelease=fedora/30; yumarch=x86_64; ;; \
+		*-31-x86_64) yumrelease=fedora/31; yumarch=x86_64; ;; \
+		*-f31-x86_64) yumrelease=fedora/31; yumarch=x86_64; ;; \
 		*) echo "Unrecognized release for $$repo, exiting" >&2; exit 1; ;; \
 	    esac; \
 	    rpmdir=$(REPOBASEDIR)/$$yumrelease/$$yumarch; \
@@ -77,6 +83,10 @@ install:: $(MOCKS)
 	    echo "	Pushing RPMS to $$rpmdir"; \
 	    rsync $(RSYNCSAFEOPTS) --exclude=*.src.rpm --exclude=*debuginfo*.rpm $$repo/*.rpm $$rpmdir/. || exit 1; \
 	    createrepo -q $$rpmdir/.; \
+	done
+	@for name in $(MOCKCFGS); do \
+	     echo Refreshing ../$${name}.cfg; \
+	     touch ../$${name}.cfg; \
 	done
 
 clean::
