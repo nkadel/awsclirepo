@@ -116,8 +116,8 @@ awsclirepo-6-x86_64.cfg: epel-6-x86_64.cfg
 	@echo Generating $@ from $?
 	@cat $? > $@
 	@sed -i 's/epel-6-x86_64/awsclirepo-6-x86_64/g' $@
-	@echo '"""' >> $@
 	@echo >> $@
+	@echo "config_opts['yum.conf'] += \"\"\"" >> $@
 	@echo '[awsclirepo]' >> $@
 	@echo 'name=awsclirepo' >> $@
 	@echo 'enabled=1' >> $@
@@ -128,15 +128,13 @@ awsclirepo-6-x86_64.cfg: epel-6-x86_64.cfg
 	@echo 'gpgcheck=0' >> $@
 	@echo '#cost=2000' >> $@
 	@echo '"""' >> $@
-	@uniq -u $@ > $@~
-	@mv $@~ $@
 
 awsclirepo-7-x86_64.cfg: epel-7-x86_64.cfg
 	@echo Generating $@ from $?
 	@cat $? > $@
 	@sed -i 's/epel-7-x86_64/awsclirepo-7-x86_64/g' $@
-	@echo '"""' >> $@
 	@echo >> $@
+	@echo "config_opts['yum.conf'] += \"\"\"" >> $@
 	@echo '[awsclirepo]' >> $@
 	@echo 'name=awsclirepo' >> $@
 	@echo 'enabled=1' >> $@
@@ -147,15 +145,16 @@ awsclirepo-7-x86_64.cfg: epel-7-x86_64.cfg
 	@echo 'gpgcheck=0' >> $@
 	@echo '#cost=2000' >> $@
 	@echo '"""' >> $@
-	@uniq -u $@ > $@~
-	@mv $@~ $@
 
 awsclirepo-8-x86_64.cfg: epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@cat $? > $@
 	@sed -i 's/epel-8-x86_64/awsclirepo-8-x86_64/g' $@
-	@echo '"""' >> $@
+	@echo "    Disabling 'best=' for $@"
+	@sed -i '/^best=/d' $@
+	@echo "best=0" >> $@
 	@echo >> $@
+	@echo "config_opts['yum.conf'] += \"\"\"" >> $@
 	@echo '[awsclirepo]' >> $@
 	@echo 'name=awsclirepo' >> $@
 	@echo 'enabled=1' >> $@
@@ -166,8 +165,6 @@ awsclirepo-8-x86_64.cfg: epel-8-x86_64.cfg
 	@echo 'gpgcheck=0' >> $@
 	@echo '#cost=2000' >> $@
 	@echo '"""' >> $@
-	@uniq -u $@ > $@~
-	@mv $@~ $@
 
 $(MOCKCFGS)::
 	ln -sf --no-dereference /etc/mock/$@ $@
