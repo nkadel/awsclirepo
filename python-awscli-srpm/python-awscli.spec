@@ -8,7 +8,7 @@
 %global botocore_version 1.13.14
 
 Name:           python-%{pypi_name}
-Version:        1.16.278
+Version:        1.16.283
 Release:        0%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
@@ -93,7 +93,7 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
-* Mon Nov 11 2019 Nico Kadel-Garcia <nkadel@gmail.com>
+* Mon Nov 11 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.16.283
 - Backport to RHEL
 - Update relax-dependencies patch
 - Add epel-rpm-macros as needed
