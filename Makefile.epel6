@@ -16,16 +16,11 @@ MOCKS+=epel-6-x86_64
 #MOCKS+=epel-7-x86_64
 #MOCKS+=epel-8-x86_64
 
-MOCKCFGS+=awsclirepo-6-x86_64
-#MOCKCFGS+=awsclirepo-7-x86_64
-#MOCKCFGS+=awsclirepo-8-x86_64
-
 # Local yum compatible RPM repository
 REPOBASEDIR="`/bin/pwd | xargs dirname`/awsclirepo"
 
 # Deduce local package names and .spec files, for universe Makefile use
 SPEC := `ls *.spec | head -1`
-PKGNAME := "`ls *.spec | head -1 | sed 's/.spec$$//g'`"
 
 # Needed for yum repo updates
 all:: /usr/bin/createrepo
@@ -35,30 +30,36 @@ all:: $(MOCKS)
 getsrc:
 	spectool -g $(SPEC)
 
-srpm:: FORCE
-	@echo "Building $(SPEC) SRPM"
-	rm -rf rpmbuild
+srpm:: src.rpm
+
+#.PHONY:: src.rpm
+src.rpm:: Makefile
+	@rm -rf rpmbuild
+	@rm -f $@
+	@echo "Building SRPM with $(SPEC)"
 	rpmbuild --define '_topdir $(PWD)/rpmbuild' \
 		--define '_sourcedir $(PWD)' \
 		-bs $(SPEC) --nodeps
+	mv rpmbuild/SRPMS/*.src.rpm src.rpm
 
-# Needed for python27 compatible compilation
-build:: srpm FORCE
+.PHONY: build
+build:: src.rpm
 	rpmbuild --define '_topdir $(PWD)/rpmbuild' \
-		--rebuild rpmbuild/SRPMS/*.src.rpm
+		--rebuild $?
 
-$(MOCKS):: srpm FORCE
-	@if [ -n "`find $@ -name \*.rpm ! -name \*.src.rpm 2>/dev/null`" ]; then \
-		echo "	Skipping $(SPEC) in $@ with RPMS"; \
+.PHONY: $(MOCKS)
+$(MOCKS):: src.rpm
+	@if [ -e $@ -a -n "`find $@ -name \*.rpm`" ]; then \
+		echo "	Skipping RPM populated $@"; \
 	else \
-		echo "Storing " rpmbuild/SRPMS/*.src.rpm "as $@.src.rpm"; \
-		install rpmbuild/SRPMS/*.src.rpm $@.src.rpm; \
-		echo "Building $@.src.rpm in $@"; \
+		echo "Actally building $? in $@"; \
 		rm -rf $@; \
 		mock -q -r $(PWD)/../$@.cfg \
-		    --resultdir=$(PWD)/$@ \
-		    $@.src.rpm; \
+		     --resultdir=$(PWD)/$@ \
+		     $?; \
 	fi
+
+mock:: $(MOCKS)
 
 mock:: $(MOCKS)
 
@@ -84,10 +85,6 @@ install:: $(MOCKS)
 	    rsync $(RSYNCSAFEOPTS) --exclude=*.src.rpm --exclude=*debuginfo*.rpm $$repo/*.rpm $$rpmdir/. || exit 1; \
 	    createrepo -q $$rpmdir/.; \
 	done
-	@for name in $(MOCKCFGS); do \
-	     echo Refreshing ../$${name}.cfg; \
-	     touch ../$${name}.cfg; \
-	done
 
 clean::
 	rm -rf $(MOCKS)
@@ -98,5 +95,3 @@ clean::
 	rm -f *.out
 
 realclean distclean:: clean
-
-FORCE:
