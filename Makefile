@@ -117,7 +117,7 @@ awsclirepo-6-x86_64.cfg: epel-6-x86_64.cfg
 	@cat $? > $@
 	@sed -i 's/epel-6-x86_64/awsclirepo-6-x86_64/g' $@
 	@echo >> $@
-	echo "config_opts['yum.conf'] += \"\"\"" >> $@
+	@echo "config_opts['yum.conf'] += \"\"\"" >> $@
 	@echo "[awsclirepo]" >> $@
 	@echo "name=awsclirepo" >> $@
 	@echo "enabled=1" >> $@
