@@ -1,8 +1,4 @@
-# Use only for fedora
-%if 0%{?fedora}
 %{?python_enable_dependency_generator}
-%endif
-
 # Enable tests
 %bcond_with test
 # Disable documentation generation for now
@@ -11,7 +7,7 @@
 %global pypi_name botocore
 
 Name:           python-%{pypi_name}
-Version:        1.13.19
+Version:        1.13.44
 Release:        0%{?dist}
 Summary:        Low-level, data-driven core of boto 3
 
@@ -20,16 +16,15 @@ URL:            https://github.com/boto/botocore
 Source0:        https://pypi.io/packages/source/b/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
 
-%if 0%{?rhel}
-BuildRequires:  epel-rpm-macros
-%endif
-
 %description
 A low-level interface to a growing number of Amazon Web Services. The
 botocore package is the foundation for the AWS CLI as well as boto3.
 
 %package -n     python%{python3_pkgversion}-%{pypi_name}
 Summary:        Low-level, data-driven core of boto 3
+%if 0%{?rhel}
+BuildRequires:	epel-rpm-macros
+%endif
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 %if %{with docs}
@@ -62,9 +57,6 @@ Summary: Documentation for %{name}
 
 %prep
 %setup -q -n %{pypi_name}-%{version}
-# Clean up localized components for RHEL
-#sed -i -e '1 d' botocore/vendored/requests/packages/chardet/chardetect.py
-#sed -i -e '1 d' botocore/vendored/requests/certs.py
 rm -rf %{pypi_name}.egg-info
 # Remove online tests
 rm -rf tests/integration
@@ -97,9 +89,14 @@ nosetests-3 --with-coverage --cover-erase --cover-package botocore --with-xunit 
 %endif # with docs
 
 %changelog
-* Mon Nov 11 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.13.19-0
-- Update to 1.13.19
-- Stop editing vendored files for 1.13.19
+* Mon Dec 23 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.13.44-0
+- Update to 1.13.44
+
+* Tue Nov 19 2019 Orion Poplawski <orion@nwra.com> - 1.13.21-1
+- Update to 1.13.21
+
+* Mon Oct 28 2019 David Duncan <davdunc@amazon.com> - 1.13.2-1
+- Merge changes from 1.13.2 release. (#1677950)
 
 * Mon Oct 21 2019 James Hogarth <james.hogarth@gmail.com> - 1.12.253-2
 * Fix changelog format
