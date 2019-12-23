@@ -5,17 +5,16 @@
 %{?python_enable_dependency_generator}
 %endif
 
-%global botocore_version 1.13.14
+%global botocore_version 1.13.44
 
 Name:           python-%{pypi_name}
-Version:        1.16.283
+Version:        1.16.308
 Release:        0%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
 License:        ASL 2.0 and MIT
 URL:            http://aws.amazon.com/cli
 Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
-Patch1:         relax-dependencies.patch
 BuildArch:      noarch
 
 %if 0%{?rhel}
@@ -61,6 +60,15 @@ command line interface to Amazon Web Services.
 
 rm -rf %{pypi_name}.egg-info
 
+# Patch broken colorama dependencies
+sed -i.bak  "s/'colorama>=0.2.5,<0.4.2'/'colorama>=0.2.5'/g" setup.py
+if cmp -s setup.py setup.py.bak; then
+    echo Error: colorama patch failed, exiting
+    exit 1
+else
+    true
+fi
+
 %build
 %py3_build
 
@@ -93,6 +101,9 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
+* Mon Dec 23 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.16.308
+- Simplify cleanup of mismatched colorama dependency with "sed"
+
 * Mon Nov 11 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.16.283
 - Backport to RHEL
 - Update relax-dependencies patch
