@@ -1,8 +1,4 @@
-# Use only for fedora
-%if 0%{?fedora}
 %{?python_enable_dependency_generator}
-%endif
-
 # Enable tests
 %bcond_with test
 # Disable documentation generation for now
@@ -11,7 +7,7 @@
 %global pypi_name botocore
 
 Name:           python-%{pypi_name}
-Version:        1.12.233
+Version:        1.13.44
 Release:        0%{?dist}
 Summary:        Low-level, data-driven core of boto 3
 
@@ -20,24 +16,17 @@ URL:            https://github.com/boto/botocore
 Source0:        https://pypi.io/packages/source/b/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
 
-%if 0%{?rhel}
-BuildRequires:  epel-rpm-macros
-%endif
-
 %description
 A low-level interface to a growing number of Amazon Web Services. The
 botocore package is the foundation for the AWS CLI as well as boto3.
 
 %package -n     python%{python3_pkgversion}-%{pypi_name}
 Summary:        Low-level, data-driven core of boto 3
+%if 0%{?rhel}
+BuildRequires:	epel-rpm-macros
+%endif
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
-BuildRequires:  python%{python3_pkgversion}-urllib3
-BuildRequires:  python%{python3_pkgversion}-dateutil
-BuildRequires:  python%{python3_pkgversion}-jmespath
-Requires:       python%{python3_pkgversion}-urllib3
-Requires:       python%{python3_pkgversion}-dateutil
-Requires:       python%{python3_pkgversion}-jmespath
 %if %{with docs}
 BuildRequires:  python%{python3_pkgversion}-sphinx
 BuildRequires:  python%{python3_pkgversion}-guzzle_sphinx_theme
@@ -48,7 +37,10 @@ BuildRequires:  python%{python3_pkgversion}-nose
 BuildRequires:  python%{python3_pkgversion}-six
 BuildRequires:  python%{python3_pkgversion}-wheel
 BuildRequires:  python%{python3_pkgversion}-docutils
+BuildRequires:  python%{python3_pkgversion}-dateutil
+BuildRequires:  python%{python3_pkgversion}-jmespath
 BuildRequires:  python%{python3_pkgversion}-jsonschema
+BuildRequires:  python%{python3_pkgversion}-urllib3
 %endif # with tests
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
@@ -65,8 +57,6 @@ Summary: Documentation for %{name}
 
 %prep
 %setup -q -n %{pypi_name}-%{version}
-sed -i -e '1 d' botocore/vendored/requests/packages/chardet/chardetect.py
-sed -i -e '1 d' botocore/vendored/requests/certs.py
 rm -rf %{pypi_name}.egg-info
 # Remove online tests
 rm -rf tests/integration
@@ -99,15 +89,63 @@ nosetests-3 --with-coverage --cover-erase --cover-package botocore --with-xunit 
 %endif # with docs
 
 %changelog
-* Wed Sep 11 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.12.226-0
-- Update to 1.12.226
+* Mon Dec 23 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.13.44-0
+- Update to 1.13.44
 
-* Thu Aug 8 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.12.204-0
-- Update to 1.12.204
-- Update python-dateutil requirements
+* Tue Nov 19 2019 Orion Poplawski <orion@nwra.com> - 1.13.21-1
+- Update to 1.13.21
 
-* Thu Jul 25 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.12.188-0
-- Backport ot RHEL
+* Mon Oct 28 2019 David Duncan <davdunc@amazon.com> - 1.13.2-1
+- Merge changes from 1.13.2 release. (#1677950)
+
+* Mon Oct 21 2019 James Hogarth <james.hogarth@gmail.com> - 1.12.253-2
+* Fix changelog format
+
+* Sat Oct 19 2019 David Duncan <davedunc@amazon.com> - 1.12.253-1
+- Merge changes from 1.12.253 release. (#1677950)
+
+* Fri Oct 04 2019 David Duncan <davedunc@amazon.com> - 1.12.243-1
+- Merge changes from 1.12.243 release. (#1677950)
+
+* Thu Oct 03 2019 David Duncan <davedunc@amazon.com> - 1.12.242-1
+- Merge changes from 1.12.242 release. (#1677950)
+
+* Thu Oct 03 2019 David Duncan <davedunc@amazon.com> - 1.12.241-1
+- Merge changes from 1.12.241 release. (#1677950)
+
+* Tue Oct 01 2019 David Duncan <davedunc@amazon.com> - 1.12.240-1
+- Merge changes from 1.12.240 release. (#1677950)
+
+* Mon Sep 30 2019 David Duncan <davedunc@amazon.com> - 1.12.239-1
+- Merge changes from 1.12.239 release. (#1677950)
+
+* Sat Sep 28 2019 David Duncan <davedunc@amazon.com> - 1.12.238-1
+- Merge changes from 1.12.238 release. (#1677950)
+
+* Thu Sep 26 2019 David Duncan <davdunc@amazon.com> - 1.12.237-1
+- Merge changes from 1.12.237 release. (#1677950)
+
+* Thu Sep 26 2019 David Duncan <davdunc@amazon.com> - 1.12.236-1
+- Merge changes from 1.12.236 release.
+
+* Sun Sep 22 2019 David Duncan <davdunc@amazon.com> - 1.12.233-1
+- Merge changes from 1.12.233 release.
+
+* Thu Sep 19 2019 David Duncan <davdunc@amazon.com> - 1.12.231 
+- Update to 1.12.231
+- Update to latest endpoints and models
+
+* Mon Sep 09 2019 Charalampos Stratakis <cstratak@redhat.com> - 1.12.225-1
+- Update to 1.12.225
+
+* Wed Aug 21 2019 Kevin Fenzi <kevin@scrye.com> - 1.12.212-1
+- Update to 1.12.212
+
+* Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 1.12.188-3
+- Rebuilt for Python 3.8
+
+* Fri Jul 26 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.12.188-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
 * Sat Jul 13 2019 David Duncan <davdunc@amazon.com> - 1.12.188-1
 - Bumping version to 1.12.188

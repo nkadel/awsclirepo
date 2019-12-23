@@ -66,7 +66,10 @@ cp -a . %{py3dir}
 find %{py3dir} -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
 %endif # with_python3
 
-find -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python}|'
+%if 0%{?with_python2}
+# updates obsolete .py files for python2
+find -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python2}|'
+%endif # with_python2
 
 %build
 %if 0%{?with_python2}

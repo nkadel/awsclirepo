@@ -5,17 +5,16 @@
 %{?python_enable_dependency_generator}
 %endif
 
-%global botocore_version 1.12.233
+%global botocore_version 1.13.44
 
 Name:           python-%{pypi_name}
-Version:        1.16.243
+Version:        1.16.308
 Release:        0%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
 License:        ASL 2.0 and MIT
 URL:            http://aws.amazon.com/cli
 Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
-Patch1:         relax-dependencies.patch
 BuildArch:      noarch
 
 %if 0%{?rhel}
@@ -61,6 +60,15 @@ command line interface to Amazon Web Services.
 
 rm -rf %{pypi_name}.egg-info
 
+# Patch broken colorama dependencies
+sed -i.bak  "s/'colorama>=0.2.5,<0.4.2'/'colorama>=0.2.5'/g" setup.py
+if cmp -s setup.py setup.py.bak; then
+    echo Error: colorama patch failed, exiting
+    exit 1
+else
+    true
+fi
+
 %build
 %py3_build
 
@@ -93,10 +101,51 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
-* Sat Sep 21 2019 Nico Kadel-Garcia <nkadel@gmail.com>
+* Mon Dec 23 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.16.308
+- Simplify cleanup of mismatched colorama dependency with "sed"
+
+* Mon Nov 11 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.16.283
 - Backport to RHEL
 - Update relax-dependencies patch
 - Add epel-rpm-macros as needed
+
+* Mon Oct 21 2019 James Hogarth <james.hogarth@gmail.com> - 1.16.263-2
+- Fix changelog syntax
+- Remove unused patchfile
+
+* Sat Oct 19 2019 David Duncan <davdunc@amazon.com> - 1.16.263-1
+- Merge changes from 1.16.263 release.
+
+* Thu Oct 10 2019 David Duncan <davdunc@amazon.com> - 1.16.253-2
+- Merge changes from 1.16.253 release.
+- Remove relax-dependencies patch requirement. 
+
+* Fri Oct 04 2019 David Duncan <davdunc@amazon.com> - 1.16.253-1
+- Merge changes from 1.16.253 release.
+
+* Thu Oct 03 2019 David Duncan <davdunc@amazon.com> - 1.16.252-1
+- Merge changes from 1.16.252 release.
+
+* Thu Oct 03 2019 David Duncan <davdunc@amazon.com> - 1.16.251-1
+- Merge changes from 1.16.251 release.
+
+* Tue Oct 01 2019 David Duncan <davdunc@amazon.com> - 1.16.250-1
+- Merge changes from 1.16.250 release.
+
+* Mon Sep 30 2019 David Duncan <davdunc@amazon.com> - 1.16.249-1
+- Merge changes from 1.16.249 release.
+
+* Sat Sep 28 2019 David Duncan <davdunc@amazon.com> - 1.16.248-1
+- Merge changes from 1.16.248 release.
+
+* Thu Sep 26 2019 David Duncan <davdunc@amazon.com> - 1.16.247-1
+- Merge changes from 1.16.247 release.
+
+* Wed Sep 25 2019 David Duncan <davdunc@amazon.com> - 1.16.246-1
+- Merge changes from 1.16.246 release.
+
+* Sun Sep 22 2019 David Duncan <davdunc@amazon.com> - 1.16.243-1
+- Merge changes from 1.16.243 release.
 
 * Thu Sep 19 2019 David Duncan <davdunc@amazon.com - 1.16.241-1
 - Update to 1.16.241
@@ -463,8 +512,8 @@ rm %{buildroot}%{_bindir}/aws.cmd
 
 * Fri Jan 15 2016 Fabio Alessandro Locati <fale@fedoraproject.org> - 1.9.19-1
 - Update to current upstream version
-- do not substitue the text of bin/aws_bash_completer anymore (pull request merged)
-- do not remove the shabang from awscli/paramfile.py anymore (pull request merged)
+- Do not substitue the text of bin/aws_bash_completer anymore (pull request merged)
+- Do not remove the shabang from awscli/paramfile.py anymore (pull request merged)
 
 * Wed Jan 13 2016 Fabio Alessandro Locati <fale@fedoraproject.org> - 1.9.18-1
 - Update to current upstream version

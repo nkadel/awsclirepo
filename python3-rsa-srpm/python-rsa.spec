@@ -22,21 +22,6 @@ BuildArch:      noarch
 BuildRequires:  epel-rpm-macros
 %endif
 
-%if %{with_python2}
-BuildRequires:  python2
-BuildRequires:  python2-devel
-BuildRequires:  python2-setuptools
-BuildRequires:  python2-pyasn1%{!?el6: >= 0.1.3}
-BuildRequires:  python2-unittest2
-%endif
-%if 0%{?with_python3}
-BuildRequires:  python%{python3_pkgversion}
-BuildRequires:  python%{python3_pkgversion}-devel
-BuildRequires:  python%{python3_pkgversion}-setuptools
-BuildRequires:  python%{python3_pkgversion}-pyasn1 >= 0.1.3
-BuildRequires:  python%{python3_pkgversion}-unittest2
-%endif # with_python3
-
 %description
 Python-RSA is a pure-Python RSA implementation. It supports encryption
 and decryption, signing and verifying signatures, and key generation
@@ -49,6 +34,18 @@ Summary:        Pure-Python RSA implementation
 %{?python_provide:%python_provide python2-%{pypi_name}}
 %{?el6:Provides: python-%{pypi_name}}
 %{?el6:Obsoletes: python-%{pypi_name} < 3.3}
+%if %{with_python2}
+BuildRequires:  python2
+BuildRequires:  python2-devel
+BuildRequires:  python2-setuptools
+BuildRequires:  python2-pyasn1%{!?el6: >= 0.1.3}
+BuildRequires:  python2-unittest2
+%endif
+BuildRequires:  python2
+BuildRequires:  python2-devel
+BuildRequires:  python2-setuptools
+BuildRequires:  python2-pyasn1%{!?el6: >= 0.1.3}
+BuildRequires:  python2-unittest2
 Requires:       python-pyasn1%{!?el6: >= 0.1.3}
 Requires:       python-setuptools
 
@@ -63,6 +60,11 @@ well as on the command-line.
 %package -n     python%{python3_pkgversion}-%{pypi_name}
 Summary:        Pure-Python RSA implementation
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
+BuildRequires:  python%{python3_pkgversion}
+BuildRequires:  python%{python3_pkgversion}-devel
+BuildRequires:  python%{python3_pkgversion}-setuptools
+BuildRequires:  python%{python3_pkgversion}-pyasn1 >= 0.1.3
+BuildRequires:  python%{python3_pkgversion}-unittest2
 Requires:       python%{python3_pkgversion}-pyasn1 >= 0.1.3
 Requires:       python%{python3_pkgversion}-setuptools
 
