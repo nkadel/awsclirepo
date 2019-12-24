@@ -15,9 +15,6 @@ RSYNCOPTS=-a --no-owner --no-group
 #MOCKS+=epel-6-x86_64
 MOCKS+=awsclirepo-6-x86_64
 
-# Associated repos
-MOCKCFGS+=$(MOCKS)
-
 # Local yum compatible RPM repository
 REPOBASEDIR="`/bin/pwd | xargs dirname`/awsclirepo"
 
@@ -87,11 +84,6 @@ install:: $(MOCKS)
 	    rsync $(RSYNCSAFEOPTS) --exclude=*.src.rpm --exclude=*debuginfo*.rpm $$repo/*.rpm $$rpmdir/. || exit 1; \
 	    createrepo -q $$rpmdir/.; \
 	done
-	@for name in $(MOCKCFGS); do \
-	    echo Forcing updates for $${name}; \
-	    touch ../$${name}.cfg; \
-	done
-
 
 clean::
 	rm -rf $(MOCKS)
