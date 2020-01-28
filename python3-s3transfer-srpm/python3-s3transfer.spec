@@ -3,7 +3,7 @@
 S3transfer is a Python library for managing Amazon S3 transfers.
 
 Name:           python-%{pypi_name}
-Version:        0.2.0
+Version:        0.3.2
 Release:        0%{?dist}
 Summary:        Amazon S3 Transfer Manager
 
@@ -45,6 +45,21 @@ rm -vrf *.egg-info
 %{python3_sitelib}/%{pypi_name}-*.egg-info/
 
 %changelog
+* Mon Jan 13 2020 Charalampos Stratakis <cstratak@redhat.com> - 0.3.0-1
+- Update to 0.3.0 (rhbz#1717156)
+
+* Tue Nov 19 2019 Orion Poplawski <orion@nwra.com> - 0.2.1-1
+- Update to 0.2.1
+
+* Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 0.2.0-4
+- Rebuilt for Python 3.8.0rc1 (#1748018)
+
+* Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 0.2.0-3
+- Rebuilt for Python 3.8
+
+* Fri Jul 26 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.2.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
 * Fri Feb 15 2019 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.2.0-1
 - Update to 0.2.0
 
