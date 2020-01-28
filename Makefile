@@ -33,12 +33,19 @@ EPELPKGS+=python-mimeparse-srpm
 EPELPKGS+=python-unittest2-srpm
 EPELPKGS+=python-PyYAML-srpm
 EPELPKGS+=python3-dateutil-srpm
-EPELPKGS+=python3-fixtures-srpm
 
 # Actually compilable with epel-6-x86_64
 EPELPKGS+=python-awscli-srpm
 
+# dependencies
+
+AWSCLIPKGS+=python3-fixtures-srpm
+
+
+AWSCLIPKGS+=python-linecache2-srpm
+
 AWSCLIPKGS+=python-botocore-srpm
+AWSCLIPKGS+=python-boto3-srpm
 
 AWSCLIPKGS+=python3-rsa-srpm
 
@@ -47,8 +54,7 @@ AWSCLIPKGS+=python3-pbr-srpm
 
 AWSCLIPKGS+=python3-s3transfer-srpm
 
-# dependencies
-AWSCLIPKGS+=python-linecache2-srpm
+AWSCLIPKGS+=python-fedcred-srpm
 
 REPOS+=awsclirepo/el/6
 REPOS+=awsclirepo/el/7
@@ -66,13 +72,12 @@ MOCKCFGS+=epel-6-x86_64.cfg
 MOCKCFGS+=epel-7-x86_64.cfg
 MOCKCFGS+=epel-8-x86_64.cfg
 
-all:: $(CFGS) $(MOCKCFGS)
-all:: $(REPODIRS)
-all:: $(EPELPKGS)
-all:: $(AWSCLIPKGS)
-
-
 all:: install
+install:: $(CFGS) $(MOCKCFGS)
+install:: $(REPODIRS)
+install:: $(EPELPKGS)
+install:: $(AWSCLIPKGS)
+
 build install clean getsrc build:: FORCE
 	@for name in $(EPELPKGS) $(AWSCLIPKGS); do \
 	     (cd $$name; $(MAKE) $(MFLAGS) $@); \
@@ -84,13 +89,19 @@ epel:: $(EPELPKGS)
 # Dependencies for order sensitivity
 python-awscli-srpm::
 
+python3-fixtures-srpm:: python3-testtools-srpm
+
 python-botocore-srpm:: python-jmespath-srpm
 python-botocore-srpm:: python3-dateutil-srpm
 
-python-linecacwe-srpm:: python-fixtures-srpm
-python-linecacwe-srpm:: python-unittest2-srpm
+python-boto3-srpm:: python-botocore-srpm
+
+python-linecache2-srpm:: python3-fixtures-srpm
+python-linecache2-srpm:: python-unittest2-srpm
 
 python3-pbr-srpm:: python-d2to1-srpm
+
+python-fedcred-srpm:: python-boto3-srpm
 
 # Actually build in directories
 $(EPELPKGS):: FORCE
