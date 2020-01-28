@@ -35,6 +35,9 @@ Recommends:     groff
 Provides: awscli = %{version}-%{release}
 Obsoletes: awscli <= %{version}-%{release}
 Conflicts: awscli
+Provides: aws-cli = %{version}-%{release}
+Obsoletes: aws-cli <= %{version}-%{release}
+Conflicts: aws-cli
 
 %description
 This package provides a unified
