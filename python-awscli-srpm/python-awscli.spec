@@ -5,10 +5,10 @@
 %{?python_enable_dependency_generator}
 %endif
 
-%global botocore_version 1.13.44
+%global botocore_version 1.14.9
 
 Name:           python-%{pypi_name}
-Version:        1.16.308
+Version:        1.17.9
 Release:        0%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
@@ -35,6 +35,9 @@ Recommends:     groff
 Provides: awscli = %{version}-%{release}
 Obsoletes: awscli <= %{version}-%{release}
 Conflicts: awscli
+Provides: aws-cli = %{version}-%{release}
+Obsoletes: aws-cli <= %{version}-%{release}
+Conflicts: aws-cli
 
 %description
 This package provides a unified
@@ -101,10 +104,13 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
-* Mon Dec 23 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.16.308
+* Mon Jan 27 2020 Nico Kadel-Garcia <nkadel@gmail.com> - 1.17.9-0
+- Update to 1.17.9
+
+* Mon Dec 23 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.16.308-0
 - Simplify cleanup of mismatched colorama dependency with "sed"
 
-* Mon Nov 11 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.16.283
+* Mon Nov 11 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 1.16.283-0
 - Backport to RHEL
 - Update relax-dependencies patch
 - Add epel-rpm-macros as needed
