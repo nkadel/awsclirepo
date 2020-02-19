@@ -7,7 +7,7 @@
 %global pypi_name botocore
 
 Name:           python-%{pypi_name}
-Version:        1.14.9
+Version:        1.15.3
 Release:        0%{?dist}
 Summary:        Low-level, data-driven core of boto 3
 

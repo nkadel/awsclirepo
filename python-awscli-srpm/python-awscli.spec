@@ -5,10 +5,10 @@
 %{?python_enable_dependency_generator}
 %endif
 
-%global botocore_version 1.14.9
+%global botocore_version 1.15.3
 
 Name:           python-%{pypi_name}
-Version:        1.17.9
+Version:        1.18.3
 Release:        0%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
@@ -50,7 +50,7 @@ Requires:       python%{python3_pkgversion}-botocore = %{botocore_version}
 Requires:       python%{python3_pkgversion}-colorama >= 0.2.5
 Requires:       python%{python3_pkgversion}-docutils >= 0.10
 Requires:       python%{python3_pkgversion}-rsa >= 3.1.2
-Requires:       python%{python3_pkgversion}-s3transfer >= 0.1.9
+Requires:       python%{python3_pkgversion}-s3transfer >= 0.3.0
 Requires:       python%{python3_pkgversion}-PyYAML >= 3.10
 #%endif
 
