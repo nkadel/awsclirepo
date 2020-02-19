@@ -26,6 +26,7 @@ BuildRequires:  python%{python3_pkgversion}-six
 
 Requires:       python%{python3_pkgversion}-six
 Requires:       tzdata
+%{?python_provide:%python_provide python2-%{pkgname}}
 
 %description
 The dateutil module provides powerful extensions to the standard datetime

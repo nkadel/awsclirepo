@@ -31,14 +31,13 @@ It also provides some shortcuts to help generate ANSI sequences, and works fine
 in conjunction with any other ANSI sequence generation library, such as
 Termcolor.
 
-
-
 %if 0%{?with_python3}
 %package -n python%{python3_pkgversion}-%{pypi_name}
 Summary:        Cross-platform colored terminal text
 
 Requires:      python%{python3_pkgversion}
 BuildRequires: python%{python3_pkgversion}-devel
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
 %description -n python%{python3_pkgversion}-%{pypi_name}
 Makes ANSI escape character sequences, for producing colored

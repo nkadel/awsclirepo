@@ -1,9 +1,9 @@
 %global with_python3 1
 %global with_python2 1
 
-%global upname d2to1
+%global pypi_name d2to1
 
-Name: python-%{upname}
+Name: python-%{pypi_name}
 Version: 0.2.10
 #Release: 1%%{?dist}
 Release: 0%{?dist}
@@ -12,7 +12,7 @@ License: BSD
 
 Group: Development/Languages
 URL: https://pypi.python.org/pypi/d2to1
-Source0: https://pypi.python.org/packages/source/d/d2to1/%{upname}-%{version}.tar.gz
+Source0: https://pypi.python.org/packages/source/d/d2to1/%{pypi_name}-%{version}.tar.gz
 BuildRequires: openssl-devel
 
 %if 0%{?rhel}
@@ -22,7 +22,7 @@ BuildRequires:  epel-rpm-macros
 BuildRequires: python2-devel
 BuildRequires: python2-setuptools
 Requires: python2-setuptools
-%{?python_provide:%python_provide python2-%{pkgname}}
+%{?python_provide:%python_provide python2-%{pypi_name}}
 
 BuildArch: noarch
 
@@ -38,7 +38,7 @@ Summary: Allows using distutils2-like setup.cfg files with setup.py
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 Requires:  python%{python3_pkgversion}-setuptools
-%{?python_provide:%python_provide python%{python3_pkgversion}-%{pkgname}}
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
 %description -n python%{python3_pkgversion}-d2to1
 d2to1 allows using distutils2-like setup.cfg files for a package's metadata 
@@ -48,8 +48,8 @@ and a very minimal setup.py which will slurp its arguments from the setup.cfg.
 %endif # with_python3
 
 %prep
-%setup -q -n %{upname}-%{version}
-rm -rf %{upname}.egg-info
+%setup -q -n %{pypi_name}-%{version}
+rm -rf %{pypi_name}.egg-info
 
 
 for file in \

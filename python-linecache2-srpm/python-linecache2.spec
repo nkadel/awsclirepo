@@ -29,7 +29,9 @@ BuildRequires:  python2-pbr
 BuildRequires:  python2-fixtures
 # Tests are broken for non on RHEL 6
 #BuildRequires:  python2-unittest2
+%{?python_provide:%python_provide python2-%{pypi_name}}
 %endif # with python2
+
 %if %{with python3}
 BuildRequires:  python%{python3_pkgversion}
 BuildRequires:  python%{python3_pkgversion}-devel
@@ -39,6 +41,7 @@ BuildRequires:  python%{python3_pkgversion}-pbr
 BuildRequires:  python%{python3_pkgversion}-fixtures
 # Tests are broken for non on RHEL 6
 #BuildRequires:  python%%{python3_pkgversion}-unittest2
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 %endif # with python3
 
 %description

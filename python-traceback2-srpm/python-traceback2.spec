@@ -1,6 +1,3 @@
-# Single python3 version in Fedora, python3_pkgversion macro not available
-%{!?python3_pkgversion:%global python3_pkgversion 3}
-
 %global pkgname traceback2
 %global sum Backport of the traceback module
 %global desc A backport of traceback to older supported Pythons.

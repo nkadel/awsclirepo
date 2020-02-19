@@ -1,6 +1,3 @@
-# Single python3 version in Fedora, python3_pkgversion macro not available
-%{!?python3_pkgversion:%global python3_pkgversion 3}
-
 %global with_python3 1
 %global with_python2 1
 
@@ -22,6 +19,7 @@ BuildRequires:  epel-rpm-macros
 %endif
 
 BuildRequires:  python2-devel
+%{?python_provide:%python_provide python2-%{pypi_name}}
 %if %{with_python3}
 BuildRequires:  python%{python3_pkgversion}-devel
 %endif # if with_python3
@@ -34,6 +32,7 @@ and matching them against a list of media-ranges.
 %package -n python%{python3_pkgversion}-%{pypi_name}
 Summary:        Python module for parsing mime-type names
 Group:          Development/Languages
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
 %description -n python%{python3_pkgversion}-%{pypi_name}
 This module provides basic functions for parsing mime-type names
