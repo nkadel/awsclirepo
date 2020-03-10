@@ -71,6 +71,7 @@ time to make that code into a proper re-usable library.
 %package -n python2-pbr
 Summary:        Python Build Reasonableness
 Requires:       python2-pip
+%{?python_provide:%python_provide python2-%{pypi_name}}
 
 %description -n python2-pbr
 Manage dynamic plugins for Python applications
@@ -79,6 +80,8 @@ Manage dynamic plugins for Python applications
 #%%if %%{with_python3}
 #%%package -n python%%{python3_pkgversion}-pbr
 #Summary:        Python Build Reasonableness
+#Requires:       python%%{python3_pkgversion}-pip
+#%{?python_provide:%python_provide python%%{python3_pkgversion}-%{pypi_name}}
 #
 #%%description -n python%%{python3_pkgversion}-pbr
 #Manage dynamic plugins for Python applications

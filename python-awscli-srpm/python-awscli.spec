@@ -50,7 +50,7 @@ Requires:       python%{python3_pkgversion}-botocore = %{botocore_version}
 Requires:       python%{python3_pkgversion}-colorama >= 0.2.5
 Requires:       python%{python3_pkgversion}-docutils >= 0.10
 Requires:       python%{python3_pkgversion}-rsa >= 3.1.2
-Requires:       python%{python3_pkgversion}-s3transfer >= 0.1.9
+Requires:       python%{python3_pkgversion}-s3transfer >= 0.3.0
 Requires:       python%{python3_pkgversion}-PyYAML >= 3.10
 #%endif
 
@@ -104,6 +104,9 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
+* Sat Feb 22 2020 Nico Kadel-Garcia <nkadel@gmail.com> - 1.18.5-0
+- Update to 1.18.5
+
 * Mon Feb 10 2020 Nico Kadel-Garcia <nkadel@gmail.com> - 1.17.13-0
 -Update to 1.17.13
 

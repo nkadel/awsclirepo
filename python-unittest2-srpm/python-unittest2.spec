@@ -1,6 +1,3 @@
-# Single python3 version in Fedora, python3_pkgversion macro not available
-%{!?python3_pkgversion:%global python3_pkgversion 3}
-
 %bcond_without python3
 
 %global pypi_name unittest2
@@ -38,6 +35,7 @@ Requires:       python2-traceback2
 %endif
 Requires:       python2-setuptools
 Requires:       python2-six
+%{?python_provide:%python_provide python2-%{pypi_name}}
 
 %if %{with python3}
 BuildRequires:  python%{python3_pkgversion}-devel
@@ -62,6 +60,7 @@ Requires:       python%{python3_pkgversion}-six
 %if ! 0%{?bootstrap_traceback2}
 Requires:       python%{python3_pkgversion}-traceback2
 %endif
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
 %description -n python%{python3_pkgversion}-%{pypi_name}
 unittest2 is a backport of the new features added to the unittest testing

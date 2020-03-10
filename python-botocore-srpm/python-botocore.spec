@@ -89,6 +89,9 @@ nosetests-3 --with-coverage --cover-erase --cover-package botocore --with-xunit 
 %endif # with docs
 
 %changelog
+* Sat Feb 22 2020 Nico Kadel-Garcia <nkadel@gmail.com> - 1.15.5
+- Update to 1.15.5
+
 * Mon Feb 10 2020 Nico Kadel-Garcia <nkadel@gmail.com> - 1.14.13-0
 - Update to 1.14.13
 

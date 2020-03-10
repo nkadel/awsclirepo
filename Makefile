@@ -66,13 +66,12 @@ MOCKCFGS+=epel-6-x86_64.cfg
 MOCKCFGS+=epel-7-x86_64.cfg
 MOCKCFGS+=epel-8-x86_64.cfg
 
-all:: $(CFGS) $(MOCKCFGS)
-all:: $(REPODIRS)
-all:: $(EPELPKGS)
-all:: $(AWSCLIPKGS)
-
-
 all:: install
+install:: $(CFGS) $(MOCKCFGS)
+install:: $(REPODIRS)
+install:: $(EPELPKGS)
+install:: $(AWSCLIPKGS)
+
 build install clean getsrc build:: FORCE
 	@for name in $(EPELPKGS) $(AWSCLIPKGS); do \
 	     (cd $$name; $(MAKE) $(MFLAGS) $@); \

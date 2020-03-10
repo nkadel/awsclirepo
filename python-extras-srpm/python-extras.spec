@@ -1,15 +1,17 @@
+%global pypi_name extras
+
 %global with_python3 1
 %global with_python2 0
 
-Name:           python-extras
+Name:           python-%{pypi_name}
 Version:        0.0.3
 #Release:        2%%{?dist}
 Release:        0%{?dist}
 Summary:        Useful extra bits for Python
 
 License:        MIT
-URL:            https://github.com/testing-cabal/extras
-Source0:        https://pypi.python.org/packages/source/e/extras/extras-%{version}.tar.gz
+URL:            https://github.com/testing-cabal/%{pypi_name}
+Source0:        https://pypi.python.org/packages/source/e/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 
 BuildArch:      noarch
 
@@ -27,32 +29,34 @@ BuildRequires:  python%{python3_pkgversion}-setuptools
 %endif @ with_python3
 
 %description
-extras is a set of extensions to the Python standard library, originally
+%{pypi_name} is a set of extensions to the Python standard library, originally
 written to make the code within testtools cleaner, but now split out for
 general use outside of a testing context.
 
 %if %{with_python2}
-%package -n python2-extras
+%package -n python2-%{pypi_name}
 Summary:        Useful extra bits for Python
+%{?python_provide:%python_provide python2-%{pypi_name}}
 
-%description -n python2-extras
-extras is a set of extensions to the Python standard library, originally
+%description -n python2-%{pypi_name}
+%{pypi_name} is a set of extensions to the Python standard library, originally
 written to make the code within testtools cleaner, but now split out for
 general use outside of a testing context.
 %endif # with_python2
 
 %if %{with_python3}
-%package -n python%{python3_pkgversion}-extras
+%package -n python%{python3_pkgversion}-%{pypi_name}
 Summary:        Useful extra bits for Python
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
-%description -n python%{python3_pkgversion}-extras
-extras is a set of extensions to the Python standard library, originally
+%description -n python%{python3_pkgversion}-%{pypi_name}
+%{pypi_name} is a set of extensions to the Python standard library, originally
 written to make the code within testtools cleaner, but now split out for
 general use outside of a testing context.
 %endif # with_python3
 
 %prep
-%setup -q -n extras-%{version}
+%setup -q -n %{pypi_name}-%{version}
 # Remove bundled egg-info
 %if %{with_python3}
 rm -rf %{py3dir}
@@ -95,14 +99,14 @@ popd
 %endif
 
 %if %{with_python2}
-%files -n python2-extras
+%files -n python2-%{pypi_name}
 %doc LICENSE NEWS README.rst
 # For noarch packages: sitelib
 %{python2_sitelib}/*
 %endif # with_python2
 
 %if %{with_python3}
-%files -n python%{python3_pkgversion}-extras
+%files -n python%{python3_pkgversion}-%{pypi_name}
 %doc LICENSE NEWS README.rst
 %{python3_sitelib}/*
 %endif # with_python3

@@ -1,8 +1,10 @@
+%global pypi_name testtools
+
 %global with_python3 1
 # Disable python2 on older RHEL, does not work on RHEL 6
 %global with_python2 0
 
-Name:           python-testtools
+Name:           python-%{pypi_name}
 Version:        1.1.0
 Release:        1%{?dist}
 Summary:        Extensions to the Python unit testing framework
@@ -11,9 +13,9 @@ Summary:        Extensions to the Python unit testing framework
 Group:          Development/Tools
 %endif
 License:        MIT
-URL:            https://launchpad.net/testtools
-Source0:        https://pypi.python.org/packages/source/t/testtools/testtools-%{version}.tar.gz
-Patch0:         testtools-0.9.30-py3.patch
+URL:            https://launchpad.net/%{pypi_name}
+Source0:        https://pypi.python.org/packages/source/t/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
+Patch0:         %{pypi_name}-0.9.30-py3.patch
 
 BuildArch:      noarch
 
@@ -38,29 +40,31 @@ BuildRequires:  python%{python3_pkgversion}-setuptools
 %endif
 
 %description
-testtools is a set of extensions to the Python standard library's unit testing
+%{pypi_name} is a set of extensions to the Python standard library's unit testing
 framework.
 
 %if %{with_python2}
-%package -n python2-testtools
+%package -n python2-%{pypi_name}
 Summary:        Extensions to the Python unit testing framework
 Requires:       python2-extras
 Requires:       python2-mimeparse
+%{?python_provide:%python_provide python2-%{pypi_name}}
 
-%description -n python2-testtools
-testtools is a set of extensions to the Python standard library's unit testing
+%description -n python2-%{pypi_name}
+%{pypi_name} is a set of extensions to the Python standard library's unit testing
 framework.
 %endif # with_python2
 
 %if %{with_python3}
-%package -n python%{python3_pkgversion}-testtools
+%package -n python%{python3_pkgversion}-%{pypi_name}
 Summary:        Extensions to the Python unit testing framework
 
 Requires:       python%{python3_pkgversion}-extras
 Requires:       python%{python3_pkgversion}-mimeparse
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
-%description -n python%{python3_pkgversion}-testtools
-testtools is a set of extensions to the Python standard library's unit testing
+%description -n python%{python3_pkgversion}-%{pypi_name}
+%{pypi_name} is a set of extensions to the Python standard library's unit testing
 framework.
 %endif # with_python3
 
@@ -77,7 +81,7 @@ Provides:       bundled(jquery)
 This package contains HTML documentation for %{name}.
 
 %prep
-%setup -q -n testtools-%{version}
+%setup -q -n %{pypi_name}-%{version}
 
 %if %{with_python3}
 rm -rf %{py3dir}
@@ -89,8 +93,8 @@ pushd %{py3dir}
 popd
 
 find %{py3dir} -name '*.py' | xargs sed -i '1s|^#!python.*|#!%{__python3}|'
-rm %{py3dir}/testtools/_compat2x.py
-rm testtools/_compat3x.py
+rm %{py3dir}/%{pypi_name}/_compat2x.py
+rm %{pypi_name}/_compat3x.py
 %endif # with_python3
 
 %build
@@ -109,7 +113,7 @@ PYTHONPATH=$PWD make -C doc html
 %endif
 
 %install
-# do python3 install first in case python-testtools ever install scripts in
+# do python3 install first in case python-%{pypi_name} ever install scripts in
 # _bindir -- the one installed last should be Python 2.x's as that's the
 # current default
 %if %{with_python3}
@@ -136,7 +140,7 @@ popd
 #%endif # with_python3
 
 %if %{with_python2}
-%files -n python2-testtools
+%files -n python2-%{pypi_name}
 %{!?_licensedir:%global license %doc} 
 %defattr(-,root,root,-)
 %doc NEWS README.rst
@@ -145,7 +149,7 @@ popd
 %endif # with_python2
 
 %if %{with_python3}
-%files -n python%{python3_pkgversion}-testtools
+%files -n python%{python3_pkgversion}-%{pypi_name}
 %{!?_licensedir:%global license %doc} 
 %doc NEWS README.rst
 %license LICENSE
