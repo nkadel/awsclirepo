@@ -31,13 +31,6 @@ Recommends:     groff
 %endif # Fedora
 
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
-# Block and obsolete misnamed awscli package
-Provides: awscli = %{version}-%{release}
-Obsoletes: awscli <= %{version}-%{release}
-Conflicts: awscli
-Provides: aws-cli = %{version}-%{release}
-Obsoletes: aws-cli <= %{version}-%{release}
-Conflicts: aws-cli
 
 %description
 This package provides a unified
@@ -52,6 +45,14 @@ Requires:       python%{python3_pkgversion}-docutils >= 0.10
 Requires:       python%{python3_pkgversion}-rsa >= 3.1.2
 Requires:       python%{python3_pkgversion}-s3transfer >= 0.3.0
 Requires:       python%{python3_pkgversion}-PyYAML >= 3.10
+
+# Block and obsolete misnamed awscli package
+Provides: awscli = %{version}-%{release}
+Obsoletes: awscli <= %{version}-%{release}
+Conflicts: awscli
+Provides: aws-cli = %{version}-%{release}
+Obsoletes: aws-cli <= %{version}-%{release}
+Conflicts: aws-cli
 #%endif
 
 %description -n python%{python3_pkgversion}-%{pypi_name}
