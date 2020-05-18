@@ -105,7 +105,7 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
-* Sun 17 May 2020 Nico Kadel-Garcia <nkadel@gmail.com> - 1.18.61-0
+* Sun May 17 2020 Nico Kadel-Garcia <nkadel@gmail.com> - 1.18.61-0
 - Update to 1.18.61
 
 * Sat Feb 22 2020 Nico Kadel-Garcia <nkadel@gmail.com> - 1.18.5-0
