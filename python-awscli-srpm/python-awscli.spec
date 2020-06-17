@@ -5,10 +5,10 @@
 %{?python_enable_dependency_generator}
 %endif
 
-%global botocore_version 1.16.26
+%global botocore_version 1.17.4
 
 Name:           python-%{pypi_name}
-Version:        1.18.76
+Version:        1.18.81
 Release:        0%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
