@@ -3,7 +3,7 @@
 S3transfer is a Python library for managing Amazon S3 transfers.
 
 Name:           python-%{pypi_name}
-Version:        0.3.2
+Version:        0.3.3
 Release:        0%{?dist}
 Summary:        Amazon S3 Transfer Manager
 
@@ -23,6 +23,8 @@ BuildRequires:  epel-rpm-macros
 Summary:        %{summary}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
+Requires:       python%{python3_pkgversion}-botocore >= 1.12.36
+Requires:       python%{python3_pkgversion}-botocore < 2.0a.0
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
 %description -n python%{python3_pkgversion}-%{pypi_name} %{_description}
