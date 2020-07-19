@@ -5,10 +5,10 @@
 %{?python_enable_dependency_generator}
 %endif
 
-%global botocore_version 1.17.17
+%global botocore_version 1.17.23
 
 Name:           python-%{pypi_name}
-Version:        1.18.94
+Version:        1.18.100
 Release:        0%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
@@ -105,6 +105,9 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
+* Sun Jul 19 2020 Nico Kadel-Garcia <nkadel@gmail.com> - 1.18.100-0
+- Update to 1.18.100
+
 * Mon Jul 6 2020 Nico Kadel-Garcia <nkadel@gmail.com> - 1.18.94-0
 - Update to 1.18.93
 
