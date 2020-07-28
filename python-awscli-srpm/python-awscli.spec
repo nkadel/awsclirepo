@@ -5,10 +5,10 @@
 %{?python_enable_dependency_generator}
 %endif
 
-%global botocore_version 1.17.23
+%global botocore_version 1.17.29
 
 Name:           python-%{pypi_name}
-Version:        1.18.100
+Version:        1.18.106
 Release:        0%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
@@ -93,7 +93,7 @@ ls -alh %{buildroot}%{zsh_completion_dir}/aws_zsh_completer.sh
 rm %{buildroot}%{_bindir}/aws.cmd
 
 %files -n  python%{python3_pkgversion}-%{pypi_name}
-%doc README.rst
+%doc README.md
 %license LICENSE.txt
 %{_bindir}/aws
 %{_bindir}/aws_completer
@@ -105,6 +105,10 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
+* Tue Jul 28 2020 Nico Kadel-Garcia <nkadel@gmail.com> - 1.18.106-0
+- Update to 1.18.106
+- Change README.rst to README.md
+
 * Sun Jul 19 2020 Nico Kadel-Garcia <nkadel@gmail.com> - 1.18.100-0
 - Update to 1.18.100
 
