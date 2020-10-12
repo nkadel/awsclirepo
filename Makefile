@@ -26,6 +26,7 @@ EPELPKGS+=python2-unittest2-srpm
 
 # Build python3 versions of packages
 EPELPKGS+=python-colorama-srpm
+EPELPKGS+=python-boto-srpm
 EPELPKGS+=python-d2to1-srpm
 EPELPKGS+=python-extras-srpm
 EPELPKGS+=python-jmespath-srpm
