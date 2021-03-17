@@ -12,31 +12,22 @@
 REPOBASE = file://$(PWD)
 
 # Placeholder RPMs for python2-foo packages to include python-foo
-EPELPKGS+=python2-contextlib2-srpm
-EPELPKGS+=python2-d2to1-srpm
-EPELPKGS+=python2-dateutil-srpm
 EPELPKGS+=python2-extras-srpm
 EPELPKGS+=python2-fixtures-srpm
 EPELPKGS+=python2-linecache2-srpm
-EPELPKGS+=python2-mimeparse-srpm
-EPELPKGS+=python2-pbr-srpm
-EPELPKGS+=python2-pyasn1-srpm
 EPELPKGS+=python2-testtools-srpm
 EPELPKGS+=python2-unittest2-srpm
 
 # Build python3 versions of packages
 EPELPKGS+=python-colorama-srpm
-EPELPKGS+=python-boto-srpm
 EPELPKGS+=python-d2to1-srpm
 EPELPKGS+=python-extras-srpm
 EPELPKGS+=python-jmespath-srpm
 EPELPKGS+=python-mimeparse-srpm
 EPELPKGS+=python-unittest2-srpm
-EPELPKGS+=python-PyYAML-srpm
-EPELPKGS+=python3-dateutil-srpm
 EPELPKGS+=python3-fixtures-srpm
 
-# Actually compilable with epel-6-x86_64
+# Actually compilable with epel-7-x86_64 alone
 EPELPKGS+=python-awscli-srpm
 
 AWSCLIPKGS+=python-botocore-srpm

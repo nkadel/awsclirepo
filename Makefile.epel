@@ -13,7 +13,8 @@ RSYNCSAFEOPTS=$(RSYNCOPTS) --ignore-existing
 
 # "mock" configurations to build with, activate only as needed
 # Some RHEL dependencies are supplied locally in awsclirepo
-MOCKS+=epel-6-x86_64
+# Disabled, RHEL 6 is now obsolete
+#MOCKS+=epel-6-x86_64
 MOCKS+=epel-7-x86_64
 MOCKS+=epel-8-x86_64
 

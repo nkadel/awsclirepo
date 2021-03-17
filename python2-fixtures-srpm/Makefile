@@ -1,1 +1,1 @@
-../Makefile.epel67
+../Makefile.epel7
