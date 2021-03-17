@@ -42,6 +42,7 @@ Summary:        Universal Command Line Environment for AWS
 Requires:       python%{python3_pkgversion}-botocore = %{botocore_version}
 Requires:       python%{python3_pkgversion}-colorama >= 0.2.5
 Requires:       python%{python3_pkgversion}-docutils >= 0.10
+Requires:       python%{python3_pkgversion}-jmespath
 Requires:       python%{python3_pkgversion}-rsa >= 3.1.2
 Requires:       python%{python3_pkgversion}-s3transfer >= 0.3.0
 Requires:       python%{python3_pkgversion}-PyYAML >= 3.10
