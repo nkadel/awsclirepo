@@ -13,7 +13,6 @@ RSYNCOPTS=-a --no-owner --no-group
 # "mock" configurations to build with, activate only as needed
 # Some RHEL dependencies are supplied locally in awsclirepo
 # Disabled, RHEL 6 is now obsolete
-#MOCKS+=awsclirepo-6-x86_64
 MOCKS+=awsclirepo-7-x86_64
 MOCKS+=awsclirepo-8-x86_64
 
@@ -68,13 +67,10 @@ install:: $(MOCKS)
 	@for repo in $(MOCKS); do \
 	    echo Installing $$repo; \
 	    case $$repo in \
-		*-6-x86_64) yumrelease=el/6; yumarch=x86_64; ;; \
 		*-7-x86_64) yumrelease=el/7; yumarch=x86_64; ;; \
 		*-8-x86_64) yumrelease=el/8; yumarch=x86_64; ;; \
-		*-30-x86_64) yumrelease=fedora/30; yumarch=x86_64; ;; \
-		*-f30-x86_64) yumrelease=fedora/30; yumarch=x86_64; ;; \
-		*-31-x86_64) yumrelease=fedora/31; yumarch=x86_64; ;; \
-		*-f31-x86_64) yumrelease=fedora/31; yumarch=x86_64; ;; \
+		*-33-x86_64) yumrelease=fedora/33; yumarch=x86_64; ;; \
+		*-f33-x86_64) yumrelease=fedora/33; yumarch=x86_64; ;; \
 		*) echo "Unrecognized release for $$repo, exiting" >&2; exit 1; ;; \
 	    esac; \
 	    rpmdir=$(REPOBASEDIR)/$$yumrelease/$$yumarch; \

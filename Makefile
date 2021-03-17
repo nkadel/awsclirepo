@@ -20,7 +20,6 @@ EPELPKGS+=python2-unittest2-srpm
 
 # Build python3 versions of packages
 EPELPKGS+=python-colorama-srpm
-EPELPKGS+=python-d2to1-srpm
 EPELPKGS+=python-extras-srpm
 EPELPKGS+=python-jmespath-srpm
 EPELPKGS+=python-mimeparse-srpm
@@ -42,19 +41,16 @@ AWSCLIPKGS+=python3-s3transfer-srpm
 # dependencies
 AWSCLIPKGS+=python-linecache2-srpm
 
-REPOS+=awsclirepo/el/6
 REPOS+=awsclirepo/el/7
 REPOS+=awsclirepo/el/8
 
 REPODIRS := $(patsubst %,%/x86_64/repodata,$(REPOS)) $(patsubst %,%/SRPMS/repodata,$(REPOS))
 
 # No local dependencies at build time
-CFGS+=awsclirepo-6-x86_64.cfg
 CFGS+=awsclirepo-7-x86_64.cfg
 CFGS+=awsclirepo-8-x86_64.cfg
 
 # Link from /etc/mock
-MOCKCFGS+=epel-6-x86_64.cfg
 MOCKCFGS+=epel-7-x86_64.cfg
 MOCKCFGS+=epel-8-x86_64.cfg
 
@@ -73,15 +69,12 @@ build install clean getsrc build:: FORCE
 epel:: $(EPELPKGS)
 
 # Dependencies for order sensitivity
-python-awscli-srpm::
-
-python-botocore-srpm:: python-jmespath-srpm
-python-botocore-srpm:: python3-dateutil-srpm
-
-python-linecacwe-srpm:: python-fixtures-srpm
-python-linecacwe-srpm:: python-unittest2-srpm
-
-python3-pbr-srpm:: python-d2to1-srpm
+#python-awscli-srpm::
+#
+#python-botocore-srpm:: python-jmespath-srpm
+#
+#python-linecacwe-srpm:: python-fixtures-srpm
+#python-linecacwe-srpm:: python-unittest2-srpm
 
 # Actually build in directories
 $(EPELPKGS):: FORCE
@@ -102,23 +95,6 @@ $(REPODIRS): $(REPOS)
 
 .PHONY: cfg cfgs
 cfg cfgs:: $(CFGS) $(MOCKCFGS)
-
-awsclirepo-6-x86_64.cfg: epel-6-x86_64.cfg
-	@echo Generating $@ from $?
-	@cat $? > $@
-	@sed -i 's/epel-6-x86_64/awsclirepo-6-x86_64/g' $@
-	@echo >> $@
-	@echo "config_opts['yum.conf'] += \"\"\"" >> $@
-	@echo '[awsclirepo]' >> $@
-	@echo 'name=awsclirepo' >> $@
-	@echo 'enabled=1' >> $@
-	@echo 'baseurl=$(REPOBASE)/awsclirepo/el/6/x86_64/' >> $@
-	@echo 'failovermethod=priority' >> $@
-	@echo 'skip_if_unavailable=False' >> $@
-	@echo 'metadata_expire=1' >> $@
-	@echo 'gpgcheck=0' >> $@
-	@echo '#cost=2000' >> $@
-	@echo '"""' >> $@
 
 awsclirepo-7-x86_64.cfg: epel-7-x86_64.cfg
 	@echo Generating $@ from $?
