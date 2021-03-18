@@ -5,10 +5,10 @@
 %{?python_enable_dependency_generator}
 %endif
 
-%global botocore_version 1.19.15
+%global botocore_version 1.20.30
 
 Name:           python-%{pypi_name}
-Version:        1.18.175
+Version:        1.19.30
 Release:        0%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
@@ -39,13 +39,23 @@ command line interface to Amazon Web Services.
 %package -n python%{python3_pkgversion}-%{pypi_name}
 Summary:        Universal Command Line Environment for AWS
 #%if %%{undefined __pythondist_requires}
+
+# Maximum requirements from egg.info
+#Requires:       python%{python3_pkgversion}-PyYAML < 5.5
+#Requires:       python%{python3_pkgversion}-colorama < 0.4.4
+#Requires:       python%{python3_pkgversion}-docutils < 0.16
+#Requires:       python%{python3_pkgversion}-rsa < 4.5.0
+#Requires:       python%{python3_pkgversion}-s3transfer < 0.4.0
+
+# Undocumented requirements
+Requires:       python%{python3_pkgversion}-jmespath
+
+Requires:       python%{python3_pkgversion}-PyYAML >= 3.10
 Requires:       python%{python3_pkgversion}-botocore = %{botocore_version}
 Requires:       python%{python3_pkgversion}-colorama >= 0.2.5
 Requires:       python%{python3_pkgversion}-docutils >= 0.10
-Requires:       python%{python3_pkgversion}-jmespath
 Requires:       python%{python3_pkgversion}-rsa >= 3.1.2
 Requires:       python%{python3_pkgversion}-s3transfer >= 0.3.0
-Requires:       python%{python3_pkgversion}-PyYAML >= 3.10
 
 # Block and obsolete misnamed awscli package
 Provides: awscli = %{version}-%{release}
@@ -66,7 +76,7 @@ command line interface to Amazon Web Services.
 rm -rf %{pypi_name}.egg-info
 
 # Patch broken colorama dependencies
-sed -i.bak  "s/'colorama>=0.2.5,<0.4.2'/'colorama>=0.2.5'/g" setup.py
+sed -i.bak  "s/'colorama>=0.2.5,<0.4.4'/'colorama>=0.2.5'/g" setup.py
 if cmp -s setup.py setup.py.bak; then
     echo Error: colorama patch failed, exiting
     exit 1
@@ -106,6 +116,9 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
+* Thu Mar 18 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 1.19.30
+- Update to 1.19.30, add python3-jmespath dependency
+
 * Wed Nov 11 2020 Nico Kadel-Garcia <nkadel@gmail.com> - 1.18.175-0
 - Update to 1.18.175
 
