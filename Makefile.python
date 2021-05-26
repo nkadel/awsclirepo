@@ -23,7 +23,7 @@ REPOBASEDIR="`/bin/pwd | xargs dirname`/awsclirepo"
 SPEC := `ls *.spec | head -1`
 
 # Needed for yum repo updates
-all:: /usr/bin/createrepo
+all:: /usr/bin/createrepo_c
 all:: $(MOCKS)
 
 # Get any tarballs as describe by .spec
@@ -77,10 +77,10 @@ install:: $(MOCKS)
 	    srpmdir=$(REPOBASEDIR)/$$yumrelease/SRPMS; \
 	    echo "	Pusning SRPMS to $$srpmdir"; \
 	    rsync $(RSYNCSAFEOPTS) $$repo/*.src.rpm $$srpmdir/. || exit 1; \
-	    createrepo -q $$srpmdir/.; \
+	    createrepo_c -q $$srpmdir/.; \
 	    echo "	Pushing RPMS to $$rpmdir"; \
 	    rsync $(RSYNCSAFEOPTS) --exclude=*.src.rpm --exclude=*debuginfo*.rpm $$repo/*.rpm $$rpmdir/. || exit 1; \
-	    createrepo -q $$rpmdir/.; \
+	    createrepo_c -q $$rpmdir/.; \
 	done
 
 clean::
