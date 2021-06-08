@@ -25,6 +25,7 @@ EPELPKGS+=python-jmespath-srpm
 EPELPKGS+=python-mimeparse-srpm
 EPELPKGS+=python-unittest2-srpm
 EPELPKGS+=python3-fixtures-srpm
+EPELPKGS+=python-d2to1-srpm
 
 # Actually compilable with epel-7-x86_64 alone
 EPELPKGS+=python-awscli-srpm
