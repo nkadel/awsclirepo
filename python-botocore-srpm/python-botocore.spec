@@ -92,6 +92,9 @@ nosetests-3 --with-coverage --cover-erase --cover-package botocore --with-xunit 
 * Tue Jul 6 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 1.19.105-0
 - Update to 1.19.105
 
+* Thu Jun 24 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 1.19.100-0
+- Update to 1.20.100-0
+
 * Tue Jun 8 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 1.19.90-0
 - Update to 1.19.90-0
 
