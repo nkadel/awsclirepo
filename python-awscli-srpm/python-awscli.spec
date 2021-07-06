@@ -116,14 +116,17 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
-* Tue Jun 8 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 1.19.90-0
-- Update to 1.19.90
+* Tue Jul 6 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 1.20.105-0
+- Update to 1.20.105
+
+* Tue Jun 8 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 1.20.90-0
+- Update to 1.20.90
 
 * Wed May 26 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 1.20.81-0
 - Update to 1.20.81
 
-* Thu Mar 18 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 1.19.30
-- Update to 1.19.30, add python3-jmespath dependency
+* Thu Mar 18 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 1.20.30
+- Update to 1.20.30, add python3-jmespath dependency
 
 * Wed Nov 11 2020 Nico Kadel-Garcia <nkadel@gmail.com> - 1.18.175-0
 - Update to 1.18.175
