@@ -7,7 +7,7 @@
 %global pypi_name botocore
 
 Name:           python-%{pypi_name}
-Version:        1.20.105
+Version:        1.21.43
 Release:        0%{?dist}
 Summary:        Low-level, data-driven core of boto 3
 
@@ -89,8 +89,8 @@ nosetests-3 --with-coverage --cover-erase --cover-package botocore --with-xunit 
 %endif # with docs
 
 %changelog
-* Tue Jul 6 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 1.19.105-0
-- Update to 1.19.105
+* Fri Sep 17 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 1.21.43-0
+- Update to 1.21.43
 
 * Thu Jun 24 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 1.19.100-0
 - Update to 1.20.100-0
