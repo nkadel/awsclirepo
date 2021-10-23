@@ -15,7 +15,7 @@ REPOBASE = file://$(PWD)
 EPELPKGS+=python2-extras-srpm
 EPELPKGS+=python2-fixtures-srpm
 EPELPKGS+=python2-linecache2-srpm
-EPELPKGS+=python2-testtools-srpm
+#EPELPKGS+=python2-testtools-srpm
 EPELPKGS+=python2-unittest2-srpm
 
 # Build python3 versions of packages
@@ -34,7 +34,7 @@ AWSCLIPKGS+=python-botocore-srpm
 
 AWSCLIPKGS+=python3-rsa-srpm
 
-AWSCLIPKGS+=python3-testtools-srpm
+#AWSCLIPKGS+=python3-testtools-srpm
 AWSCLIPKGS+=python3-pbr-srpm
 
 AWSCLIPKGS+=python3-s3transfer-srpm
@@ -74,8 +74,8 @@ epel:: $(EPELPKGS)
 #
 #python-botocore-srpm:: python-jmespath-srpm
 #
-#python-linecacwe-srpm:: python-fixtures-srpm
-#python-linecacwe-srpm:: python-unittest2-srpm
+#python-linecache2-srpm:: python-fixtures-srpm
+#python-linecache2-srpm:: python-unittest2-srpm
 
 # Actually build in directories
 $(EPELPKGS):: FORCE
