@@ -19,6 +19,8 @@ EPELPKGS+=python2-linecache2-srpm
 EPELPKGS+=python2-unittest2-srpm
 
 # Build python3 versions of packages
+EPELPKGS+=python-boto-srpm
+EPELPKGS+=python-boto3-srpm
 EPELPKGS+=python-colorama-srpm
 EPELPKGS+=python-extras-srpm
 EPELPKGS+=python-jmespath-srpm
