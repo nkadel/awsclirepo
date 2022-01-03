@@ -29,7 +29,7 @@ EPELPKGS+=python-unittest2-srpm
 EPELPKGS+=python3-fixtures-srpm
 EPELPKGS+=python-d2to1-srpm
 
-# Actually compilable with epel-7-x86_64 alone
+# Actually compilable with centos+epel-7-x86_64 alone
 EPELPKGS+=python-awscli-srpm
 
 AWSCLIPKGS+=python-botocore-srpm
@@ -54,8 +54,8 @@ CFGS+=awsclirepo-7-x86_64.cfg
 CFGS+=awsclirepo-8-x86_64.cfg
 
 # Link from /etc/mock
-MOCKCFGS+=epel-7-x86_64.cfg
-MOCKCFGS+=epel-8-x86_64.cfg
+MOCKCFGS+=centos+epel-7-x86_64.cfg
+MOCKCFGS+=centos+epel-8-x86_64.cfg
 
 all:: install
 install:: $(CFGS) $(MOCKCFGS)
@@ -99,10 +99,10 @@ $(REPODIRS): $(REPOS)
 .PHONY: cfg cfgs
 cfg cfgs:: $(CFGS) $(MOCKCFGS)
 
-awsclirepo-7-x86_64.cfg: epel-7-x86_64.cfg
+awsclirepo-7-x86_64.cfg: centos+epel-7-x86_64.cfg
 	@echo Generating $@ from $?
 	@cat $? > $@
-	@sed -i 's/epel-7-x86_64/awsclirepo-7-x86_64/g' $@
+	@sed -i 's/centos+epel-7-x86_64/awsclirepo-7-x86_64/g' $@
 	@echo >> $@
 	@echo "config_opts['yum.conf'] += \"\"\"" >> $@
 	@echo '[awsclirepo]' >> $@
@@ -116,10 +116,10 @@ awsclirepo-7-x86_64.cfg: epel-7-x86_64.cfg
 	@echo '#cost=2000' >> $@
 	@echo '"""' >> $@
 
-awsclirepo-8-x86_64.cfg: epel-8-x86_64.cfg
+awsclirepo-8-x86_64.cfg: centos+epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@cat $? > $@
-	@sed -i 's/epel-8-x86_64/awsclirepo-8-x86_64/g' $@
+	@sed -i 's/centos+epel-8-x86_64/awsclirepo-8-x86_64/g' $@
 	@echo "    Disabling 'best=' for $@"
 	@sed -i '/^best=/d' $@
 	@echo "best=0" >> $@
