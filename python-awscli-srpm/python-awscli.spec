@@ -1,14 +1,14 @@
-%global pypi_name awscli
+global pypi_name awscli
 
 # Use only for fedora
 %if 0%{?fedora}
 %{?python_enable_dependency_generator}
 %endif
 
-%global botocore_version 1.23.19
+%global botocore_version 1.23.27
 
 Name:           python-%{pypi_name}
-Version:        1.22.19
+Version:        1.22.27
 Release:        0%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
