@@ -1,4 +1,4 @@
-global pypi_name awscli
+%global pypi_name awscli
 
 # Use only for fedora
 %if 0%{?fedora}
@@ -117,6 +117,9 @@ rm %{buildroot}%{_bindir}/aws.cmd
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 
 %changelog
+* Mon Jan 3 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 1.22.27-0
+- Update to 1.22.27
+
 * Sat Oct 23 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 1.21.2-0
 - Update to 1.21.2
 

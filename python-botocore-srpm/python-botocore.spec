@@ -89,6 +89,9 @@ nosetests-3 --with-coverage --cover-erase --cover-package botocore --with-xunit 
 %endif # with docs
 
 %changelog
+* Mon Jan 3 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 1.23.27-0
+- Update to 1.23.27
+
 * Sat Oct 23 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 1.22.2-0
 - Udpate to 1.22.2
 
