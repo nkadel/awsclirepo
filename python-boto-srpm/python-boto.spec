@@ -2,17 +2,10 @@
 
 %bcond_with unittests
 
-%{!?__python2: %global __python2 /usr/bin/python2}
-%{!?python2_sitelib: %global python2_sitelib %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%if %{with python3}
-%{!?__python3: %global __python3 /usr/bin/python3}
-%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%endif  # with python3
-
 Summary:        A simple, lightweight interface to Amazon Web Services
 Name:           python-boto
-Version:        2.34.0
-Release:        0.4%{?dist}
+Version:        2.49.0
+Release:        0%{?dist}
 License:        MIT
 Group:          Development/Languages
 URL:            https://github.com/boto/boto
@@ -21,27 +14,27 @@ Source0:        http://pypi.python.org/packages/source/b/boto/boto-%{version}.ta
 Source1:        boto-mit-license.txt
 
 BuildRequires:  python2-devel
-BuildRequires:  python-setuptools
+BuildRequires:  python2-setuptools
 %if %{with python3}
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
+BuildRequires:  python%{python3_pkgversion}-devel
+BuildRequires:  python%{python3_pkgversion}-setuptools
 %endif  # with python3
 
 %if %{with unittests}
-BuildRequires:  python-httpretty
-BuildRequires:  python-mock
-BuildRequires:  python-nose
-BuildRequires:  python-requests
+BuildRequires:  python2-httpretty
+BuildRequires:  python2-mock
+BuildRequires:  python2-nose
+BuildRequires:  python2-requests
 %if %{with python3}
-BuildRequires:  python3-httpretty
-BuildRequires:  python3-mock
-BuildRequires:  python3-nose
-BuildRequires:  python3-requests
+BuildRequires:  python%{python3_pkgversion}-httpretty
+BuildRequires:  python%{python3_pkgversion}-mock
+BuildRequires:  python%{python3_pkgversion}-nose
+BuildRequires:  python%{python3_pkgversion}-requests
 %endif  # with python3
 %endif  # with unittests
 
-Requires:       python-requests
-Requires:       python-rsa
+Requires:       python2-requests
+Requires:       python2-rsa
 
 Provides:       python2-boto = %{version}-%{release}
 
@@ -59,19 +52,19 @@ cloud systems like Eucalyptus, OpenStack and Open Nebula.
 
 
 %if %{with python3}
-%package -n python3-boto
+%package -n python%{python3_pkgversion}-boto
 Summary:        A simple, lightweight interface to Amazon Web Services
 
-Requires:       python3-requests
+Requires:       python%{python3_pkgversion}-requests
 %if 0%{?fedora} > 20
 # python3-rsa was introduced in python-rsa-3.1.1-6.fc21.
 # If it is backported to F20 please file a bug to request a rebuild
 # without this condition.
-Requires:       python3-rsa
+Requires:       python%{python3_pkgversion}-rsa
 %endif  # fedora > 20
 
 
-%description -n python3-boto
+%description -n python%{python3_pkgversion}-boto
 Boto is a Python package that provides interfaces to Amazon Web Services.
 It supports over thirty services, such as S3 (Simple Storage Service),
 SQS (Simple Queue Service), and EC2 (Elastic Compute Cloud) via their
@@ -157,7 +150,7 @@ popd
 
 
 %if %{with python3}
-%files -n python3-boto
+%files -n python%{python3_pkgversion}-boto
 %license boto-mit-license.txt
 %{python3_sitelib}/boto*
 %endif  # with python3
