@@ -1,1 +1,6 @@
-../.gitignore.epel
+*.out
+*.rpm
+*/
+*[0-9]
+*\#*
+*~
