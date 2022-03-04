@@ -55,7 +55,7 @@ CFGS+=awsclirepo-8-x86_64.cfg
 
 # Link from /etc/mock
 MOCKCFGS+=centos+epel-7-x86_64.cfg
-MOCKCFGS+=centos+epel-8-x86_64.cfg
+MOCKCFGS+=centos-stream+epel-8-x86_64.cfg
 
 all:: install
 install:: $(CFGS) $(MOCKCFGS)
@@ -116,10 +116,10 @@ awsclirepo-7-x86_64.cfg: centos+epel-7-x86_64.cfg
 	@echo '#cost=2000' >> $@
 	@echo '"""' >> $@
 
-awsclirepo-8-x86_64.cfg: centos+epel-8-x86_64.cfg
+awsclirepo-8-x86_64.cfg: centos-stream+epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@cat $? > $@
-	@sed -i 's/centos+epel-8-x86_64/awsclirepo-8-x86_64/g' $@
+	@sed -i 's/centos-stream+epel-8-x86_64/awsclirepo-8-x86_64/g' $@
 	@echo "    Disabling 'best=' for $@"
 	@sed -i '/^best=/d' $@
 	@echo "best=0" >> $@
