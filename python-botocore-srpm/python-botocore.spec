@@ -5,15 +5,16 @@
 %bcond_with docs
 
 %global pypi_name botocore
+%global pypi_version 1.24.12
 
 Name:           python-%{pypi_name}
-Version:        1.23.49
+Version:        1.24.12
 Release:        0%{?dist}
 Summary:        Low-level, data-driven core of boto 3
 
 License:        ASL 2.0
 URL:            https://github.com/boto/botocore
-Source0:        https://pypi.io/packages/source/b/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
+Source0:        %{pypi_source}
 BuildArch:      noarch
 
 %description

@@ -1,15 +1,17 @@
-%bcond_without python3
+%global pypi_name boto
+%global pypi_version 2.49.0
 
+%bcond_without python3
 %bcond_with unittests
 
 Summary:        A simple, lightweight interface to Amazon Web Services
-Name:           python-boto
-Version:        2.49.0
+Name:           python-%{pypi_name}
+Version:        %{pypi_version}
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Languages
-URL:            https://github.com/boto/boto
-Source0:        http://pypi.python.org/packages/source/b/boto/boto-%{version}.tar.gz
+URL:            https://github.com/%{pypi_name}/%{pypi_name}
+Source0:        %pypi_source
 # Taken from sourcecode 2014-07-31
 Source1:        boto-mit-license.txt
 
@@ -36,7 +38,7 @@ BuildRequires:  python%{python3_pkgversion}-requests
 Requires:       python2-requests
 Requires:       python2-rsa
 
-Provides:       python2-boto = %{version}-%{release}
+Provides:       python2-%{pypi_name} = %{version}-%{release}
 
 BuildArch:      noarch
 
@@ -52,7 +54,7 @@ cloud systems like Eucalyptus, OpenStack and Open Nebula.
 
 
 %if %{with python3}
-%package -n python%{python3_pkgversion}-boto
+%package -n python%{python3_pkgversion}-%{pypi_name}
 Summary:        A simple, lightweight interface to Amazon Web Services
 
 Requires:       python%{python3_pkgversion}-requests
@@ -64,7 +66,7 @@ Requires:       python%{python3_pkgversion}-rsa
 %endif  # fedora > 20
 
 
-%description -n python%{python3_pkgversion}-boto
+%description -n python%{python3_pkgversion}-%{pypi_name}
 Boto is a Python package that provides interfaces to Amazon Web Services.
 It supports over thirty services, such as S3 (Simple Storage Service),
 SQS (Simple Queue Service), and EC2 (Elastic Compute Cloud) via their
@@ -76,10 +78,10 @@ cloud systems like Eucalyptus, OpenStack and Open Nebula.
 
 
 %prep
-%setup -q -n boto-%{version}
+%setup -q -n %{pypi_name}-%{version}
 cp -p %{SOURCE1} .
 
-rm -r boto.egg-info
+rm -r %{pypi_name}.egg-info
 
 %if %{with python3}
 rm -rf %{py3dir}
@@ -146,13 +148,13 @@ popd
 %{_bindir}/s3put
 %{_bindir}/sdbadmin
 %{_bindir}/taskadmin
-%{python2_sitelib}/boto*
+%{python2_sitelib}/%{pypi_name}*
 
 
 %if %{with python3}
-%files -n python%{python3_pkgversion}-boto
+%files -n python%{python3_pkgversion}-%{pypi_name}
 %license boto-mit-license.txt
-%{python3_sitelib}/boto*
+%{python3_sitelib}/%{pypi_name}*
 %endif  # with python3
 
 
