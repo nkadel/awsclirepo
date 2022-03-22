@@ -5,10 +5,10 @@
 %bcond_with docs
 
 %global pypi_name botocore
-%global pypi_version 1.24.12
+%global pypi_version 1.24.24
 
 Name:           python-%{pypi_name}
-Version:        1.24.12
+Version:        %{pypi_version}
 Release:        0%{?dist}
 Summary:        Low-level, data-driven core of boto 3
 
@@ -90,6 +90,9 @@ nosetests-3 --with-coverage --cover-erase --cover-package botocore --with-xunit 
 %endif # with docs
 
 %changelog
+* Fri Mar 4 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 1.24.20-0
+- Update to 1.24.20
+
 * Mon Jan 3 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 1.23.27-0
 - Update to 1.23.27
 
