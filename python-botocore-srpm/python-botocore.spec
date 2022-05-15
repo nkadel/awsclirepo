@@ -5,11 +5,11 @@
 %bcond_with docs
 
 %global pypi_name botocore
-%global pypi_version 1.25.2
+%global pypi_version 1.26.0
 
 Name:           python-%{pypi_name}
 Version:        %{pypi_version}
-Release:        0%{?dist}
+Release:        0.1%{?dist}
 Summary:        Low-level, data-driven core of boto 3
 
 License:        ASL 2.0
@@ -90,6 +90,9 @@ nosetests-3 --with-coverage --cover-erase --cover-package botocore --with-xunit 
 %endif # with docs
 
 %changelog
+* Sun May 15 2022 Nico Kadel-Garcia <nkadel@gmail.bom< - 1.26.0-0.1
+- Update to 1.26.0
+
 * Fri Apr 29 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 1.25.2-0
 - Update to 1.25.2
 
