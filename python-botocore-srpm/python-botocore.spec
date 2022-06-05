@@ -5,7 +5,7 @@
 %bcond_with docs
 
 %global pypi_name botocore
-%global pypi_version 1.26.0
+%global pypi_version 1.27.2
 
 Name:           python-%{pypi_name}
 Version:        %{pypi_version}
