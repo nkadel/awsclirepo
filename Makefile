@@ -46,16 +46,19 @@ AWSCLIPKGS+=python-linecache2-srpm
 
 REPOS+=awsclirepo/el/7
 REPOS+=awsclirepo/el/8
+REPOS+=awsclirepo/el/9
 
 REPODIRS := $(patsubst %,%/x86_64/repodata,$(REPOS)) $(patsubst %,%/SRPMS/repodata,$(REPOS))
 
 # No local dependencies at build time
 CFGS+=awsclirepo-7-x86_64.cfg
 CFGS+=awsclirepo-8-x86_64.cfg
+CFGS+=awsclirepo-9-x86_64.cfg
 
 # Link from /etc/mock
 MOCKCFGS+=centos+epel-7-x86_64.cfg
 MOCKCFGS+=centos-stream+epel-8-x86_64.cfg
+MOCKCFGS+=centos-stream+epel-9-x86_64.cfg
 
 all:: install
 install:: $(CFGS) $(MOCKCFGS)
@@ -104,6 +107,8 @@ awsclirepo-7-x86_64.cfg: centos+epel-7-x86_64.cfg
 	@cat $? > $@
 	@sed -i 's/centos+epel-7-x86_64/awsclirepo-7-x86_64/g' $@
 	@echo >> $@
+	@echo Resetting root directory
+	@echo "config_opts['root'] = 'awsclirepo-{{ releasever }}-{{ target_arch }}'" >> $@
 	@echo "config_opts['yum.conf'] += \"\"\"" >> $@
 	@echo '[awsclirepo]' >> $@
 	@echo 'name=awsclirepo' >> $@
@@ -120,6 +125,8 @@ awsclirepo-8-x86_64.cfg: centos-stream+epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@cat $? > $@
 	@sed -i 's/centos-stream+epel-8-x86_64/awsclirepo-8-x86_64/g' $@
+	@echo Resetting root directory
+	@echo "config_opts['root'] = 'awsclirepo-{{ releasever }}-{{ target_arch }}'" >> $@
 	@echo "    Disabling 'best=' for $@"
 	@sed -i '/^best=/d' $@
 	@echo "best=0" >> $@
@@ -129,6 +136,28 @@ awsclirepo-8-x86_64.cfg: centos-stream+epel-8-x86_64.cfg
 	@echo 'name=awsclirepo' >> $@
 	@echo 'enabled=1' >> $@
 	@echo 'baseurl=$(REPOBASE)/awsclirepo/el/8/x86_64/' >> $@
+	@echo 'failovermethod=priority' >> $@
+	@echo 'skip_if_unavailable=False' >> $@
+	@echo 'metadata_expire=1' >> $@
+	@echo 'gpgcheck=0' >> $@
+	@echo '#cost=2000' >> $@
+	@echo '"""' >> $@
+
+awsclirepo-9-x86_64.cfg: centos-stream+epel-9-x86_64.cfg
+	@echo Generating $@ from $?
+	@cat $? > $@
+	@sed -i 's/centos-stream+epel-9-x86_64/awsclirepo-9-x86_64/g' $@
+	@echo Resetting root directory
+	@echo "config_opts['root'] = 'awsclirepo-{{ releasever }}-{{ target_arch }}'" >> $@
+	@echo "    Disabling 'best=' for $@"
+	@sed -i '/^best=/d' $@
+	@echo "best=0" >> $@
+	@echo >> $@
+	@echo "config_opts['yum.conf'] += \"\"\"" >> $@
+	@echo '[awsclirepo]' >> $@
+	@echo 'name=awsclirepo' >> $@
+	@echo 'enabled=1' >> $@
+	@echo 'baseurl=$(REPOBASE)/awsclirepo/el/9/x86_64/' >> $@
 	@echo 'failovermethod=priority' >> $@
 	@echo 'skip_if_unavailable=False' >> $@
 	@echo 'metadata_expire=1' >> $@
