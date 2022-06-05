@@ -1,8 +1,9 @@
-# Single python3 version in Fedora, python3_pkgversion macro not available
-%{!?python3_pkgversion:%global python3_pkgversion 3}
-
-# Enable for RHEL 6 and awscli
-%global with_python3 1
+%if 0%{?fedora} || 0%{?rhel} > 7
+%bcond_with python2
+%else
+%bcond_without python2
+%endif
+%bcond_with python3
 
 %global pypi_name jmespath
 
@@ -17,21 +18,20 @@ URL:            https://github.com/jmespath/jmespath.py
 Source0:        https://pypi.python.org/packages/source/j/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
 BuildArch:      noarch
 
-%if 0%{?rhel}
-BuildRequires:  epel-rpm-macros
-%endif
-
+%if %{with python2}
 BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools
-%if 0%{?with_python3}
+%endif
+%if %{with python3}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
-%endif # with_python3
+%endif # with python3
 
 %description
 JMESPath allows you to declaratively specify how to extract elements from
 a JSON document.
 
+%if %{with python2}
 %package -n     python2-%{pypi_name}
 Summary:        JSON Matching Expressions
 %{?el6:Provides: python-jmespath}
@@ -40,8 +40,9 @@ Summary:        JSON Matching Expressions
 %description -n python2-%{pypi_name}
 JMESPath allows you to declaratively specify how to extract elements from
 a JSON document.
+%endif
 
-%if 0%{?with_python3}
+%if %{with python3}
 %package -n     python%{python3_pkgversion}-%{pypi_name}
 Summary:        JSON Matching Expressions
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
@@ -49,30 +50,35 @@ Summary:        JSON Matching Expressions
 %description -n python%{python3_pkgversion}-%{pypi_name}
 JMESPath allows you to declaratively specify how to extract elements from
 a JSON document.
-%endif # with_python3
+%endif # with python3
 
 %prep
 %setup -n %{pypi_name}-%{version}
 rm -rf %{pypi_name}.egg-info
 
 %build
+%if %{with python2}
 %py2_build
-%if 0%{?with_python3}
+%endif
+%if %{with python3}
 %py3_build
-%endif # with_python3
+%endif # with python3
 
 %install
-%if 0%{?with_python3}
+%if %{with python3}
 %py3_install
 cp %{buildroot}/%{_bindir}/jp.py %{buildroot}/%{_bindir}/jp.py-3
 ln -sf %{_bindir}/jp.py-3 %{buildroot}/%{_bindir}/jp.py-%{python3_version}
 %endif # with_python3
 
+%if %{with python2}
 %py2_install
 cp %{buildroot}/%{_bindir}/jp.py %{buildroot}/%{_bindir}/jp.py-2
 ln -sf %{_bindir}/jp.py-2 %{buildroot}/%{_bindir}/jp.py-%{python2_version}
+%endif
 
 
+%if %{with python2}
 %files -n python2-%{pypi_name}
 %{!?_licensedir:%global license %doc}
 %doc README.rst
@@ -82,12 +88,16 @@ ln -sf %{_bindir}/jp.py-2 %{buildroot}/%{_bindir}/jp.py-%{python2_version}
 %{_bindir}/jp.py-%{python2_version}
 %{python2_sitelib}/%{pypi_name}
 %{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
+%endif
 
-%if 0%{?with_python3}
+%if %{with python3}
 %files -n python%{python3_pkgversion}-%{pypi_name}
 %{!?_licensedir:%global license %doc}
 %doc README.rst
 %license LICENSE.txt
+%if %{without python2}
+%{_bindir}/jp.py
+%endif
 %{_bindir}/jp.py-3
 %{_bindir}/jp.py-%{python3_version}
 %{python3_sitelib}/%{pypi_name}

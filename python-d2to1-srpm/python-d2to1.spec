@@ -1,12 +1,16 @@
-%global with_python3 1
+%if 0%{?fedora} || 0%{?rhel} > 7
+%global with_python2 0
+%else
 %global with_python2 1
+%endif
+%global with_python3 1
 
 %global pypi_name d2to1
 
 Name: python-%{pypi_name}
 Version: 0.2.10
 #Release: 1%%{?dist}
-Release: 0%{?dist}
+Release: 0.1%{?dist}
 Summary: Allows using distutils2-like setup.cfg files with setup.py
 License: BSD
 
@@ -15,14 +19,12 @@ URL: https://pypi.python.org/pypi/d2to1
 Source0: https://pypi.python.org/packages/source/d/d2to1/%{pypi_name}-%{version}.tar.gz
 BuildRequires: openssl-devel
 
-%if 0%{?rhel}
-BuildRequires:  epel-rpm-macros
-%endif
-
+%if 0%{?with_python2}
 BuildRequires: python2-devel
 BuildRequires: python2-setuptools
 Requires: python2-setuptools
 %{?python_provide:%python_provide python2-%{pypi_name}}
+%endif
 
 BuildArch: noarch
 
@@ -96,8 +98,10 @@ popd
 %endif
 
 %files
+%if 0%{?with_python2}
 %doc CHANGES.rst CONTRIBUTORS LICENSE README.rst
 %{python2_sitelib}/*
+%endif
 
 %if 0%{?with_python3}
 %files -n python%{python3_pkgversion}-d2to1

@@ -1,12 +1,16 @@
 %global with_python3 1
+%if 0%{?fedora} || 0%{rhel} > 8
+%global with_python2 0
+%else
 %global with_python2 1
+%endif
 
 %global pypi_name mimeparse
 
 Name:           python-%{pypi_name}
 Version:        0.1.4
 #Release:        1%%{?dist}
-Release:        0%{?dist}
+Release:        0.1%{?dist}
 Summary:        Python module for parsing mime-type names
 Group:          Development/Languages
 License:        MIT
@@ -14,12 +18,11 @@ URL:            https://pypi.python.org/pypi/python-mimeparse
 Source0:        https://pypi.python.org/packages/source/p/%{name}/%{name}-%{version}.tar.gz
 BuildArch:      noarch
 
-%if 0%{?rhel}
-BuildRequires:  epel-rpm-macros
-%endif
-
+%if %{with_python2}
 BuildRequires:  python2-devel
 %{?python_provide:%python_provide python2-%{pypi_name}}
+%endif
+
 %if %{with_python3}
 BuildRequires:  python%{python3_pkgversion}-devel
 %endif # if with_python3
@@ -48,7 +51,9 @@ cp -a . %{py3dir}
 %endif # with_python3
 
 %build
+%if %{with_python2}
 CFLAGS="%{optflags}" %{__python2} setup.py build
+%endif
 
 %if %{with_python3}
 pushd %{py3dir}
@@ -57,7 +62,9 @@ popd
 %endif # with_python3
 
 %check
+%if %{with_python2}
 %{__python2} mimeparse_test.py
+%endif
 
 %if %{with_python3}
 pushd %{py3dir}
@@ -75,11 +82,15 @@ pushd %{py3dir}
 popd
 %endif # with_python3
 
+%if %{with_python2}
 %{__python2} setup.py install --skip-build --root %{buildroot}
+%endif
 
 %files
+%if %{with_python2}
 %doc README
 %{python2_sitelib}/*
+%endif
 
 %if %{with_python3}
 %files -n python%{python3_pkgversion}-%{pypi_name}

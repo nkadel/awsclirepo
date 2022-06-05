@@ -1,12 +1,18 @@
+%if 0%{?fedora} || 0%{?rhel} > 7
+%bcond_with python2
+%else
+%bcond_without python2
+%endif
 %bcond_without python3
 
 %global pypi_name unittest2
-#%global bootstrap_traceback2 0
+#%%global bootstrap_traceback2 0
 %global bootstrap_traceback2 1
 
 Name:           python-%{pypi_name}
 Version:        1.1.0
-Release:        4%{?dist}
+#Release:        4%%{?dist}
+Release:        0.4%{?dist}
 Summary:        The new features in unittest backported to Python 2.4+
 
 License:        BSD
@@ -26,6 +32,7 @@ BuildArch:      noarch
 BuildRequires:  epel-rpm-macros
 %endif
 
+%if %{with python2}
 BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools
 BuildRequires:  python2-six
@@ -36,6 +43,7 @@ Requires:       python2-traceback2
 Requires:       python2-setuptools
 Requires:       python2-six
 %{?python_provide:%python_provide python2-%{pypi_name}}
+%endif
 
 %if %{with python3}
 BuildRequires:  python%{python3_pkgversion}-devel
@@ -87,7 +95,9 @@ find %{py3dir} -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
 
 
 %build
+%if %{with python2}
 %{__python2} setup.py build
+%endif
 
 %if %{with python3}
 pushd %{py3dir}
@@ -107,12 +117,15 @@ mv %{buildroot}%{_bindir}/unit2 %{buildroot}/%{_bindir}/python%{python3_pkgversi
 popd
 %endif # with_python3
 
+%if %{with python2}
 %{__python2} setup.py install --skip-build --root %{buildroot}
-
+%endif
 
 %check
 %if ! 0%{?bootstrap_traceback2}
+%if %{with python2}
 %{__python2} -m unittest2
+%endif
 
 %if %{with python3}
 pushd %{py3dir}
@@ -123,10 +136,12 @@ popd
 
 
 %files
+%if %{with python2}
 %doc README.txt
 %{_bindir}/unit2
 %{python2_sitelib}/%{pypi_name}
 %{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
+%endif
 
 %if %{with python3}
 %files -n python%{python3_pkgversion}-%{pypi_name}
