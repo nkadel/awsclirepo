@@ -1,6 +1,11 @@
 %global pypi_name boto
 %global pypi_version 2.49.0
 
+%if 0%{?fedora} || 0%{?rhel} > 8
+%bcond_with python2
+%else
+%bcond_without python2
+%endif
 %bcond_without python3
 %bcond_with unittests
 
@@ -15,18 +20,22 @@ Source0:        %pypi_source
 # Taken from sourcecode 2014-07-31
 Source1:        boto-mit-license.txt
 
+%if %{with python2}
 BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools
+%endif
 %if %{with python3}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 %endif  # with python3
 
 %if %{with unittests}
+%if %{with python2}
 BuildRequires:  python2-httpretty
 BuildRequires:  python2-mock
 BuildRequires:  python2-nose
 BuildRequires:  python2-requests
+%endif
 %if %{with python3}
 BuildRequires:  python%{python3_pkgversion}-httpretty
 BuildRequires:  python%{python3_pkgversion}-mock
@@ -35,13 +44,14 @@ BuildRequires:  python%{python3_pkgversion}-requests
 %endif  # with python3
 %endif  # with unittests
 
+%if %{with python2}
 Requires:       python2-requests
 Requires:       python2-rsa
 
 Provides:       python2-%{pypi_name} = %{version}-%{release}
+%endif
 
 BuildArch:      noarch
-
 
 %description
 Boto is a Python package that provides interfaces to Amazon Web Services.
@@ -90,7 +100,9 @@ cp -a . %{py3dir}
 
 
 %build
+%if %{with python2}
 %{__python2} setup.py build
+%endif
 
 %if %{with python3}
 pushd %{py3dir}
@@ -108,12 +120,16 @@ popd
 rm -f $RPM_BUILD_ROOT/%{_bindir}/*
 %endif  # with python3
 
+%if %{with python2}
 %{__python2} setup.py install --skip-build --root $RPM_BUILD_ROOT
-
+%endif
 
 %check
 %if %{with unittests}
+%if %{with python2}
 %{__python2} tests/test.py default
+%endif
+
 %if %{with python3}
 pushd %{py3dir}
 %{__python3} tests/test.py default
@@ -122,6 +138,7 @@ popd
 %endif  # with unittests
 
 
+%if %{with python2}
 %files
 # For some reason this definition really does have to go in this section.
 %{!?_licensedir: %global license %%doc}
@@ -149,7 +166,7 @@ popd
 %{_bindir}/sdbadmin
 %{_bindir}/taskadmin
 %{python2_sitelib}/%{pypi_name}*
-
+%endif
 
 %if %{with python3}
 %files -n python%{python3_pkgversion}-%{pypi_name}
