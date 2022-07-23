@@ -4,7 +4,7 @@
 
 Name:           python-%{pypi_name}
 Version:        %{pypi_version}
-Release:        0.1%{?dist}
+Release:        0.2%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
 License:        Apache License 2.0
@@ -27,7 +27,7 @@ Summary:        Universal Command Line Environment for AWS
 
 Requires:       python%{python3_pkgversion}-PyYAML < 5.5
 Requires:       python%{python3_pkgversion}-PyYAML >= 3.10
-Requires:       python%{python3_pkgversion}-botocore = 1.27.33
+Requires:       python%{python3_pkgversion}-botocore = 1.27.35
 Requires:       python%{python3_pkgversion}-colorama < 0.4.4
 Requires:       python%{python3_pkgversion}-colorama >= 0.2.5
 Requires:       python%{python3_pkgversion}-docutils < 0.16
