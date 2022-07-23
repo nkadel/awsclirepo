@@ -102,71 +102,58 @@ $(REPODIRS): $(REPOS)
 .PHONY: cfg cfgs
 cfg cfgs:: $(CFGS) $(MOCKCFGS)
 
-awsclirepo-7-x86_64.cfg: centos+epel-7-x86_64.cfg
-	@echo Generating $@ from $?
-	@cat $? > $@
-	@sed -i 's/centos+epel-7-x86_64/awsclirepo-7-x86_64/g' $@
-	@echo >> $@
-	@echo Resetting root directory
-	@echo "config_opts['root'] = 'awsclirepo-{{ releasever }}-{{ target_arch }}'" >> $@
-	@echo "config_opts['yum.conf'] += \"\"\"" >> $@
-	@echo '[awsclirepo]' >> $@
-	@echo 'name=awsclirepo' >> $@
-	@echo 'enabled=1' >> $@
-	@echo 'baseurl=$(REPOBASE)/awsclirepo/el/7/x86_64/' >> $@
-	@echo 'failovermethod=priority' >> $@
-	@echo 'skip_if_unavailable=False' >> $@
-	@echo 'metadata_expire=1' >> $@
-	@echo 'gpgcheck=0' >> $@
-	@echo '#cost=2000' >> $@
-	@echo '"""' >> $@
-
-awsclirepo-8-x86_64.cfg: centos-stream+epel-8-x86_64.cfg
-	@echo Generating $@ from $?
-	@cat $? > $@
-	@sed -i 's/centos-stream+epel-8-x86_64/awsclirepo-8-x86_64/g' $@
-	@echo Resetting root directory
-	@echo "config_opts['root'] = 'awsclirepo-{{ releasever }}-{{ target_arch }}'" >> $@
-	@echo "    Disabling 'best=' for $@"
-	@sed -i '/^best=/d' $@
-	@echo "best=0" >> $@
-	@echo >> $@
-	@echo "config_opts['yum.conf'] += \"\"\"" >> $@
-	@echo '[awsclirepo]' >> $@
-	@echo 'name=awsclirepo' >> $@
-	@echo 'enabled=1' >> $@
-	@echo 'baseurl=$(REPOBASE)/awsclirepo/el/8/x86_64/' >> $@
-	@echo 'failovermethod=priority' >> $@
-	@echo 'skip_if_unavailable=False' >> $@
-	@echo 'metadata_expire=1' >> $@
-	@echo 'gpgcheck=0' >> $@
-	@echo '#cost=2000' >> $@
-	@echo '"""' >> $@
-
-awsclirepo-9-x86_64.cfg: centos-stream+epel-9-x86_64.cfg
-	@echo Generating $@ from $?
-	@cat $? > $@
-	@sed -i 's/centos-stream+epel-9-x86_64/awsclirepo-9-x86_64/g' $@
-	@echo Resetting root directory
-	@echo "config_opts['root'] = 'awsclirepo-{{ releasever }}-{{ target_arch }}'" >> $@
-	@echo "    Disabling 'best=' for $@"
-	@sed -i '/^best=/d' $@
-	@echo "best=0" >> $@
-	@echo >> $@
-	@echo "config_opts['yum.conf'] += \"\"\"" >> $@
-	@echo '[awsclirepo]' >> $@
-	@echo 'name=awsclirepo' >> $@
-	@echo 'enabled=1' >> $@
-	@echo 'baseurl=$(REPOBASE)/awsclirepo/el/9/x86_64/' >> $@
-	@echo 'failovermethod=priority' >> $@
-	@echo 'skip_if_unavailable=False' >> $@
-	@echo 'metadata_expire=1' >> $@
-	@echo 'gpgcheck=0' >> $@
-	@echo '#cost=2000' >> $@
-	@echo '"""' >> $@
-
 $(MOCKCFGS)::
-	ln -sf --no-dereference /etc/mock/$@ $@
+	@echo Generating $@ from /etc/mock/$@
+	@echo "include('/etc/mock/$@')" | tee $@
+
+awsclirepo-7-x86_64.cfg: /etc/mock/centos+epel-7-x86_64.cfg
+	@echo Generating $@ from $?
+	@echo "include('$?')" | tee $@
+	@echo | tee -a $@
+	@echo "config_opts['root'] = 'awsclirepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
+	@echo "config_opts['yum.conf'] += \"\"\"" | tee -a $@
+	@echo '[awsclirepo]' | tee -a $@
+	@echo 'name=awsclirepo' | tee -a $@
+	@echo 'enabled=1' | tee -a $@
+	@echo 'baseurl=$(REPOBASE)/awsclirepo/el/7/x86_64/' | tee -a $@
+	@echo 'failovermethod=priority' | tee -a $@
+	@echo 'skip_if_unavailable=False' | tee -a $@
+	@echo 'metadata_expire=1' | tee -a $@
+	@echo 'gpgcheck=0' | tee -a $@
+	@echo '#cost=2000' | tee -a $@
+	@echo '"""' | tee -a $@
+
+awsclirepo-8-x86_64.cfg: /etc/mock/centos-stream+epel-8-x86_64.cfg
+	@echo Generating $@ from $?
+	@echo "include('$?')" > $@
+	@echo "config_opts['root'] = 'awsclirepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
+	@echo "config_opts['dnf.conf'] += \"\"\"" | tee -a $@
+	@echo '[awsclirepo]' | tee -a $@
+	@echo 'name=awsclirepo' | tee -a $@
+	@echo 'enabled=1' | tee -a $@
+	@echo 'baseurl=$(REPOBASE)/awsclirepo/el/8/x86_64/' | tee -a $@
+	@echo 'failovermethod=priority' | tee -a $@
+	@echo 'skip_if_unavailable=False' | tee -a $@
+	@echo 'metadata_expire=1' | tee -a $@
+	@echo 'gpgcheck=0' | tee -a $@
+	@echo '#cost=2000' | tee -a $@
+	@echo '"""' | tee -a $@
+
+awsclirepo-9-x86_64.cfg: /etc/mock/centos-stream+epel-9-x86_64.cfg
+	@echo Generating $@ from $?
+	@echo "include('$?')" > $@
+	@echo "config_opts['root'] = 'awsclirepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
+	@echo "config_opts['dnf.conf'] += \"\"\"" | tee -a $@
+	@echo '[awsclirepo]' | tee -a $@
+	@echo 'name=awsclirepo' | tee -a $@
+	@echo 'enabled=1' | tee -a $@
+	@echo 'baseurl=$(REPOBASE)/awsclirepo/el/9/x86_64/' | tee -a $@
+	@echo 'failovermethod=priority' | tee -a $@
+	@echo 'skip_if_unavailable=False' | tee -a $@
+	@echo 'metadata_expire=1' | tee -a $@
+	@echo 'gpgcheck=0' | tee -a $@
+	@echo '#cost=2000' | tee -a $@
+	@echo '"""' | tee -a $@
 
 repo: awsclirepo.repo
 awsclirepo.repo:: Makefile awsclirepo.repo.in
