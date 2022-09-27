@@ -1,7 +1,6 @@
 # Created by pyp2rpm-3.3.7
 %global pypi_name awscli
-%global pypi_version 1.25.71
-
+%global pypi_version 1.25.83
 Name:           python-%{pypi_name}
 Version:        %{pypi_version}
 Release:        0.2%{?dist}
@@ -27,7 +26,7 @@ Summary:        Universal Command Line Environment for AWS
 
 Requires:       python%{python3_pkgversion}-PyYAML < 5.5
 Requires:       python%{python3_pkgversion}-PyYAML >= 3.10
-Requires:       python%{python3_pkgversion}-botocore = 1.27.70
+Requires:       python%{python3_pkgversion}-botocore = 1.27.82
 Requires:       python%{python3_pkgversion}-colorama < 0.4.4
 Requires:       python%{python3_pkgversion}-colorama >= 0.2.5
 Requires:       python%{python3_pkgversion}-docutils < 0.16
@@ -66,6 +65,9 @@ rm -rf %{pypi_name}.egg-info
 %{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
 
 %changelog
+* Tue Sep 27 2022 Nico Kadel-Garcia <nkadel@gmail.bom< - 1.25.83-0.1
+- Update to 1.25.83
+
 * Sun May 15 2022 Nico Kadel-Garcia <nkadel@gmail.bom< - 1.24.0-0.1
 - Update to 1.24.0
 

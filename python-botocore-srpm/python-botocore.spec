@@ -5,7 +5,7 @@
 %bcond_with docs
 
 %global pypi_name botocore
-%global pypi_version 1.27.70
+%global pypi_version 1.27.82
 Name:           python-%{pypi_name}
 Version:        %{pypi_version}
 Release:        0.1%{?dist}
@@ -89,6 +89,9 @@ nosetests-3 --with-coverage --cover-erase --cover-package botocore --with-xunit 
 %endif # with docs
 
 %changelog
+* Tue Sep 27 2022 Nico Kadel-Garcia <nkadel@gmail.bom< - 1.27.82-0.1
+- Update to 1.27.82
+
 * Sun May 15 2022 Nico Kadel-Garcia <nkadel@gmail.bom< - 1.26.0-0.1
 - Update to 1.26.0
 
