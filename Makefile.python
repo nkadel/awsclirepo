@@ -8,7 +8,7 @@ LANG=C
 # Ignore ownership and group,
 RSYNCOPTS=-a --no-owner --no-group
 # Skip existing files to avoid binary churn in yum repos
-#RSYNCSAFEOPTS=$(RSYNCOPTS) --ignore-existing 
+#RSYNCOPTS+=--ignore-existing
 
 # "mock" configurations to build with, activate only as needed
 # Some RHEL dependencies are supplied locally in awsclirepo
@@ -49,15 +49,15 @@ build:: src.rpm
 		--rebuild $?
 
 .PHONY: $(MOCKS)
-$(MOCKS):: src.rpm
+$(MOCKS)::
 	@if [ -e $@ -a -n "`find $@ -name '*.rpm' ! -name '*.src.rpm' 2>/dev/null`" ]; then \
 		echo "	Skipping RPM populated $@"; \
 	else \
 		echo "Actally building $? in $@"; \
 		rm -rf $@; \
 		mock -q -r $(PWD)/../$@.cfg \
-		     --resultdir=$(PWD)/$@ \
-		     $?; \
+		    --sources $(PWD) --spec $(SPEC) \
+		    --resultdir=$(PWD)/$@; \
 	fi
 
 mock:: $(MOCKS)
@@ -78,10 +78,10 @@ install:: $(MOCKS)
 	    rpmdir=$(REPOBASEDIR)/$$yumrelease/$$yumarch; \
 	    srpmdir=$(REPOBASEDIR)/$$yumrelease/SRPMS; \
 	    echo "	Pusning SRPMS to $$srpmdir"; \
-	    rsync $(RSYNCSAFEOPTS) $$repo/*.src.rpm $$srpmdir/. || exit 1; \
+	    rsync $(RSYNCOPTS) $$repo/*.src.rpm $$srpmdir/. || exit 1; \
 	    createrepo_c -q $$srpmdir/.; \
 	    echo "	Pushing RPMS to $$rpmdir"; \
-	    rsync $(RSYNCSAFEOPTS) --exclude=*.src.rpm --exclude=*debuginfo*.rpm $$repo/*.rpm $$rpmdir/. || exit 1; \
+	    rsync $(RSYNCOPTS) --exclude=*.src.rpm --exclude=*debuginfo*.rpm $$repo/*.rpm $$rpmdir/. || exit 1; \
 	    createrepo_c -q $$rpmdir/.; \
 	done
 
