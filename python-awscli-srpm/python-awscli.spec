@@ -1,9 +1,9 @@
 # Created by pyp2rpm-3.3.7
 %global pypi_name awscli
-%global pypi_version 1.25.91
+%global pypi_version 1.25.92
 Name:           python-%{pypi_name}
 Version:        %{pypi_version}
-Release:        0.2%{?dist}
+Release:        0.1%{?dist}
 Summary:        Universal Command Line Environment for AWS
 
 License:        Apache License 2.0
@@ -65,6 +65,9 @@ rm -rf %{pypi_name}.egg-info
 %{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
 
 %changelog
+* Sat Oct 15 2022 Nico Kadel-Garcia <nkadel@gmail.bom< - 1.25.92-0.1
+- Update to 1.25.92
+
 * Tue Sep 27 2022 Nico Kadel-Garcia <nkadel@gmail.bom< - 1.25.83-0.1
 - Update to 1.25.83
 
