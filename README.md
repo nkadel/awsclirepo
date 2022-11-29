@@ -5,12 +5,6 @@ Wrapper for SRPM building tools for awscli on RHEL. RHEL 7 has a
 working version published via EPEL, but it's out of date, so this
 provides an RPM based upgrade path.
 
-Local repo access
-=================
-
-Mock now allows the use of file:// based repositories in the .cfg
-file. Review the REPONAWE option in the Makefile for the options.
-
 Building awscli
 ===============
 
