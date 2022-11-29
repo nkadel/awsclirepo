@@ -1,12 +1,12 @@
 %global pypi_name s3transfer
-%global pypi_version 0.5.1
+%global pypi_version 0.5.2
 
 %global _description \
 S3transfer is a Python library for managing Amazon S3 transfers.
 
 Name:           python-%{pypi_name}
-Version:        0.5.1
-Release:        0%{?dist}
+Version:        0.5.2
+Release:        0.1%{?dist}
 Summary:        Amazon S3 Transfer Manager
 
 License:        ASL 2.0
