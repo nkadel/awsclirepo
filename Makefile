@@ -23,7 +23,6 @@ EPELPKGS+=python-boto3-srpm
 EPELPKGS+=python-colorama-srpm
 EPELPKGS+=python-d2to1-srpm
 EPELPKGS+=python-jmespath-srpm
-EPELPKGS+=python-mimeparse-srpm
 EPELPKGS+=python-unittest2-srpm
 
 # Actually compilable with centos+epel-7-x86_64 alone
