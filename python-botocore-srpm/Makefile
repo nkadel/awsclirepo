@@ -1,1 +1,1 @@
-../Makefile.python
+../Makefile.epel

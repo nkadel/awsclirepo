@@ -20,21 +20,19 @@ EPELPKGS+=python2-unittest2-srpm
 # Build python3 versions of packages
 EPELPKGS+=python-boto-srpm
 EPELPKGS+=python-boto3-srpm
+EPELPKGS+=python-botocore-srpm
 EPELPKGS+=python-colorama-srpm
 EPELPKGS+=python-d2to1-srpm
 EPELPKGS+=python-jmespath-srpm
 EPELPKGS+=python-unittest2-srpm
+EPELPKGS+=python3-s3transfer-srpm
 
 # Actually compilable with centos+epel-7-x86_64 alone
 EPELPKGS+=python-awscli-srpm
 
-AWSCLIPKGS+=python-botocore-srpm
-
 AWSCLIPKGS+=python3-rsa-srpm
 
 AWSCLIPKGS+=python3-pbr-srpm
-
-AWSCLIPKGS+=python3-s3transfer-srpm
 
 # dependencies
 AWSCLIPKGS+=python-linecache2-srpm
