@@ -1,14 +1,9 @@
 %global pypi_name fixtures
 
-# Disable python2 for RHEL 6 dependencies on python-testtool
-%global with_python3 1
-# Older RHEL versions ahve python-%%{pypi_name} packages
-%global with_python2 0
-
 Name:           python-%{pypi_name}
 Version:        0.3.14
 #Release:        3%%{?dist}
-Release:        0%{?dist}
+Release:        0.1%{?dist}
 Summary:        Fixtures, reusable state for writing clean tests and more
 
 License:        ASL 2.0 or BSD
@@ -29,24 +24,6 @@ make it easy to write your own fixtures using the fixtures contract.
 Glue code is provided that makes using fixtures that meet the Fixtures
 contract in unittest compatible test cases easy and straight forward.
 
-%if 0%{?with_python2}
-%package -n python2-%{pypi_name}
-Summary:        Fixtures, reusable state for writing clean tests and more
-BuildArch:      noarch
-BuildRequires:  python2-devel
-BuildRequires:  python2-setuptools
-Requires:       python2-testtools
-%{?python_provide:%python_provide python2-%{pypi_name}}
-
-%description -n python2-%{pypi_name}
-Fixtures defines a Python contract for reusable state / support logic,
-primarily for unit testing. Helper and adaption logic is included to
-make it easy to write your own fixtures using the fixtures contract.
-Glue code is provided that makes using fixtures that meet the Fixtures
-contract in unittest compatible test cases easy and straight forward.
-%endif # with_python2
-
-%if 0%{?with_python3}
 %package -n python%{python3_pkgversion}-%{pypi_name}
 Summary:        Fixtures, reusable state for writing clean tests and more
 BuildArch:      noarch
@@ -61,52 +38,26 @@ primarily for unit testing. Helper and adaption logic is included to
 make it easy to write your own fixtures using the fixtures contract.
 Glue code is provided that makes using fixtures that meet the Fixtures
 contract in unittest compatible test cases easy and straight forward.
-%endif
-
 
 %prep
 %setup -q -n %{pypi_name}-%{version}
 
-%if 0%{?with_python3}
 cp -a . %{py3dir}
-%endif
-
 
 %build
-%if 0%{?with_python2}
-%{__python2} setup.py build
-%endif
-%if 0%{?with_python3}
 pushd %{py3dir}
 %{__python3} setup.py build
 popd
-%endif # with_python3
-
 
 %install
-%if 0%{?with_python3}
 pushd %{py3dir}
 %{__python3} setup.py install --skip-build --root %{buildroot}
 popd
-%endif
-%if 0%{?with_python2}
-%{__python2} setup.py install --skip-build --root %{buildroot}
-%endif
 
-
-%if 0%{?with_python2}
-%files -n python2-%{pypi_name}
-%doc README GOALS NEWS Apache-2.0 BSD COPYING
-%{python2_sitelib}/%{pypi_name}
-%{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
-%endif
-
-%if 0%{?with_python3}
 %files -n python%{python3_pkgversion}-%{pypi_name}
 %doc README GOALS NEWS Apache-2.0 BSD COPYING
 %{python3_sitelib}/%{pypi_name}
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
-%endif
 
 %changelog
 * Mon Apr 29 2019 Nico Kadel-Garcia <nkadel@gmail.com> - 0.3.14-0
