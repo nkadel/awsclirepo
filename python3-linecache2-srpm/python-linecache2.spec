@@ -37,7 +37,8 @@ A backport of linecache to older supported Pythons.
 
 %prep
 %setup -qc
-cp -a python2 python3
+mv %{pypi_name}-%{version} python3
+mv python3/%{pypi_name}/tests .
 
 %build
 pushd python3
