@@ -1,10 +1,5 @@
 %global pypi_name pbr
 
-%global with_python3 1
-# Disable python2 until RHEL 6 natively includes python2-pbr
-#%%global with_python2 1
-%global with_python2 0
-
 #%%if 0%%{?fedora} > 19
 #%%global do_test 1
 #%%endif
@@ -28,36 +23,8 @@ BuildArch:      noarch
 BuildRequires:  epel-rpm-macros
 %endif
 
-%if %{with_python2}
-%if 0%{?rhel}==6
-BuildRequires: python-sphinx10
-%else
-BuildRequires: python2-sphinx >= 1.1.3
-%endif # rhel == 6
-
-BuildRequires:  python2-devel
-# very new required, when also using tests
-BuildRequires:  python2-d2to1 >= 0.2.10
-
-%if %{do_test}
-BuildRequires:  python2-testtools
-BuildRequires:  python2-testscenarios
-%endif # do_test
-
-# still not packaged yet:
-BuildRequires:  python2-discover
-BuildRequires:  python2-coverage >= 3.6
-BuildRequires:  python2-flake8
-BuildRequires:  python2-mock >= 1.0
-BuildRequires:  python2-testrepository >= 0.0.18
-BuildRequires:  python2-subunit
-BuildRequires:  python2-testresources
-%endif # with_python2
-
-%if %{with_python3}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-d2to1
-%endif
 
 %description
 PBR is a library that injects some useful and sensible default behaviors into 
@@ -67,25 +34,13 @@ different projects each with at least 3 active branches, it seems like a good
 time to make that code into a proper re-usable library.
 
 # Not yet supported as distinctly bundled package
-%if %{with_python2}
-%package -n python2-pbr
-Summary:        Python Build Reasonableness
-Requires:       python2-pip
-%{?python_provide:%python_provide python2-%{pypi_name}}
-
-%description -n python2-pbr
-Manage dynamic plugins for Python applications
-%endif # with_python2
-
-#%%if %%{with_python3}
 #%%package -n python%%{python3_pkgversion}-pbr
 #Summary:        Python Build Reasonableness
 #Requires:       python%%{python3_pkgversion}-pip
-#%{?python_provide:%python_provide python%%{python3_pkgversion}-%{pypi_name}}
+#%%{?python_provide:%%python_provide python%%{python3_pkgversion}-%%{pypi_name}}
 #
 #%%description -n python%%{python3_pkgversion}-pbr
 #Manage dynamic plugins for Python applications
-#%%endif
 
 %prep
 %setup -q -n %{pypi_name}-%{version}
@@ -95,67 +50,24 @@ rm -rf {test-,}requirements.txt
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
 
-%if %{with_python3}
 rm -rf %{py3dir}
 cp -a . %{py3dir}
-%endif
 
 %build
-
-%if %{with_python2}
-%{py2_build}
-
-# generate html docs 
-%if 0%{?rhel}==6
-sphinx-1.0-build doc/source html
-%else
-sphinx-build doc/source html
-%endif # rhel == 6
-
-# remove the sphinx-build leftovers
-rm -rf html/.{doctrees,buildinfo}
-%endif
-
-%if %{with_python3}
 pushd %{py3dir}
 %{py3_build}
 popd
-%endif
-
 
 %install
-%if %{with_python2}
-%{py2_install}
-
-%if 0%{?do_test} 
-%check
-# we don't have the necessary br's, yet
-%{__python2} setup.py test
-%endif # do_test
-%endif # with_python2
-
-%if %{with_python3}
 pushd %{py3dir}
 %{py3_install}
 popd
-%endif # with_python3
 
-%if %{with_python2}
-%files -n python2-pbr
-%doc README.rst LICENSE
-#%doc html
-%doc html
-%{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
-%{python2_sitelib}/%{pypi_name}
-%endif # with_python3
-
-%if %{with_python3}
 %files -n python%{python3_pkgversion}-pbr
 %doc README.rst LICENSE
 #%doc html
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
 %{python3_sitelib}/%{pypi_name}
-%endif
 
 %changelog
 * Mon Apr 29 2019 Nico Kadel-Garcia <nkadel@gmail.com> 0.8.0-0

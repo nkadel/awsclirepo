@@ -65,7 +65,7 @@ rm -rf %{pypi_name}.egg-info
 %{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
 
 %changelog
-* Sun Jan 1 2022 Nico Kadel-Garcia <nkadel@gmail.bom< - 1.27.41-0.1
+* Sun Jan 1 2023 Nico Kadel-Garcia <nkadel@gmail.bom< - 1.27.41-0.1
 - Update to 1.27.41
 
 * Wed Dec 14 2022 Nico Kadel-Garcia <nkadel@gmail.bom< - 1.27.29-0.1

@@ -1,10 +1,3 @@
-%if 0%{?fedora} || 0%{?rhel} > 7
-%bcond_with python2
-%else
-%bcond_without python2
-%endif
-%bcond_without python3
-
 %global pypi_name unittest2
 #%%global bootstrap_traceback2 0
 %global bootstrap_traceback2 1
@@ -32,35 +25,18 @@ BuildArch:      noarch
 BuildRequires:  epel-rpm-macros
 %endif
 
-%if %{with python2}
-BuildRequires:  python2-devel
-BuildRequires:  python2-setuptools
-BuildRequires:  python2-six
-%if ! 0%{?bootstrap_traceback2}
-BuildRequires:  python2-traceback2
-Requires:       python2-traceback2
-%endif
-Requires:       python2-setuptools
-Requires:       python2-six
-%{?python_provide:%python_provide python2-%{pypi_name}}
-%endif
-
-%if %{with python3}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 BuildRequires:  python%{python3_pkgversion}-six
 %if ! 0%{?bootstrap_traceback2}
 BuildRequires:  python%{python3_pkgversion}-traceback2
 %endif # bootstrap_traceback2
-%endif # if with_python3
-
 
 %description
 unittest2 is a backport of the new features added to the unittest testing
 framework in Python 2.7 and onwards. It is tested to run on Python 2.6, 2.7,
 3.2, 3.3, 3.4 and pypy.
 
-%if %{with python3}
 %package -n     python%{python3_pkgversion}-%{pypi_name}
 Summary:        The new features in unittest backported to Python 2.4+
 Requires:       python%{python3_pkgversion}-setuptools
@@ -74,7 +50,6 @@ Requires:       python%{python3_pkgversion}-traceback2
 unittest2 is a backport of the new features added to the unittest testing
 framework in Python 2.7 and onwards. It is tested to run on Python 2.6, 2.7,
 3.2, 3.3, 3.4 and pypy.
-%endif # with_python3
 
 %prep
 %setup -q -n %{pypi_name}-%{version}
@@ -87,69 +62,38 @@ rm -rf %{pypi_name}.egg-info
 %patch1 -p0
 %endif
 
-%if %{with python3}
 rm -rf %{py3dir}
 cp -a . %{py3dir}
 find %{py3dir} -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
-%endif # with_python3
-
 
 %build
-%if %{with python2}
-%{__python2} setup.py build
-%endif
-
-%if %{with python3}
 pushd %{py3dir}
 %{__python3} setup.py build
 popd
-%endif # with_python3
-
 
 %install
 # Must do the subpackages' install first because the scripts in /usr/bin are
 # overwritten with every setup.py install (and we want the python2 version
 # to be the default for now).
-%if %{with python3}
 pushd %{py3dir}
 %{__python3} setup.py install --skip-build --root %{buildroot}
 mv %{buildroot}%{_bindir}/unit2 %{buildroot}/%{_bindir}/python%{python3_pkgversion}-unit2
 popd
-%endif # with_python3
-
-%if %{with python2}
-%{__python2} setup.py install --skip-build --root %{buildroot}
-%endif
 
 %check
 %if ! 0%{?bootstrap_traceback2}
-%if %{with python2}
-%{__python2} -m unittest2
-%endif
-
-%if %{with python3}
 pushd %{py3dir}
 %{__python3} -m unittest2
 popd
-%endif # with_python3
 %endif # bootstrap_traceback2
 
 
 %files
-%if %{with python2}
-%doc README.txt
-%{_bindir}/unit2
-%{python2_sitelib}/%{pypi_name}
-%{python2_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
-%endif
-
-%if %{with python3}
 %files -n python%{python3_pkgversion}-%{pypi_name}
 %doc README.txt
 %{_bindir}/python%{python3_pkgversion}-unit2
 %{python3_sitelib}/%{pypi_name}
 %{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
-%endif # with_python3
 
 %changelog
 * Mon Jan 11 2016 Matěj Cepl <mcepl@redhat.com> - 1.1.0-4

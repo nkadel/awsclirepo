@@ -1,12 +1,6 @@
 %global pypi_name boto
 %global pypi_version 2.49.0
 
-%if 0%{?fedora} || 0%{?rhel} > 8
-%bcond_with python2
-%else
-%bcond_without python2
-%endif
-%bcond_without python3
 %bcond_with unittests
 
 Summary:        A simple, lightweight interface to Amazon Web Services
@@ -20,36 +14,15 @@ Source0:        %pypi_source
 # Taken from sourcecode 2014-07-31
 Source1:        boto-mit-license.txt
 
-%if %{with python2}
-BuildRequires:  python2-devel
-BuildRequires:  python2-setuptools
-%endif
-%if %{with python3}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
-%endif  # with python3
 
 %if %{with unittests}
-%if %{with python2}
-BuildRequires:  python2-httpretty
-BuildRequires:  python2-mock
-BuildRequires:  python2-nose
-BuildRequires:  python2-requests
-%endif
-%if %{with python3}
 BuildRequires:  python%{python3_pkgversion}-httpretty
 BuildRequires:  python%{python3_pkgversion}-mock
 BuildRequires:  python%{python3_pkgversion}-nose
 BuildRequires:  python%{python3_pkgversion}-requests
-%endif  # with python3
 %endif  # with unittests
-
-%if %{with python2}
-Requires:       python2-requests
-Requires:       python2-rsa
-
-Provides:       python2-%{pypi_name} = %{version}-%{release}
-%endif
 
 BuildArch:      noarch
 
@@ -63,18 +36,11 @@ for other public services such as Google Storage in addition to private
 cloud systems like Eucalyptus, OpenStack and Open Nebula.
 
 
-%if %{with python3}
 %package -n python%{python3_pkgversion}-%{pypi_name}
 Summary:        A simple, lightweight interface to Amazon Web Services
 
 Requires:       python%{python3_pkgversion}-requests
-%if 0%{?fedora} > 20
-# python3-rsa was introduced in python-rsa-3.1.1-6.fc21.
-# If it is backported to F20 please file a bug to request a rebuild
-# without this condition.
 Requires:       python%{python3_pkgversion}-rsa
-%endif  # fedora > 20
-
 
 %description -n python%{python3_pkgversion}-%{pypi_name}
 Boto is a Python package that provides interfaces to Amazon Web Services.
@@ -84,7 +50,6 @@ REST and Query APIs.  The goal of boto is to support the full breadth
 and depth of Amazon Web Services.  In addition, boto provides support
 for other public services such as Google Storage in addition to private
 cloud systems like Eucalyptus, OpenStack and Open Nebula.
-%endif  # with python3
 
 
 %prep
@@ -93,86 +58,33 @@ cp -p %{SOURCE1} .
 
 rm -r %{pypi_name}.egg-info
 
-%if %{with python3}
 rm -rf %{py3dir}
 cp -a . %{py3dir}
-%endif
-
 
 %build
-%if %{with python2}
-%{__python2} setup.py build
-%endif
-
-%if %{with python3}
 pushd %{py3dir}
 %{__python3} setup.py build
 popd
-%endif  # with python3
-
 
 %install
-%if %{with python3}
 # Scripts only work with python2
 pushd %{py3dir}
 %{__python3} setup.py install --skip-build --root $RPM_BUILD_ROOT
 popd
 rm -f $RPM_BUILD_ROOT/%{_bindir}/*
-%endif  # with python3
-
-%if %{with python2}
-%{__python2} setup.py install --skip-build --root $RPM_BUILD_ROOT
-%endif
 
 %check
 %if %{with unittests}
-%if %{with python2}
-%{__python2} tests/test.py default
-%endif
-
-%if %{with python3}
 pushd %{py3dir}
 %{__python3} tests/test.py default
 popd
-%endif  # with python3
 %endif  # with unittests
 
-
-%if %{with python2}
-%files
-# For some reason this definition really does have to go in this section.
-%{!?_licensedir: %global license %%doc}
-%license boto-mit-license.txt
-%doc README.rst
-%{_bindir}/asadmin
-%{_bindir}/bundle_image
-%{_bindir}/cfadmin
-%{_bindir}/cq
-%{_bindir}/cwutil
-%{_bindir}/dynamodb_dump
-%{_bindir}/dynamodb_load
-%{_bindir}/elbadmin
-%{_bindir}/fetch_file
-%{_bindir}/glacier
-%{_bindir}/instance_events
-%{_bindir}/kill_instance
-%{_bindir}/launch_instance
-%{_bindir}/list_instances
-%{_bindir}/lss3
-%{_bindir}/mturk
-%{_bindir}/pyami_sendmail
-%{_bindir}/route53
-%{_bindir}/s3put
-%{_bindir}/sdbadmin
-%{_bindir}/taskadmin
-%{python2_sitelib}/%{pypi_name}*
-%endif
-
-%if %{with python3}
 %files -n python%{python3_pkgversion}-%{pypi_name}
 %license boto-mit-license.txt
 %{python3_sitelib}/%{pypi_name}*
-%endif  # with python3
+# Scripts only work with python2
+#%%{_bindir}/*
 
 
 %changelog
