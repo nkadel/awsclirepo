@@ -15,11 +15,11 @@ REPOBASE = file://$(PWD)
 EPELPKGS+=python3-fixtures-srpm
 
 # Build python3 versions of packages
-EPELPKGS+=python3-colorama-srpm
+#EPELPKGS+=python3-colorama-srpm
 EPELPKGS+=python3-d2to1-srpm
 EPELPKGS+=python3-jmespath-srpm
 EPELPKGS+=python3-boto-srpm
-EPELPKGS+=python3-boto3-srpm
+#EPELPKGS+=python3-boto3-srpm
 EPELPKGS+=python3-botocore-srpm
 EPELPKGS+=python3-s3transfer-srpm
 EPELPKGS+=python3-unittest2-srpm
