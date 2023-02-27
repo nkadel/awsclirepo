@@ -29,7 +29,7 @@ EPELPKGS+=python-awscli-srpm
 
 AWSCLIPKGS+=python-rsa-srpm
 
-AWSCLIPKGS+=python-pbr-srpm
+AWSCLIPKGS+=python3-pbr-srpm
 
 # dependencies
 AWSCLIPKGS+=python-linecache2-srpm
