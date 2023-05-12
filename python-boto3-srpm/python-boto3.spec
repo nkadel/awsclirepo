@@ -26,14 +26,14 @@ published...
 %package -n     python%{python3_pkgversion}-%{pypi_name}
 Summary:        The AWS SDK for Python
 
-Requires:       python%{python3_pkgversion}-botocore < 1.24
-Requires:       python%{python3_pkgversion}-botocore < 2~a0
+Requires:       python%{python3_pkgversion}-botocore < 1.30
+Requires:       python%{python3_pkgversion}-botocore < 2
 Requires:       python%{python3_pkgversion}-botocore >= 1.21
-Requires:       python%{python3_pkgversion}-botocore >= 1.23.19
-Requires:       python%{python3_pkgversion}-jmespath < 1
+Requires:       python%{python3_pkgversion}-botocore >= 1.23.133
+Requires:       python%{python3_pkgversion}-jmespath < 2
 Requires:       python%{python3_pkgversion}-jmespath >= 0.7.1
-Requires:       python%{python3_pkgversion}-s3transfer < 0.6
-Requires:       python%{python3_pkgversion}-s3transfer >= 0.5
+Requires:       python%{python3_pkgversion}-s3transfer < 0.7
+Requires:       python%{python3_pkgversion}-s3transfer >= 0.6
 %description -n python%{python3_pkgversion}-%{pypi_name}
  Boto3 - The AWS SDK for Python |Version| |Gitter|Boto3 is the Amazon Web
 Services (AWS) Software Development Kit (SDK) for Python, which allows Python
