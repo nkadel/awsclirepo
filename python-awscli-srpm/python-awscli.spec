@@ -30,12 +30,19 @@ Requires:       python%{python3_pkgversion}-PyYAML >= 3.10
 Requires:       python%{python3_pkgversion}-botocore = 1.29.133
 Requires:       python%{python3_pkgversion}-colorama < 0.4.4
 Requires:       python%{python3_pkgversion}-colorama >= 0.2.5
-Requires:       python%{python3_pkgversion}-docutils < 0.16
+Requires:       python%{python3_pkgversion}-docutils < 0.17
 Requires:       python%{python3_pkgversion}-docutils >= 0.10
 Requires:       python%{python3_pkgversion}-rsa < 4.8
 Requires:       python%{python3_pkgversion}-rsa >= 3.1.2
-Requires:       python%{python3_pkgversion}-s3transfer < 0.6
-Requires:       python%{python3_pkgversion}-s3transfer >= 0.5
+Requires:       python%{python3_pkgversion}-s3transfer < 0.7
+Requires:       python%{python3_pkgversion}-s3transfer >= 0.6
+
+# awscli package is misnamed
+Provides:       awscli = %{version}-%{release}
+Obsoletes:      awscli <= %{version}-%{release}
+Conflicts:      awscli
+
+
 %description -n python%{python3_pkgversion}-%{pypi_name}
  This package provides a unified command line interface to Amazon Web
 Services.Jump to:- Getting Started <getting-started>__ - Getting Help <getting-
