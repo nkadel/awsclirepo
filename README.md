@@ -11,7 +11,12 @@ Building awscli
 Ideally, install "mock" and use that to build for both RHEL 6 and RHEL
 
 * make cfgs # Create local .cfg configs for "mock".
-* * epel-7-x86_64.cfg # Used for some Makefiles
+* * centos+epel-7-x86_64.cfg # Used for some makefiles
+* * centos-stream+epel-8-x86_64.cfg
+* * centos-stream+epel-9-x86_64.cfg
+# # awsclirepo-7-x86_64.cfg
+# # awsclirepo-8-x86_64.cfg
+# # awsclirepo-9-x86_64.cfg
 
 * make repos # Creates local local yum repositories in $PWD/awsclirepo
 * * awsclirepo/el/7

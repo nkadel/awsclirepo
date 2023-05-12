@@ -11,27 +11,26 @@
 #REPOBASE = http://localhost
 REPOBASE = file://$(PWD)
 
-# Placeholder RPMs for python2-foo packages to include python-foo
-EPELPKGS+=python-fixtures-srpm
-
-# Build python3 versions of packages
-#EPELPKGS+=python-colorama-srpm
-EPELPKGS+=python-d2to1-srpm
-EPELPKGS+=python-jmespath-srpm
-EPELPKGS+=python-boto-srpm
-#EPELPKGS+=python-boto3-srpm
+# Buildable with only EPEL
+EPELPKGS+=python-awscli-srpm
+EPELPKGS+=python-boto3-srpm
 EPELPKGS+=python-botocore-srpm
+EPELPKGS+=python-boto-srpm
+EPELPKGS+=python-boto-srpm
+EPELPKGS+=python-colorama-srpm
+EPELPKGS+=python-d2to1-srpm
+EPELPKGS+=python-fixtures-srpm
+EPELPKGS+=python-jmespath-srpm
 EPELPKGS+=python-s3transfer-srpm
 EPELPKGS+=python-unittest2-srpm
 
-# Actually compilable with centos+epel-7-x86_64 alone
-EPELPKGS+=python-awscli-srpm
-
+# Requires dependencies above
 AWSCLIPKGS+=python-rsa-srpm
 
+# Needed for linecache2
 AWSCLIPKGS+=python3-pbr-srpm
 
-# dependencies
+# Needed for awscli
 AWSCLIPKGS+=python-linecache2-srpm
 
 REPOS+=awsclirepo/el/7
