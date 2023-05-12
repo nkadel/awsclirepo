@@ -36,6 +36,8 @@ Requires:       python%{python3_pkgversion}-rsa < 4.8
 Requires:       python%{python3_pkgversion}-rsa >= 3.1.2
 Requires:       python%{python3_pkgversion}-s3transfer < 0.7
 Requires:       python%{python3_pkgversion}-s3transfer >= 0.6
+# Manually added
+Requires:       python%{python3_pkgversion}-jmespath
 
 # awscli package is misnamed
 Provides:       awscli = %{version}-%{release}
@@ -75,6 +77,7 @@ rm -rf %{pypi_name}.egg-info
 %changelog
 * Thu May 11 2023 Kadel-Garcia <nkadel@gmail.bom< - 1.27.133-0.1
 - Update to 1.27.133
+- Add Requires for jmespath
 
 * Sun Jan 1 2023 Nico Kadel-Garcia <nkadel@gmail.bom< - 1.27.41-0.1
 - Update to 1.27.41
