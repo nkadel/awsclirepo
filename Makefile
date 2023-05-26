@@ -27,7 +27,7 @@ EPELPKGS+=python-unittest2-srpm
 AWSCLIPKGS+=python-rsa-srpm
 
 # Needed for linecache2
-AWSCLIPKGS+=python3-pbr-srpm
+AWSCLIPKGS+=python-pbr-srpm
 
 # Needed for awscli
 AWSCLIPKGS+=python-linecache2-srpm
