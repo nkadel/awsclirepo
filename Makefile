@@ -16,7 +16,6 @@ EPELPKGS+=python-awscli-srpm
 EPELPKGS+=python-boto3-srpm
 EPELPKGS+=python-botocore-srpm
 EPELPKGS+=python-boto-srpm
-EPELPKGS+=python-boto-srpm
 EPELPKGS+=python-colorama-srpm
 EPELPKGS+=python-d2to1-srpm
 EPELPKGS+=python-fixtures-srpm
@@ -86,7 +85,6 @@ $(REPOS):
 $(REPODIRS): $(REPOS)
 	@install -d -m 755 `dirname $@`
 	/usr/bin/createrepo_c `dirname $@`
-
 
 .PHONY: cfg cfgs
 cfg cfgs:: $(CFGS) $(MOCKCFGS)
@@ -161,7 +159,6 @@ awsclirepo.repo:: Makefile awsclirepo.repo.in
 
 awsclirepo.repo:: FORCE
 	cmp -s /etc/yum.repos.d/$@ $@       
-
 
 nginx:: nginx/default.d/awsclirepo.conf
 
