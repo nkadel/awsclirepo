@@ -1,6 +1,6 @@
 # Created by pyp2rpm-3.3.7
 %global pypi_name awscli
-%global pypi_version 1.27.133
+%global pypi_version 1.27.142
 Name:           python-%{pypi_name}
 Version:        %{pypi_version}
 Release:        0.1%{?dist}
@@ -27,7 +27,7 @@ Summary:        Universal Command Line Environment for AWS
 Requires:       python%{python3_pkgversion}-PyYAML < 5.5
 Requires:       python%{python3_pkgversion}-PyYAML >= 3.10
 # botocore is version locked to awscli
-Requires:       python%{python3_pkgversion}-botocore = 1.29.133
+Requires:       python%{python3_pkgversion}-botocore = 1.29.142
 Requires:       python%{python3_pkgversion}-colorama < 0.4.4
 Requires:       python%{python3_pkgversion}-colorama >= 0.2.5
 Requires:       python%{python3_pkgversion}-docutils < 0.17
