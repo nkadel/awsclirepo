@@ -1,6 +1,6 @@
 # Created by pyp2rpm-3.3.7
 %global pypi_name awscli
-%global pypi_version 1.31.6
+%global pypi_version 1.32.83
 Name:           python-%{pypi_name}
 Version:        %{pypi_version}
 Release:        0.1%{?dist}
@@ -24,18 +24,18 @@ version 2, please visit the v2 branch <
 %package -n     python%{python3_pkgversion}-%{pypi_name}
 Summary:        Universal Command Line Environment for AWS
 
-Requires:       python%{python3_pkgversion}-PyYAML < 5.5
+#Requires:       python%{python3_pkgversion}-PyYAML < 6.1
 Requires:       python%{python3_pkgversion}-PyYAML >= 3.10
 # botocore is version locked to awscli
-Requires:       python%{python3_pkgversion}-botocore =  1.33.6
-Requires:       python%{python3_pkgversion}-colorama < 0.4.4
+Requires:       python%{python3_pkgversion}-botocore =  1.34.83
+#Requires:       python%{python3_pkgversion}-colorama < 0.4.5
 Requires:       python%{python3_pkgversion}-colorama >= 0.2.5
-Requires:       python%{python3_pkgversion}-docutils < 0.17
+#Requires:       python%{python3_pkgversion}-docutils < 0.17
 Requires:       python%{python3_pkgversion}-docutils >= 0.10
-Requires:       python%{python3_pkgversion}-rsa < 4.8
+#Requires:       python%{python3_pkgversion}-rsa < 4.8
 Requires:       python%{python3_pkgversion}-rsa >= 3.1.2
-Requires:       python%{python3_pkgversion}-s3transfer < 0.7
-Requires:       python%{python3_pkgversion}-s3transfer >= 0.6
+#Requires:       python%{python3_pkgversion}-s3transfer < 0.11.0
+Requires:       python%{python3_pkgversion}-s3transfer >= 0.10.0
 # Manually added
 Requires:       python%{python3_pkgversion}-jmespath
 
@@ -57,6 +57,9 @@ version 2, please visit the v2 branch <
 %autosetup -n %{pypi_name}-%{pypi_version}
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
+
+# Discrd reqirements with maximum values
+sed -i.bak "s/,<.*'/'/g" setup.*
 
 %build
 %{__python3} setup.py build
