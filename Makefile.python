@@ -15,6 +15,7 @@ RSYNCOPTS=-a --no-owner --no-group
 # Disabled, RHEL 6 is now obsolete
 MOCKS+=awsclirepo-8-x86_64
 MOCKS+=awsclirepo-9-x86_64
+MOCKS+=awsclirepo-f40-x86_64
 
 # Local yum compatible RPM repository
 REPOBASEDIR="`/bin/pwd | xargs dirname`/awsclirepo"
