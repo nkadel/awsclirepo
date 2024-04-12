@@ -12,8 +12,9 @@ RSYNCOPTS=-a --no-owner --no-group
 
 # "mock" configurations to build with, activate only as needed
 # Some RHEL dependencies are supplied locally in awsclirepo
-MOCKS+=centos-stream+epel-next-8-x86_64
+#MOCKS+=centos-stream+epel-next-8-x86_64
 MOCKS+=centos-stream+epel-next-9-x86_64
+#MOCKS+=fedora-40-x86_64
 
 # Local yum compatible RPM repository
 REPOBASEDIR="`/bin/pwd | xargs dirname`/awsclirepo"

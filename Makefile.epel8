@@ -12,9 +12,9 @@ RSYNCOPTS=-a --no-owner --no-group
 
 # "mock" configurations to build with, activate only as needed
 # Some RHEL dependencies are supplied locally in awsclirepo
-# Disabled, RHEL 6 is now obsolete
-#MOCKS+=centos-stream+epel-next-8-x86_64
+MOCKS+=centos-stream+epel-next-8-x86_64
 #MOCKS+=centos-stream+epel-next-9-x86_64
+#MOCKS+=fedora-40-x86_64
 
 # Local yum compatible RPM repository
 REPOBASEDIR="`/bin/pwd | xargs dirname`/awsclirepo"
@@ -68,7 +68,7 @@ install:: $(MOCKS)
 	    echo Installing $$repo; \
 	    case $$repo in \
 		*-8-x86_64) yumrelease=el/8; yumarch=x86_64; ;; \
-		*-9-x86_64) yumrelease=el/8; yumarch=x86_64; ;; \
+		*-9-x86_64) yumrelease=el/9; yumarch=x86_64; ;; \
 		*-40-x86_64) yumrelease=fedora/40; yumarch=x86_64; ;; \
 		*-f40-x86_64) yumrelease=fedora/40; yumarch=x86_64; ;; \
 		*) echo "Unrecognized release for $$repo, exiting" >&2; exit 1; ;; \

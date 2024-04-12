@@ -18,8 +18,6 @@ EPELPKGS+=python-botocore-srpm
 EPELPKGS+=python-boto-srpm
 EPELPKGS+=python-colorama-srpm
 EPELPKGS+=python-d2to1-srpm
-EPELPKGS+=python-fixtures-srpm
-EPELPKGS+=python-jmespath-srpm
 EPELPKGS+=python-unittest2-srpm
 
 # Requies botocore
