@@ -20,15 +20,18 @@ EPELPKGS+=python-colorama-srpm
 EPELPKGS+=python-d2to1-srpm
 EPELPKGS+=python-fixtures-srpm
 EPELPKGS+=python-jmespath-srpm
-EPELPKGS+=python-s3transfer-srpm
 EPELPKGS+=python-unittest2-srpm
+
+# Requies botocore
+EPELPKGS+=python-s3transfer-srpm
 
 # Requires dependencies above
 AWSCLIPKGS+=python-rsa-srpm
 
-# Needed for linecache2
+# Requires rsa
 AWSCLIPKGS+=python-pbr-srpm
 
+# Requires pbr
 # Needed for awscli
 AWSCLIPKGS+=python-linecache2-srpm
 
@@ -61,14 +64,6 @@ build install clean getsrc build:: FORCE
 
 # It is sometimes useful to build up all the more independent EPEL packages first
 epel:: $(EPELPKGS)
-
-# Dependencies for order sensitivity
-#python-awscli-srpm::
-#
-#python-botocore-srpm:: python-jmespath-srpm
-#
-#python-linecache2-srpm:: python-fixtures-srpm
-#python-linecache2-srpm:: python-unittest2-srpm
 
 # Actually build in directories
 $(EPELPKGS):: FORCE
