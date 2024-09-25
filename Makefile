@@ -42,8 +42,8 @@ CFGS+=awsclirepo-8-x86_64.cfg
 CFGS+=awsclirepo-9-x86_64.cfg
 
 # Link from /etc/mock
-MOCKCFGS+=alma+epel-8-x86_64.cfg
-MOCKCFGS+=alma+epel-9-x86_64.cfg
+MOCKCFGS+=centos-stream+epel-8-x86_64.cfg
+MOCKCFGS+=centos-stream+epel-9-x86_64.cfg
 
 all:: install
 install:: $(CFGS) $(MOCKCFGS)
@@ -90,7 +90,7 @@ $(MOCKCFGS)::
 	@echo Generating $@ from /etc/mock/$@
 	@echo "include('/etc/mock/$@')" | tee $@
 
-awsclirepo-8-x86_64.cfg: /etc/mock/alma+epel-8-x86_64.cfg
+awsclirepo-8-x86_64.cfg: /etc/mock/centos-stream+epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" > $@
 	@echo "config_opts['root'] = 'awsclirepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
@@ -106,7 +106,7 @@ awsclirepo-8-x86_64.cfg: /etc/mock/alma+epel-8-x86_64.cfg
 	@echo '#cost=2000' | tee -a $@
 	@echo '"""' | tee -a $@
 
-awsclirepo-9-x86_64.cfg: /etc/mock/alma+epel-9-x86_64.cfg
+awsclirepo-9-x86_64.cfg: /etc/mock/centos-stream+epel-9-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" > $@
 	@echo "config_opts['root'] = 'awsclirepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
