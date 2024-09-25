@@ -32,21 +32,18 @@ AWSCLIPKGS+=python-pbr-srpm
 # Needed for awscli
 AWSCLIPKGS+=python-linecache2-srpm
 
-REPOS+=awsclirepo/el/7
 REPOS+=awsclirepo/el/8
 REPOS+=awsclirepo/el/9
 
 REPODIRS := $(patsubst %,%/x86_64/repodata,$(REPOS)) $(patsubst %,%/SRPMS/repodata,$(REPOS))
 
 # No local dependencies at build time
-CFGS+=awsclirepo-7-x86_64.cfg
 CFGS+=awsclirepo-8-x86_64.cfg
 CFGS+=awsclirepo-9-x86_64.cfg
 
 # Link from /etc/mock
-MOCKCFGS+=centos+epel-7-x86_64.cfg
-MOCKCFGS+=centos-stream+epel-8-x86_64.cfg
-MOCKCFGS+=centos-stream+epel-9-x86_64.cfg
+MOCKCFGS+=alma+epel-8-x86_64.cfg
+MOCKCFGS+=alma+epel-9-x86_64.cfg
 
 all:: install
 install:: $(CFGS) $(MOCKCFGS)
@@ -93,24 +90,7 @@ $(MOCKCFGS)::
 	@echo Generating $@ from /etc/mock/$@
 	@echo "include('/etc/mock/$@')" | tee $@
 
-awsclirepo-7-x86_64.cfg: /etc/mock/centos+epel-7-x86_64.cfg
-	@echo Generating $@ from $?
-	@echo "include('$?')" | tee $@
-	@echo | tee -a $@
-	@echo "config_opts['root'] = 'awsclirepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
-	@echo "config_opts['yum.conf'] += \"\"\"" | tee -a $@
-	@echo '[awsclirepo]' | tee -a $@
-	@echo 'name=awsclirepo' | tee -a $@
-	@echo 'enabled=1' | tee -a $@
-	@echo 'baseurl=$(REPOBASE)/awsclirepo/el/7/x86_64/' | tee -a $@
-	@echo 'failovermethod=priority' | tee -a $@
-	@echo 'skip_if_unavailable=False' | tee -a $@
-	@echo 'metadata_expire=1' | tee -a $@
-	@echo 'gpgcheck=0' | tee -a $@
-	@echo '#cost=2000' | tee -a $@
-	@echo '"""' | tee -a $@
-
-awsclirepo-8-x86_64.cfg: /etc/mock/centos-stream+epel-8-x86_64.cfg
+awsclirepo-8-x86_64.cfg: /etc/mock/alma+epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" > $@
 	@echo "config_opts['root'] = 'awsclirepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
@@ -126,7 +106,7 @@ awsclirepo-8-x86_64.cfg: /etc/mock/centos-stream+epel-8-x86_64.cfg
 	@echo '#cost=2000' | tee -a $@
 	@echo '"""' | tee -a $@
 
-awsclirepo-9-x86_64.cfg: /etc/mock/centos-stream+epel-9-x86_64.cfg
+awsclirepo-9-x86_64.cfg: /etc/mock/alma+epel-9-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" > $@
 	@echo "config_opts['root'] = 'awsclirepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
