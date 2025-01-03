@@ -1,16 +1,23 @@
-%global with_python3 1
+# Force python38 for RHEL 8, which has python 3.6 by default
+%if 0%{?el8} || 0%{?el9}
+%global python3_version 3.12
+%global python3_pkgversion 3.12
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+%endif
 
 %global pypi_name colorama
+%global pypi_version 0.3.2
 
 Name:           python-%{pypi_name}
-Version:        0.3.2
+Version:        %{pypi_version}
 #Release:        3%%{?dist}
 Release:        0.2%{?dist}
 Summary:        Cross-platform colored terminal text
 
 License:        BSD
 URL:            https://pypi.python.org/pypi/colorama/
-Source0:        https://pypi.python.org/packages/source/c/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
+Source0:        https://pypi.python.org/packages/source/c/%{pypi_name}/%{pypi_name}-%{pypi_version}.tar.gz
 BuildArch:      noarch
 
 %if 0%{?rhel}
@@ -28,12 +35,12 @@ It also provides some shortcuts to help generate ANSI sequences, and works fine
 in conjunction with any other ANSI sequence generation library, such as
 Termcolor.
 
-%if 0%{?with_python3}
 %package -n python%{python3_pkgversion}-%{pypi_name}
 Summary:        Cross-platform colored terminal text
 
 Requires:      python%{python3_pkgversion}
 BuildRequires: python%{python3_pkgversion}-devel
+BuildRequires: python%{python3_pkgversion}-setuptools
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
 %description -n python%{python3_pkgversion}-%{pypi_name}
@@ -48,15 +55,12 @@ in conjunction with any other ANSI sequence generation library, such as
 Termcolor.
 
 %prep
-%setup -q -n %{pypi_name}-%{version}
+%setup -q -n %{pypi_name}-%{pypi_version}
 
 # remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
 
-%if 0%{?with_python3}
 cp -a . %{py3dir}
-%endif
-
 
 %build
 pushd %{py3dir}
@@ -78,8 +82,9 @@ popd
 %doc README.rst
 %license LICENSE.txt
 %{python3_sitelib}/%{pypi_name}
-%{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
-%endif
+#%{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_pkgversion}.egg-info
+%{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
+
 
 %changelog
 * Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.3.2-3
